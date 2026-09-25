@@ -1,31 +1,9 @@
-# DYNAMOS collection backend + readable report patch
+# DYNAMOS Explore build fix
 
-This package adds two things.
+Replace only:
 
-## 1. Dedicated printable DYNAMOS Result Report
+`src/pages/explore/index.astro`
 
-The Print button now prints only a readable result report, not the website. The report contains:
+This fixes the Astro build failure at the first CSS rule by restoring the missing `</style>` block and the dedicated print-report CSS. It also closes the pilot-note section cleanly before the print-only report.
 
-- model/questionnaire/derivation versions;
-- integrated PRECEPTA interpretation;
-- PRECEPTA results and participant feedback;
-- all 26 scores grouped by category;
-- missing-pattern selections;
-- targeted follow-up answers;
-- a readable explanation of what the research contribution contains;
-- contribution status and submission ID if already donated.
-
-## 2. Serverless private collection backend
-
-`research-backend/` contains a Cloudflare Worker + D1 implementation for:
-
-- POST `/v1/contributions`
-- POST `/v1/withdraw`
-- GET `/v1/stats`
-- GET `/v1/health`
-
-No server machine is required.
-
-Start with `docs/DEPLOY_RESEARCH_BACKEND.md`.
-
-`model/research/backend.json` is intentionally blank until the Worker is deployed, so the website cannot accidentally transmit data.
+Do not change `model/research/backend.json` in the same commit yet; first confirm this build is green.
