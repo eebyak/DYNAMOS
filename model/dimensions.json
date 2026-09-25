@@ -1,0 +1,223 @@
+{
+  "model": "DYNAMOS",
+  "version": "2.0.0",
+  "license": "CC-BY-SA-4.0",
+  "scale": {
+    "min": 1,
+    "max": 10
+  },
+  "categories": [
+    {
+      "id": "state_dynamics",
+      "name": "State Dynamics",
+      "description": "How states of focus or engagement are entered, maintained, exited, and re-entered.",
+      "dimensions": [
+        {
+          "id": "ET",
+          "name": "Entry Threshold",
+          "short": "Cost to start a task once disengaged",
+          "description": "How difficult it is to begin a task when not already engaged. A high score means starting feels effortful, delayed, or requires strong motivation or structure; a low score means tasks can be begun easily and spontaneously."
+        },
+        {
+          "id": "MR",
+          "name": "Maintenance Robustness",
+          "short": "Stability once engaged",
+          "description": "How stable focus or engagement is once started. A high score means engagement can be sustained for long periods despite distractions; a low score means engagement fades quickly or needs frequent reinforcement."
+        },
+        {
+          "id": "XS",
+          "name": "Exit Sensitivity",
+          "short": "How easily a state collapses when disturbed",
+          "description": "How sensitive engagement is to interruptions or disruptions. A high score means even small interruptions can break focus; a low score means engagement remains active despite disturbances."
+        },
+        {
+          "id": "RC",
+          "name": "Re-Entry Cost",
+          "short": "Cost to resume after interruption",
+          "description": "How difficult it is to return to a task after interruption. A high score means resuming feels almost like starting over; a low score means the prior thread can be resumed with little additional effort."
+        }
+      ]
+    },
+    {
+      "id": "process_attention_architecture",
+      "name": "Process & Attention Architecture",
+      "description": "What happens inside an active state.",
+      "dimensions": [
+        {
+          "id": "IG",
+          "name": "Input Gate Tightness",
+          "short": "How selective attention is once engaged",
+          "description": "How strongly incoming information is filtered while focused. A high score means irrelevant input is blocked effectively; a low score means many stimuli enter awareness at once."
+        },
+        {
+          "id": "MI",
+          "name": "Mode Integrity",
+          "short": "Resistance to attentional leakage",
+          "description": "How well one coherent mode of thinking or working is maintained. A high score means mental coherence is well maintained; a low score means attention more often drifts or fragments."
+        },
+        {
+          "id": "SF",
+          "name": "State Friction",
+          "short": "Cost of switching between tasks or modes",
+          "description": "How effortful it is to change tasks, topics, or mental modes. A high score means switching is disruptive and expensive; a low score means transitions are relatively smooth."
+        },
+        {
+          "id": "BC",
+          "name": "Baseline Charge",
+          "short": "Intensity / activation level during work",
+          "description": "Natural energy or activation level while working. A high score means strong internal drive or intensity; a low score means a calmer, lower-energy working style."
+        }
+      ]
+    },
+    {
+      "id": "meaning_drive_protection",
+      "name": "Meaning, Drive & Protection",
+      "description": "Why engagement happens and why it stops.",
+      "dimensions": [
+        {
+          "id": "CD",
+          "name": "Complexity Drive",
+          "short": "Pull toward abstraction, systems, patterns",
+          "description": "How strongly one is drawn to complexity, structure, and systemic understanding. A high score means deeper patterns and frameworks are naturally sought; a low score means simpler or more concrete tasks are preferred."
+        },
+        {
+          "id": "PH",
+          "name": "Precision Hunger",
+          "short": "Tension from unresolved structure or errors",
+          "description": "How much discomfort is produced by mistakes, inconsistencies, or unfinished structures. A high score means strong pressure to resolve them; a low score means ambiguity or imperfection is more easily tolerated."
+        },
+        {
+          "id": "RS",
+          "name": "Resonance Strength",
+          "short": "How strongly meaningful input amplifies engagement",
+          "description": "How powerfully meaningful topics or ideas activate engagement. A high score means interest can strongly increase focus and energy; a low score means meaning has a weaker activating effect."
+        },
+        {
+          "id": "PA",
+          "name": "Protection Activation",
+          "short": "Speed/intensity of withdrawal under threat",
+          "description": "How quickly disengagement or withdrawal occurs when overwhelmed, stressed, or threatened. A high score means rapid protective withdrawal; a low score means engagement tends to continue longer under strain."
+        }
+      ]
+    },
+    {
+      "id": "time_recovery",
+      "name": "Time Dynamics & Recovery",
+      "description": "How load and disruption unfold over time.",
+      "dimensions": [
+        {
+          "id": "TD",
+          "name": "Temporal Depth",
+          "short": "Natural time horizon of thinking",
+          "description": "How far into the future thinking naturally extends. A high score means long-term planning and foresight; a low score means focus is more immediate or short-term."
+        },
+        {
+          "id": "DHL",
+          "name": "Disruption Half-Life",
+          "short": "How long disruptions continue to affect the system",
+          "description": "How long the effects of an interruption or disturbance linger. A high score means disruptions echo for a long time; a low score means their effects dissipate quickly."
+        },
+        {
+          "id": "RD",
+          "name": "Recovery Demand",
+          "short": "Amount of recovery needed after sustained effort",
+          "description": "How much rest or downtime is needed after prolonged engagement. A high score means significant recovery is required; a low score means recovery is relatively quick."
+        },
+        {
+          "id": "CC",
+          "name": "Continuity Carrying",
+          "short": "Ability to resume threads after interruption",
+          "description": "How well mental continuity is retained across breaks. A high score means complex threads can be resumed easily; a low score means continuity is more often lost."
+        }
+      ]
+    },
+    {
+      "id": "coupling_load",
+      "name": "Coupling Load",
+      "description": "Cost of aligning with external people, demands, and environments.",
+      "dimensions": [
+        {
+          "id": "CL-social",
+          "name": "Coupling Load — Social",
+          "short": "Meetings, groups, social coordination",
+          "description": "How costly social interaction and coordination feel. A high score means group interaction is draining; a low score means it is relatively neutral or energizing."
+        },
+        {
+          "id": "CL-cognitive",
+          "name": "Coupling Load — Cognitive",
+          "short": "Complexity, multitasking, abstraction load",
+          "description": "The cost of handling multiple ideas, tasks, or complex reasoning simultaneously. A high score means cognitive load accumulates quickly; a low score means complexity is more manageable."
+        },
+        {
+          "id": "CL-sensory",
+          "name": "Coupling Load — Sensory",
+          "short": "Noise, light, movement, environment",
+          "description": "The cost of sensory-rich environments. A high score means sensory input is draining; a low score means it is more easily tolerated or may be helpful."
+        },
+        {
+          "id": "CL-affective",
+          "name": "Coupling Load — Affective",
+          "short": "Emotional labor, empathy demands",
+          "description": "The cost of emotional engagement with others. A high score means emotional labor is draining; a low score means it is more sustainable or energizing."
+        }
+      ]
+    },
+    {
+      "id": "feedback_sensitivity",
+      "name": "Feedback Sensitivity",
+      "description": "What kinds of feedback have the strongest effect.",
+      "dimensions": [
+        {
+          "id": "FB-S",
+          "name": "Social Feedback Sensitivity",
+          "short": "Response to approval, evaluation, rejection",
+          "description": "How strongly social feedback affects emotion or motivation. A high score means praise or criticism has strong impact; a low score means external social feedback has less effect."
+        },
+        {
+          "id": "FB-I",
+          "name": "Internal Feedback Sensitivity",
+          "short": "Response to values, ethics, self-error",
+          "description": "How strongly internal standards, values, or perceived correctness guide behavior. A high score means internal coherence is highly motivating; a low score means these internal signals are quieter."
+        }
+      ]
+    },
+    {
+      "id": "integration_coherence",
+      "name": "Integration Coherence",
+      "description": "How ideas and internal experience are integrated.",
+      "dimensions": [
+        {
+          "id": "IC-C",
+          "name": "Conceptual Integration",
+          "short": "Ideas, abstractions, systems",
+          "description": "How easily complex ideas are integrated into coherent mental models. A high score means strong conceptual synthesis; a low score means ideas remain more fragmented."
+        },
+        {
+          "id": "IC-A",
+          "name": "Affective Integration",
+          "short": "Mapping feelings into symbols/words",
+          "description": "How easily feelings are identified, labeled, and articulated. A high score means emotions are clearer and more nameable; a low score means feelings may be present but harder to describe."
+        }
+      ]
+    },
+    {
+      "id": "sustainability_context",
+      "name": "Sustainability & Context",
+      "description": "How long regulation holds under load and how context-dependent functioning is.",
+      "dimensions": [
+        {
+          "id": "RSu",
+          "name": "Regulation Sustainability",
+          "short": "How long regulation holds under load",
+          "description": "How long self-regulation can be maintained during sustained demands. A high score means regulation can be held for longer; a low score means depletion builds more quickly."
+        },
+        {
+          "id": "CG",
+          "name": "Context Gating",
+          "short": "How dependent engagement is on specific contexts",
+          "description": "How much functioning depends on the right context. A high score means alignment is crucial; a low score means functioning is more similar across contexts."
+        }
+      ]
+    }
+  ]
+}
