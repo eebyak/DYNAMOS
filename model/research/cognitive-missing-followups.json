@@ -1,0 +1,39 @@
+{
+  "id": "dynamos-cognitive-missing-pattern-followups",
+  "version": "0.1.0",
+  "status": "experimental",
+  "purpose": "Optional targeted questions shown only after a participant first says an important Cognitive & Learning pattern is missing and then selects that pattern.",
+  "bias_control": [
+    "Do not show the missing-pattern catalogue until the participant has first answered yes/no/unsure to whether an important part is missing.",
+    "Do not use follow-up responses to rewrite the original result during the same session.",
+    "Store follow-up responses as separate model-development observations."
+  ],
+  "questions": [
+    {
+      "pattern_id": "fast_insight_slow_explanation",
+      "question_id": "fis_explanation_latency_v1",
+      "prompt": "I often understand something before I can explain the steps by which I reached the understanding.",
+      "responses": [
+        "strongly_agree",
+        "mostly_agree",
+        "partly_agree",
+        "disagree",
+        "unsure"
+      ],
+      "reason": "The current 26-item questionnaire does not directly measure the gap between insight formation and linear explanation."
+    },
+    {
+      "pattern_id": "domain_locked_expert",
+      "question_id": "dle_domain_entry_contrast_v1",
+      "prompt": "When work is inside an area that strongly matters to me, starting it is substantially easier than starting otherwise comparable work outside that area.",
+      "responses": [
+        "strongly_agree",
+        "mostly_agree",
+        "partly_agree",
+        "disagree",
+        "unsure"
+      ],
+      "reason": "The current questionnaire measures overall Entry Threshold but not the within-person contrast between aligned and non-aligned domains."
+    }
+  ]
+}

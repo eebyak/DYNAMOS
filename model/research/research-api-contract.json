@@ -1,0 +1,60 @@
+{
+  "id": "dynamos-research-api-contract",
+  "version": "0.1.0",
+  "status": "provider_agnostic",
+  "base_path": "/v1",
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/contributions",
+      "request_schema": "model/research/research-contribution.schema.json",
+      "success": {
+        "status": 201,
+        "body": {
+          "accepted": true,
+          "submission_id": "<same UUID as request>",
+          "receipt_version": "1.0.0"
+        }
+      },
+      "requirements": [
+        "Reject fields not allowed by the schema.",
+        "Reject payloads larger than 32 KiB.",
+        "Treat submission_id as idempotency key; a retry must not create a duplicate row.",
+        "Do not set cookies.",
+        "Do not require login.",
+        "Do not persist request IP address, User-Agent, referrer, or analytics identifiers in the research dataset.",
+        "Keep infrastructure/request logging disabled or minimized and separately governed; do not claim anonymity until this is verified for the chosen host.",
+        "Store received_at only as coarse date or month unless exact timing is demonstrably needed."
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/withdraw",
+      "request": {
+        "withdrawal_token": "<participant-held random token>"
+      },
+      "success": {
+        "status": 200,
+        "body": {
+          "deleted": true
+        }
+      },
+      "requirements": [
+        "Hash the supplied token using the same one-way function used by the client and match only the stored hash.",
+        "Never log the plaintext withdrawal token.",
+        "Delete the matching contribution and recompute aggregates."
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/stats",
+      "response_schema": "model/research/public-stats.schema.json",
+      "requirements": [
+        "Return aggregates only.",
+        "Never return raw dimension vectors or contribution rows.",
+        "Suppress pattern-level output below the configured minimum cell size.",
+        "Separate statistics by model/questionnaire/derivation version rather than mixing incompatible cohorts."
+      ]
+    }
+  ]
+}

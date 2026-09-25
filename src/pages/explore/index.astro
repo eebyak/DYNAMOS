@@ -4,6 +4,7 @@ import model from '../../../model/dynamos-v2.json';
 import dimensions from '../../../model/dimensions.json';
 import precepta from '../../../model/precepta.json';
 import cognitiveDerivation from '../../../model/precepta-derivation-cognitive.json';
+import cognitiveFollowups from '../../../model/research/cognitive-missing-followups.json';
 
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
@@ -235,23 +236,63 @@ const questionnaireVersion = '1.1.0-pilot';
         <section class="missing-section">
           <div>
             <p class="eyebrow">False negatives matter too</p>
-            <h2>Did DYNAMOS miss an important Cognitive & Learning pattern?</h2>
+            <h2>Is an important part of how you think or work missing from this interpretation?</h2>
             <p>
-              Select a pattern only if its description feels important to you but it did not appear above.
-              This lets later research distinguish missed patterns from false-positive ones.
+              Answer this before seeing the patterns the model did not infer. That order is deliberate:
+              it reduces the chance that merely reading another description makes it feel missing.
+            </p>
+
+            <div class="missing-gate fit-options" id="missing-gate">
+              <label><input type="radio" name="important_part_missing" value="yes" /><span>Yes</span></label>
+              <label><input type="radio" name="important_part_missing" value="no" /><span>No</span></label>
+              <label><input type="radio" name="important_part_missing" value="unsure" /><span>Unsure</span></label>
+            </div>
+          </div>
+
+          <div id="missing-pattern-panel" hidden>
+            <p><strong>Which important pattern appears to be missing?</strong></p>
+            <p class="small-note">Choose at most three. Only patterns not shown in your result will be available.</p>
+            <div id="missing-pattern-list" class="missing-grid"></div>
+            <div id="missing-followups" class="missing-followups"></div>
+          </div>
+        </section>
+
+        <section class="donation-section">
+          <div>
+            <p class="eyebrow">Voluntary research contribution</p>
+            <h2>Donate this result to DYNAMOS research?</h2>
+            <p>
+              Your questionnaire and PRECEPTA interpretation are still local. Nothing has been sent.
+              The donation contract deliberately excludes names, contact details, employer,
+              diagnosis, exact location, and free text.
             </p>
           </div>
 
-          <div class="missing-grid">
-            {cognitivePatterns.map((pattern) => (
-              <label class="missing-choice">
-                <input type="checkbox" name="missing_pattern" value={pattern.id} />
-                <span>
-                  <strong>{pattern.name}</strong>
-                  <small>{pattern.description}</small>
-                </span>
-              </label>
-            ))}
+          <div class="donation-panel">
+            <details>
+              <summary>See exactly what a donated record contains</summary>
+              <pre id="donation-preview" class="donation-preview"></pre>
+            </details>
+
+            <div class="consent-checks">
+              <label><input type="checkbox" name="consent_voluntary" /> <span>I am contributing voluntarily.</span></label>
+              <label><input type="checkbox" name="consent_exploratory" /> <span>I understand DYNAMOS is exploratory and non-diagnostic.</span></label>
+              <label><input type="checkbox" name="consent_no_identity" /> <span>I understand that no identity is requested as part of this research record.</span></label>
+              <label><input type="checkbox" name="consent_aggregate" /> <span>I understand that aggregate statistics may be published.</span></label>
+              <label><input type="checkbox" name="consent_withdrawal" /> <span>I understand that I will need my withdrawal token if I later want this contribution deleted.</span></label>
+            </div>
+
+            <button id="prepare-donation" class="primary-button" type="button">
+              Prepare donation preview
+            </button>
+
+            <button id="donate-result" class="secondary-button" type="button" disabled>
+              Donation endpoint not connected yet
+            </button>
+
+            <p id="donation-status" class="small-note">
+              This pilot only prepares and validates the research payload locally. It does not send data.
+            </p>
           </div>
         </section>
 
@@ -297,6 +338,7 @@ const questionnaireVersion = '1.1.0-pilot';
         dimensionIds: allDimensions.map((d) => d.id),
         dimensions: allDimensions.map((d) => ({ id: d.id, name: d.name })),
         derivation: cognitiveDerivation,
+        followups: cognitiveFollowups,
       })}
     ></script>
 
@@ -615,39 +657,125 @@ const questionnaireVersion = '1.1.0-pilot';
         return document.querySelector(`input[name="${CSS.escape(name)}"]:checked`)?.value ?? null;
       }
 
-      function buildDownloadPayload() {
-        const patternFeedback = {};
-        for (const pattern of latestDerivation) {
-          patternFeedback[pattern.id] = selectedValue(`fit_${pattern.id}`);
-        }
-
-        const missingPatterns = Array.from(
+      function getMissingFeedback() {
+        const gate = selectedValue('important_part_missing');
+        const selectedPatterns = Array.from(
           document.querySelectorAll('input[name="missing_pattern"]:checked')
         ).map((input) => input.value);
 
+        const followups = selectedPatterns.flatMap((patternId) => {
+          const question = metadata.followups.questions.find((q) => q.pattern_id === patternId);
+          if (!question) return [];
+          const response = selectedValue(`followup_${question.question_id}`);
+          return response ? [{
+            pattern_id: patternId,
+            question_id: question.question_id,
+            response,
+          }] : [];
+        });
+
+        return {
+          important_part_missing: gate,
+          selected_patterns: selectedPatterns,
+          followups,
+        };
+      }
+
+      function patternRecognitionFeedback() {
+        return latestDerivation.flatMap((pattern) => {
+          const response = selectedValue(`fit_${pattern.id}`);
+          return response ? [{ pattern_id: pattern.id, response }] : [];
+        });
+      }
+
+      function buildDownloadPayload() {
         return {
           schema: 'dynamos-cognitive-precepta-pilot',
-          schema_version: '1.0.0',
+          schema_version: '1.1.0',
           generated_at: new Date().toISOString(),
           model_version: metadata.modelVersion,
           questionnaire_version: metadata.questionnaireVersion,
           derivation_version: metadata.derivation.derivation_version,
           privacy_mode: 'local_only_no_transmission',
           scores: getScores(),
-          derived_precepta: latestDerivation.map((p) => ({
+          derived_precepta: latestDerivation.map((p, index) => ({
             id: p.id,
             name: p.name,
-            strength: p.strength,
-            core: p.coreStates.map((c) => ({ dimension: c.dimension, target: c.target, state: c.state })),
-            supporting: p.supportingStates.map((c) => ({ dimension: c.dimension, target: c.target, state: c.state })),
+            strength: p.inference_status === 'context_sensitive' ? 'context_sensitive' : p.strength,
+            rank: index + 1,
           })),
           participant_feedback: {
             overall_precepta_fit: selectedValue('overall_precepta_fit'),
-            pattern_recognition: patternFeedback,
-            missing_patterns: missingPatterns,
+            pattern_recognition: patternRecognitionFeedback(),
+            missing_pattern_feedback: getMissingFeedback(),
           },
           note: 'Experimental Cognitive & Learning PRECEPTA pilot. Not diagnostic and not a validated psychometric result.',
         };
+      }
+
+      function randomHex(bytes = 32) {
+        const a = new Uint8Array(bytes);
+        crypto.getRandomValues(a);
+        return Array.from(a, (b) => b.toString(16).padStart(2, '0')).join('');
+      }
+
+      async function sha256Hex(value) {
+        const data = new TextEncoder().encode(value);
+        const digest = await crypto.subtle.digest('SHA-256', data);
+        return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('');
+      }
+
+      let donationSecrets = null;
+
+      async function buildResearchContribution() {
+        if (!donationSecrets) {
+          donationSecrets = {
+            submissionId: crypto.randomUUID(),
+            withdrawalToken: randomHex(32),
+          };
+        }
+
+        const withdrawalHash = await sha256Hex(donationSecrets.withdrawalToken);
+
+        return {
+          schema: 'dynamos-research-contribution',
+          schema_version: '1.0.0',
+          submission_id: donationSecrets.submissionId,
+          withdrawal_token_hash: withdrawalHash,
+          model_version: metadata.modelVersion,
+          questionnaire_version: metadata.questionnaireVersion,
+          derivation_version: metadata.derivation.derivation_version,
+          consent_version: '0.1',
+          scope: ['cognitive_learning'],
+          scores: getScores(),
+          presented_precepta: latestDerivation.map((p, index) => ({
+            pattern_id: p.id,
+            presentation_status: p.inference_status === 'context_sensitive' ? 'context_sensitive' : p.strength,
+            rank: index + 1,
+          })),
+          participant_feedback: {
+            overall_fit: selectedValue('overall_precepta_fit'),
+            pattern_recognition: patternRecognitionFeedback(),
+            missing_pattern_feedback: getMissingFeedback(),
+          },
+          consent: {
+            voluntary_contribution: document.querySelector('input[name="consent_voluntary"]').checked,
+            understands_exploratory_status: document.querySelector('input[name="consent_exploratory"]').checked,
+            understands_no_identity_requested: document.querySelector('input[name="consent_no_identity"]').checked,
+            understands_aggregate_publication: document.querySelector('input[name="consent_aggregate"]').checked,
+            understands_withdrawal_token: document.querySelector('input[name="consent_withdrawal"]').checked,
+          },
+        };
+      }
+
+      function allConsentChecked() {
+        return [
+          'consent_voluntary',
+          'consent_exploratory',
+          'consent_no_identity',
+          'consent_aggregate',
+          'consent_withdrawal',
+        ].every((name) => document.querySelector(`input[name="${name}"]`).checked);
       }
 
       document.querySelector('#download-json').addEventListener('click', () => {
@@ -661,6 +789,87 @@ const questionnaireVersion = '1.1.0-pilot';
         a.click();
         a.remove();
         URL.revokeObjectURL(url);
+      });
+
+
+      function renderMissingPatternChoices() {
+        const presented = new Set(latestDerivation.map((p) => p.id));
+        const allCognitive = metadata.derivation.patterns;
+        const available = allCognitive.filter((p) => !presented.has(p.id));
+        const list = document.querySelector('#missing-pattern-list');
+
+        list.innerHTML = available.map((pattern) => `
+          <label class="missing-choice">
+            <input type="checkbox" name="missing_pattern" value="${pattern.id}" />
+            <span>
+              <strong>${pattern.name}</strong>
+              <small>${pattern.description}</small>
+            </span>
+          </label>
+        `).join('');
+      }
+
+      document.querySelectorAll('input[name="important_part_missing"]').forEach((input) => {
+        input.addEventListener('change', () => {
+          const panel = document.querySelector('#missing-pattern-panel');
+          panel.hidden = input.value !== 'yes';
+          if (input.value === 'yes') renderMissingPatternChoices();
+          if (input.value !== 'yes') {
+            document.querySelector('#missing-pattern-list').innerHTML = '';
+            document.querySelector('#missing-followups').innerHTML = '';
+          }
+        });
+      });
+
+      document.querySelector('#missing-pattern-list').addEventListener('change', (event) => {
+        if (!event.target.matches('input[name="missing_pattern"]')) return;
+
+        const checked = Array.from(document.querySelectorAll('input[name="missing_pattern"]:checked'));
+        if (checked.length > 3) {
+          event.target.checked = false;
+          return;
+        }
+
+        const selected = new Set(checked.map((input) => input.value));
+        const followupContainer = document.querySelector('#missing-followups');
+
+        followupContainer.innerHTML = metadata.followups.questions
+          .filter((q) => selected.has(q.pattern_id))
+          .map((q) => {
+            const pattern = metadata.derivation.patterns.find((p) => p.id === q.pattern_id);
+            return `
+              <article class="followup-card">
+                <p class="eyebrow">Optional targeted follow-up · ${pattern?.name ?? q.pattern_id}</p>
+                <p><strong>${q.prompt}</strong></p>
+                <div class="dimension-fit-options">
+                  ${[
+                    ['strongly_agree', 'Strongly agree'],
+                    ['mostly_agree', 'Mostly agree'],
+                    ['partly_agree', 'Partly agree'],
+                    ['disagree', 'Disagree'],
+                    ['unsure', 'Unsure'],
+                  ].map(([value, label]) =>
+                    `<label><input type="radio" name="followup_${q.question_id}" value="${value}" /><span>${label}</span></label>`
+                  ).join('')}
+                </div>
+                <p class="small-note">This answer will not change the result above. It is stored separately as evidence about a possible measurement gap.</p>
+              </article>
+            `;
+          }).join('');
+      });
+
+      document.querySelector('#prepare-donation').addEventListener('click', async () => {
+        const status = document.querySelector('#donation-status');
+        const preview = document.querySelector('#donation-preview');
+
+        if (!allConsentChecked()) {
+          status.textContent = 'Please tick all five consent statements before preparing a donation.';
+          return;
+        }
+
+        const contribution = await buildResearchContribution();
+        preview.textContent = JSON.stringify(contribution, null, 2);
+        status.textContent = 'Donation record prepared locally. Nothing has been sent.';
       });
 
       document.querySelector('#print-results').addEventListener('click', () => window.print());
@@ -1063,9 +1272,76 @@ const questionnaireVersion = '1.1.0-pilot';
 
       .no-patterns { padding: 2rem; border: 1px solid #b9b6ad; border-radius: 0.8rem; }
 
+
+      .missing-gate { margin-top: 1.5rem; }
+
+      .small-note {
+        font-size: 0.84rem;
+        line-height: 1.45;
+      }
+
+      .missing-followups {
+        margin-top: 1.2rem;
+        display: grid;
+        gap: 0.8rem;
+      }
+
+      .followup-card {
+        border: 1px solid #b9b6ad;
+        border-radius: 0.7rem;
+        padding: 1rem;
+      }
+
+      .donation-section {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 3rem;
+        padding: 4rem 0;
+        border-top: 1px solid #b9b6ad;
+      }
+
+      .donation-panel {
+        border: 1px solid #b9b6ad;
+        border-radius: 0.8rem;
+        padding: 1.3rem;
+      }
+
+      .donation-panel details {
+        margin-bottom: 1.2rem;
+      }
+
+      .donation-preview {
+        max-height: 340px;
+        overflow: auto;
+        padding: 1rem;
+        border: 1px solid #d2cfc6;
+        border-radius: 0.5rem;
+        font-size: 0.72rem;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .consent-checks {
+        display: grid;
+        gap: 0.65rem;
+        margin: 1.2rem 0;
+      }
+
+      .consent-checks label {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0.65rem;
+        align-items: start;
+      }
+
+      .donation-panel button + button {
+        margin-left: 0.5rem;
+      }
+
       @media (max-width: 900px) {
         .pattern-results,
         .missing-section,
+        .donation-section,
         .explore-intro,
         .pilot-note {
           grid-template-columns: 1fr;

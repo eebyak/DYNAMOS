@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dynamos.example/schema/public-stats-1.0.0.json",
+  "title": "DYNAMOS public aggregate research statistics",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "generated_at",
+    "suppression_threshold",
+    "version_cohort",
+    "total_contributions",
+    "total_pattern_judgments",
+    "overall_fit_counts",
+    "pattern_stats"
+  ],
+  "properties": {
+    "schema": {
+      "const": "dynamos-public-stats"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "suppression_threshold": {
+      "type": "integer",
+      "minimum": 5,
+      "description": "No pattern-level cell is published below this n. Proposed initial setting: 20."
+    },
+    "version_cohort": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model_version",
+        "questionnaire_version",
+        "derivation_version"
+      ],
+      "properties": {
+        "model_version": {
+          "type": "string"
+        },
+        "questionnaire_version": {
+          "type": "string"
+        },
+        "derivation_version": {
+          "type": "string"
+        }
+      }
+    },
+    "total_contributions": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "total_pattern_judgments": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "overall_fit_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strongly_recognize",
+        "mostly_recognize",
+        "partly_recognize",
+        "do_not_recognize",
+        "do_not_understand",
+        "not_answered"
+      ],
+      "properties": {
+        "strongly_recognize": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mostly_recognize": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "partly_recognize": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "do_not_recognize": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "do_not_understand": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "not_answered": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "pattern_stats": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "pattern_id",
+          "n_presented",
+          "recognition_counts",
+          "n_reported_missing",
+          "published"
+        ],
+        "properties": {
+          "pattern_id": {
+            "type": "string",
+            "enum": [
+              "deep_systems_architect",
+              "precision_resolver",
+              "fast_insight_slow_explanation",
+              "divergent_idea_generator",
+              "domain_locked_expert",
+              "split_integration_thinker",
+              "big_picture_synthesizer",
+              "executive_load_taxed",
+              "flow_diver",
+              "meaning_gated_performer",
+              "burst_creator",
+              "routine_anchor",
+              "deadline_unlocked_starter",
+              "long_horizon_planner",
+              "transition_fragile",
+              "start_stop_oscillator",
+              "precision_literalist",
+              "social_cue_load",
+              "low_feedback_autonomy",
+              "impulsive_enthusiastic_communicator",
+              "masked_high_cost_performer",
+              "ethical_precision_speaker",
+              "affective_floodgate",
+              "social_rejection_amplifier",
+              "ethical_amplifier",
+              "verification_loop",
+              "affective_decoupler",
+              "open_plan_vulnerable",
+              "sensory_seeking_stabilizer",
+              "quiet_need_deep_worker",
+              "stim_regulation_loop",
+              "time_blind_sprinter"
+            ]
+          },
+          "n_presented": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "recognition_counts": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "strongly_recognize",
+              "mostly_recognize",
+              "partly_recognize",
+              "do_not_recognize",
+              "do_not_understand",
+              "not_answered"
+            ],
+            "properties": {
+              "strongly_recognize": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "mostly_recognize": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "partly_recognize": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "do_not_recognize": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "do_not_understand": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "not_answered": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "n_reported_missing": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "published": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}
