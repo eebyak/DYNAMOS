@@ -1,22 +1,36 @@
-# DYNAMOS FAQ update
+# DYNAMOS LinkedIn / social preview update
 
-This patch adds a structured public FAQ explaining the model in plain language.
+This update changes **only link-preview metadata**. It does not alter the visible website design.
 
 ## Add
-- `src/pages/faq/index.astro`
+
+- `public/social/dynamos-link-preview.png`
 
 ## Replace
-The package also includes current site pages with `FAQ` added to navigation:
+
 - `src/pages/index.astro`
-- `src/pages/model/index.astro`
-- `src/pages/model/[id].astro`
-- `src/pages/precepta/index.astro`
-- `src/pages/precepta/[id].astro`
-- `src/pages/explore/index.astro`
-- `src/pages/research/index.astro`
-- `src/pages/responsible-use.astro`
 
-No Cloudflare Worker or D1 changes are required.
+## What the homepage now exposes to LinkedIn and other social platforms
 
-Suggested commit:
-`Add DYNAMOS FAQ and diagnostic context`
+- Open Graph title
+- Open Graph description
+- canonical URL
+- 1200 × 627 social preview image
+- image dimensions and alt text
+- `summary_large_image` metadata for platforms that also read Twitter/X-style card tags
+
+## Suggested commit
+
+`Add DYNAMOS social link preview`
+
+## After GitHub Pages deploys
+
+Paste the homepage URL into LinkedIn's Post Inspector to force a fresh scrape:
+
+`https://www.linkedin.com/post-inspector/`
+
+Inspect:
+
+`https://eebyak.github.io/DYNAMOS/`
+
+If LinkedIn had already cached the old preview, the inspector is the cleanest way to refresh it.
