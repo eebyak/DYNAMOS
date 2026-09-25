@@ -110,7 +110,7 @@ const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
           {siblings.map((sibling) => (
             <a
               class:list={['sibling-link', { active: sibling.id === pattern.id }]}
-              href={`../${sibling.id}/`}
+              href={`${base}precepta/${sibling.id}/`}
               aria-current={sibling.id === pattern.id ? 'page' : undefined}
             >
               <strong>{sibling.name}</strong>

@@ -82,7 +82,7 @@ const patternCount = precepta.domains.reduce(
                 {domain.patterns.map((pattern) => (
                   <a
                     class="pattern-row"
-                    href={`./${pattern.id}/`}
+                    href={`${base}precepta/${pattern.id}/`}
                     aria-label={`Open PRECEPTA pattern ${pattern.name}`}
                   >
                     <div class="pattern-title">
