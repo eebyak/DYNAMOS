@@ -58,7 +58,7 @@ const dimensionCount = dimensions.categories.reduce(
             combinations of dimensions, context, interaction, and time.
           </p>
           <p>
-            Select a dimension below to read its canonical definition and scoring
+            Select any dimension below to open its canonical definition and scoring
             direction.
           </p>
         </div>
@@ -68,19 +68,28 @@ const dimensionCount = dimensions.categories.reduce(
         {dimensions.categories.map((category, index) => (
           <section class="model-category" id={category.id}>
             <div class="category-number">{String(index + 1).padStart(2, '0')}</div>
+
             <div class="category-content">
               <p class="eyebrow">{category.name}</p>
               <h2>{category.description}</h2>
 
               <div class="dimension-list">
                 {category.dimensions.map((dimension) => (
-                  <a class="dimension-row" href={`${base}model/${dimension.id}/`}>
+                  <a
+                    class="dimension-row dimension-row-link"
+                    href={`./${dimension.id}/`}
+                    aria-label={`Open ${dimension.id} — ${dimension.name}`}
+                  >
                     <div class="dimension-code">{dimension.id}</div>
-                    <div>
+
+                    <div class="dimension-summary">
                       <h3>{dimension.name}</h3>
                       <p>{dimension.short}</p>
                     </div>
-                    <span aria-hidden="true">→</span>
+
+                    <span class="dimension-action" aria-hidden="true">
+                      Open dimension <span class="dimension-action-arrow">→</span>
+                    </span>
                   </a>
                 ))}
               </div>
@@ -94,6 +103,7 @@ const dimensionCount = dimensions.categories.reduce(
           <p class="eyebrow">Reflective scale</p>
           <h2>1–10 describes magnitude, not quality.</h2>
         </div>
+
         <div class="scale-grid">
           {Object.entries(model.scoring.scale.anchors).map(([range, label]) => (
             <div>
@@ -102,6 +112,7 @@ const dimensionCount = dimensions.categories.reduce(
             </div>
           ))}
         </div>
+
         <p class="scale-note">
           There are no inherently good or bad scores. Interpretation depends on the
           configuration and the conditions in which it operates.
@@ -117,10 +128,67 @@ const dimensionCount = dimensions.categories.reduce(
         </p>
         <p>Model and content licensed under CC BY-SA 4.0.</p>
       </div>
+
       <div class="footer-notice">
-        <p><strong>Responsible use:</strong> DYNAMOS is non-diagnostic and is not a performance evaluation.</p>
+        <p>
+          <strong>Responsible use:</strong> DYNAMOS is non-diagnostic and is not
+          a performance evaluation.
+        </p>
         <p><a href={`${base}responsible-use/`}>Responsible-use statement →</a></p>
       </div>
     </footer>
+
+    <style>
+      .dimension-row-link {
+        cursor: pointer;
+        transition:
+          background-color 140ms ease,
+          padding-left 140ms ease,
+          padding-right 140ms ease;
+      }
+
+      .dimension-row-link:hover,
+      .dimension-row-link:focus-visible {
+        background: rgba(23, 32, 42, 0.045);
+        padding-left: 0.65rem;
+        padding-right: 0.65rem;
+        outline: none;
+      }
+
+      .dimension-summary h3 {
+        text-decoration-thickness: 1px;
+      }
+
+      .dimension-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        font-size: 0.82rem;
+        font-weight: 750;
+        white-space: nowrap;
+      }
+
+      .dimension-action-arrow {
+        display: inline-block;
+        font-size: 1.1rem;
+        transition: transform 140ms ease;
+      }
+
+      .dimension-row-link:hover .dimension-action-arrow,
+      .dimension-row-link:focus-visible .dimension-action-arrow {
+        transform: translateX(0.25rem);
+      }
+
+      @media (max-width: 760px) {
+        .dimension-row-link {
+          grid-template-columns: 58px 1fr;
+        }
+
+        .dimension-action {
+          grid-column: 2;
+          margin-top: 0.4rem;
+        }
+      }
+    </style>
   </body>
 </html>
