@@ -1,0 +1,256 @@
+---
+import '../../styles/global.css';
+import model from '../../../model/dynamos-v2.json';
+import precepta from '../../../model/precepta.json';
+
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+
+const patternCount = precepta.domains.reduce(
+  (total, domain) => total + domain.patterns.length,
+  0
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content="Explore PRECEPTA, the canonical phenotypic interface layer of DYNAMOS v2."
+    />
+    <title>PRECEPTA — DYNAMOS</title>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <a class="wordmark" href={base}>DYNAMOS</a>
+      <nav aria-label="Primary navigation">
+        <a href={`${base}model/`}>Model</a>
+        <a aria-current="page" href={`${base}precepta/`}>PRECEPTA</a>
+        <a href={`${base}#principles`}>Principles</a>
+        <a href={`${base}responsible-use/`}>Responsible use</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="precepta-hero">
+        <p class="eyebrow">Phenotypic Interface Layer · v{precepta.version}</p>
+        <h1>PRECEPTA makes combinations readable.</h1>
+        <p class="lede">
+          {patternCount} human-readable patterns across {precepta.domains.length} domains.
+          Each pattern describes a recognizable configuration that may emerge from
+          multiple DYNAMOS dimensions acting together.
+        </p>
+
+        <div class="boundary">
+          <strong>PRECEPTA is an interface layer, not a diagnostic layer.</strong>
+          <span>No single dimension defines a PRECEPTA pattern, and no pattern implies a diagnosis.</span>
+        </div>
+      </section>
+
+      <section class="precepta-intro">
+        <div>
+          <p class="eyebrow">Why an interface layer?</p>
+          <h2>Dimensions are precise. Patterns are legible.</h2>
+        </div>
+        <div>
+          <p>
+            DYNAMOS dimensions describe underlying operating architecture.
+            PRECEPTA provides a plain-language layer for describing how combinations
+            of those dimensions may become visible in everyday functioning.
+          </p>
+          <p>
+            The same PRECEPTA pattern may arise from more than one underlying
+            configuration. This is a deliberate feature of the model, not a defect.
+          </p>
+        </div>
+      </section>
+
+      <section class="precepta-domains">
+        {precepta.domains.map((domain, index) => (
+          <section class="precepta-domain" id={domain.id}>
+            <div class="domain-number">{String(index + 1).padStart(2, '0')}</div>
+
+            <div class="domain-content">
+              <p class="eyebrow">{domain.name}</p>
+              <h2>{domain.patterns.length} patterns</h2>
+
+              <div class="pattern-list">
+                {domain.patterns.map((pattern) => (
+                  <a
+                    class="pattern-row"
+                    href={`./${pattern.id}/`}
+                    aria-label={`Open PRECEPTA pattern ${pattern.name}`}
+                  >
+                    <div class="pattern-title">
+                      <h3>{pattern.name}</h3>
+                      <p>{pattern.description}</p>
+                    </div>
+
+                    <span class="pattern-action" aria-hidden="true">
+                      Open pattern <span class="pattern-arrow">→</span>
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+        ))}
+      </section>
+
+      <section class="precepta-status">
+        <div>
+          <p class="eyebrow">Current status</p>
+          <h2>The descriptions are canonical. The formal derivation grammar comes next.</h2>
+        </div>
+        <div>
+          <p>
+            The current public specification fixes the PRECEPTA names, domains, and
+            descriptions. The next development step is to encode transparent
+            derivation logic linking dimension configurations to PRECEPTA patterns.
+          </p>
+          <p>
+            Until that derivation grammar is published, PRECEPTA should be read as
+            a canonical descriptive interface rather than as a validated scoring algorithm.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        <p>
+          <strong>DYNAMOS — Dynamic Neuro-Operational Systems Model</strong><br />
+          © {model.copyright.year} {model.copyright.holder}
+        </p>
+        <p>Model and content licensed under CC BY-SA 4.0.</p>
+      </div>
+
+      <div class="footer-notice">
+        <p>
+          <strong>Responsible use:</strong> PRECEPTA is non-diagnostic and does not
+          classify human worth, ability, or clinical status.
+        </p>
+        <p><a href={`${base}responsible-use/`}>Responsible-use statement →</a></p>
+      </div>
+    </footer>
+
+    <style>
+      .precepta-hero {
+        padding: 7rem 2rem 5rem;
+      }
+
+      .precepta-intro,
+      .precepta-status {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        padding: 5rem 2rem;
+        border-top: 1px solid #b9b6ad;
+        border-bottom: 1px solid #b9b6ad;
+      }
+
+      .precepta-domains {
+        padding: 1rem 2rem 6rem;
+      }
+
+      .precepta-domain {
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        gap: 2rem;
+        padding: 5rem 0;
+        border-bottom: 1px solid #b9b6ad;
+      }
+
+      .domain-number {
+        font-weight: 800;
+        letter-spacing: 0.08em;
+      }
+
+      .domain-content > h2 {
+        font-size: clamp(1.8rem, 3.6vw, 3.5rem);
+      }
+
+      .pattern-list {
+        margin-top: 3rem;
+        border-top: 1px solid #d2cfc6;
+      }
+
+      .pattern-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 2rem;
+        align-items: center;
+        padding: 1.5rem 0;
+        border-bottom: 1px solid #d2cfc6;
+        text-decoration: none;
+        transition:
+          background-color 140ms ease,
+          padding-left 140ms ease,
+          padding-right 140ms ease;
+      }
+
+      .pattern-row:hover,
+      .pattern-row:focus-visible {
+        background: rgba(23, 32, 42, 0.045);
+        padding-left: 0.65rem;
+        padding-right: 0.65rem;
+        outline: none;
+      }
+
+      .pattern-title h3,
+      .pattern-title p {
+        margin: 0;
+      }
+
+      .pattern-title h3 {
+        font-size: 1.2rem;
+      }
+
+      .pattern-title p {
+        max-width: 760px;
+        margin-top: 0.4rem;
+      }
+
+      .pattern-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        font-size: 0.82rem;
+        font-weight: 750;
+        white-space: nowrap;
+      }
+
+      .pattern-arrow {
+        display: inline-block;
+        font-size: 1.1rem;
+        transition: transform 140ms ease;
+      }
+
+      .pattern-row:hover .pattern-arrow,
+      .pattern-row:focus-visible .pattern-arrow {
+        transform: translateX(0.25rem);
+      }
+
+      @media (max-width: 760px) {
+        .precepta-intro,
+        .precepta-status,
+        .precepta-domain {
+          grid-template-columns: 1fr;
+        }
+
+        .precepta-domain {
+          gap: 1rem;
+        }
+
+        .pattern-row {
+          grid-template-columns: 1fr;
+          gap: 0.65rem;
+        }
+      }
+    </style>
+  </body>
+</html>

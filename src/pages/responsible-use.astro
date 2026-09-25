@@ -2,8 +2,7 @@
 import '../styles/global.css';
 import model from '../../model/dynamos-v2.json';
 
-const rawBase = import.meta.env.BASE_URL;
-const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+const base = import.meta.env.BASE_URL;
 ---
 
 <!doctype html>
@@ -24,7 +23,7 @@ const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
       <nav aria-label="Primary navigation">
         <a href={base}>Home</a>
         <a href={`${base}model/`}>Model</a>
-        <a href={`${base}#precepta`}>PRECEPTA</a>
+        <a href={`${base}precepta/`}>PRECEPTA</a>
         <a aria-current="page" href={`${base}responsible-use/`}>Responsible use</a>
       </nav>
     </header>

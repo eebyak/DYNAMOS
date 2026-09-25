@@ -1,0 +1,214 @@
+---
+import '../../styles/global.css';
+import model from '../../../model/dynamos-v2.json';
+import precepta from '../../../model/precepta.json';
+
+export function getStaticPaths() {
+  return precepta.domains.flatMap((domain) =>
+    domain.patterns.map((pattern) => ({
+      params: { id: pattern.id },
+      props: {
+        pattern,
+        domain: {
+          id: domain.id,
+          name: domain.name,
+        },
+        siblings: domain.patterns.map(({ id, name }) => ({ id, name })),
+      },
+    }))
+  );
+}
+
+const { pattern, domain, siblings } = Astro.props;
+
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content={`${pattern.name}: a canonical PRECEPTA pattern in DYNAMOS v2.`}
+    />
+    <title>{pattern.name} — PRECEPTA | DYNAMOS</title>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <a class="wordmark" href={base}>DYNAMOS</a>
+      <nav aria-label="Primary navigation">
+        <a href={`${base}model/`}>Model</a>
+        <a href={`${base}precepta/`}>PRECEPTA</a>
+        <a href={`${base}responsible-use/`}>Responsible use</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="pattern-hero">
+        <div class="pattern-breadcrumb">
+          <a href={`${base}precepta/`}>PRECEPTA</a>
+          <span>→</span>
+          <a href={`${base}precepta/#${domain.id}`}>{domain.name}</a>
+        </div>
+
+        <p class="eyebrow">{domain.name}</p>
+        <h1>{pattern.name}</h1>
+      </section>
+
+      <section class="pattern-body">
+        <article class="pattern-description">
+          <p class="eyebrow">Canonical description</p>
+          <p class="definition-text">{pattern.description}</p>
+
+          <div class="interpretation-warning">
+            <strong>A pattern, not a label.</strong>
+            <p>
+              PRECEPTA describes a possible visible configuration. It does not define
+              a person, establish a diagnosis, or imply that one underlying mechanism
+              caused the pattern.
+            </p>
+          </div>
+        </article>
+
+        <aside class="pattern-status-box">
+          <p class="eyebrow">Interface status</p>
+          <p><strong>Canonical description</strong></p>
+          <p>Part of the PRECEPTA phenotypic interface layer.</p>
+
+          <hr />
+
+          <p><strong>Derivation status</strong></p>
+          <p>
+            Formal machine-readable derivation rules are not yet part of the public
+            specification.
+          </p>
+        </aside>
+      </section>
+
+      <section class="pattern-principles">
+        <div>
+          <p class="eyebrow">Interpretation rule</p>
+          <h2>Many architectures can produce similar appearances.</h2>
+        </div>
+        <div>
+          <p>
+            DYNAMOS explicitly allows degeneracy: more than one underlying
+            configuration may generate the same outward pattern. PRECEPTA therefore
+            belongs between raw dimensions and human interpretation rather than
+            replacing either one.
+          </p>
+        </div>
+      </section>
+
+      <section class="siblings-section">
+        <p class="eyebrow">Also in {domain.name}</p>
+        <div class="siblings-grid">
+          {siblings.map((sibling) => (
+            <a
+              class:list={['sibling-link', { active: sibling.id === pattern.id }]}
+              href={`../${sibling.id}/`}
+              aria-current={sibling.id === pattern.id ? 'page' : undefined}
+            >
+              <strong>{sibling.name}</strong>
+            </a>
+          ))}
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        <p>
+          <strong>DYNAMOS — Dynamic Neuro-Operational Systems Model</strong><br />
+          © {model.copyright.year} {model.copyright.holder}
+        </p>
+        <p>Model and content licensed under CC BY-SA 4.0.</p>
+      </div>
+
+      <div class="footer-notice">
+        <p>
+          <strong>Responsible use:</strong> PRECEPTA is non-diagnostic and should
+          not be used as a clinical or evaluative label.
+        </p>
+        <p><a href={`${base}responsible-use/`}>Responsible-use statement →</a></p>
+      </div>
+    </footer>
+
+    <style>
+      .pattern-hero {
+        padding: 7rem 2rem 5rem;
+      }
+
+      .pattern-breadcrumb {
+        display: flex;
+        gap: 0.65rem;
+        flex-wrap: wrap;
+        margin-bottom: 2.5rem;
+        font-size: 0.9rem;
+      }
+
+      .pattern-body {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(260px, 0.8fr);
+        gap: 5rem;
+        padding: 5rem 2rem;
+        border-top: 1px solid #b9b6ad;
+      }
+
+      .definition-text {
+        max-width: 820px;
+        margin: 0;
+        font-size: clamp(1.4rem, 2.4vw, 2rem);
+        line-height: 1.45;
+      }
+
+      .interpretation-warning {
+        max-width: 760px;
+        margin-top: 3rem;
+        padding: 1.25rem 1.5rem;
+        border-left: 4px solid currentColor;
+      }
+
+      .interpretation-warning p {
+        margin-bottom: 0;
+      }
+
+      .pattern-status-box {
+        align-self: start;
+        padding: 1.5rem;
+        border: 1px solid #b9b6ad;
+        border-radius: 0.75rem;
+      }
+
+      .pattern-status-box hr {
+        border: 0;
+        border-top: 1px solid #d2cfc6;
+        margin: 1.5rem 0;
+      }
+
+      .pattern-principles {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        padding: 5rem 2rem;
+        border-top: 1px solid #b9b6ad;
+        border-bottom: 1px solid #b9b6ad;
+      }
+
+      .pattern-principles h2 {
+        font-size: clamp(2rem, 4vw, 3.8rem);
+      }
+
+      @media (max-width: 760px) {
+        .pattern-body,
+        .pattern-principles {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </body>
+</html>
