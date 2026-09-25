@@ -1,0 +1,81 @@
+{
+  "$schema": "./schema/model.schema.json",
+  "id": "dynamos",
+  "name": "DYNAMOS",
+  "full_name": "Dynamic Neuro-Operational Systems Model",
+  "version": "2.0.0",
+  "status": "canonical",
+  "language": "en",
+  "license": "CC-BY-SA-4.0",
+  "copyright": {
+    "year": 2026,
+    "holder": "Kay Berkling"
+  },
+  "description": "A non-diagnostic systems-architecture framework for describing how a human cognitive-behavioral system operates under meaning, load, interaction, context, and time.",
+  "principles": [
+    "No single dimension produces a trait.",
+    "Every interpretation is conditional and context-sensitive.",
+    "The same surface pattern may arise from more than one underlying architecture.",
+    "Costs are described before benefits.",
+    "Withdrawal is not framed as failure.",
+    "Regulation and compensation strategies are not deficits.",
+    "Diagnostic labels are optional annotations, never organizing categories.",
+    "Sustainability matters as much as capacity.",
+    "Context is treated as structure, not noise."
+  ],
+  "architecture": {
+    "dimension_count": 26,
+    "category_count": 8,
+    "precepta_count": 32,
+    "persona_count": 10,
+    "persona_status": "experimental"
+  },
+  "layers": [
+    {
+      "id": "dimensions",
+      "name": "DYNAMOS Dimensions",
+      "role": "origin_space",
+      "status": "canonical",
+      "source": "dimensions.json"
+    },
+    {
+      "id": "precepta",
+      "name": "PRECEPTA",
+      "full_name": "Phenotypic Interface Layer",
+      "role": "human_readable_pattern_layer",
+      "status": "canonical",
+      "source": "precepta.json"
+    },
+    {
+      "id": "personas",
+      "name": "Composite Personas",
+      "role": "relational_and_organizational_reflection",
+      "status": "experimental",
+      "note": "Experimental layer; machine-readable persona definitions will be added after review."
+    }
+  ],
+  "scoring": {
+    "type": "self_report_reflective",
+    "scale": {
+      "min": 1,
+      "max": 10,
+      "anchors": {
+        "1-2": "Very low / rarely present",
+        "3-4": "Low",
+        "5-6": "Moderate / situational",
+        "7-8": "High",
+        "9-10": "Very high / strongly characteristic"
+      }
+    },
+    "qualitative_context": "encouraged"
+  },
+  "boundaries": {
+    "diagnostic": false,
+    "personality_test": false,
+    "performance_evaluation": false,
+    "validated_psychometric_instrument": false,
+    "employment_selection": false,
+    "legal_decision_support": false,
+    "clinical_decision_support": false
+  }
+}
