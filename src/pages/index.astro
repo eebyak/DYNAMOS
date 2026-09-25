@@ -1,0 +1,151 @@
+---
+import '../styles/global.css';
+import model from '../../model/dynamos-v2.json';
+import dimensions from '../../model/dimensions.json';
+import precepta from '../../model/precepta.json';
+
+const dimensionCount = dimensions.categories.reduce(
+  (total, category) => total + category.dimensions.length,
+  0
+);
+
+const preceptaCount = precepta.domains.reduce(
+  (total, domain) => total + domain.patterns.length,
+  0
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content="DYNAMOS — an open systems-architecture framework for understanding how human systems operate under meaning, load, interaction, context, and time."
+    />
+    <title>DYNAMOS — Dynamic Neuro-Operational Systems Model</title>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <a class="wordmark" href="./">DYNAMOS</a>
+      <nav aria-label="Primary navigation">
+        <a href="#model">Model</a>
+        <a href="#precepta">PRECEPTA</a>
+        <a href="#principles">Principles</a>
+        <a href="#open">Open framework</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <p class="eyebrow">Dynamic Neuro-Operational Systems Model · v{model.version}</p>
+        <h1>How does a human system operate?</h1>
+        <p class="lede">
+          DYNAMOS is a non-diagnostic systems-architecture framework for describing
+          cognitive and behavioral dynamics under meaning, load, interaction,
+          context, and time.
+        </p>
+
+        <div class="boundary">
+          <strong>Not a personality test. Not a diagnosis. Not a performance evaluation.</strong>
+          <span>DYNAMOS describes operating architecture rather than categories of people.</span>
+        </div>
+
+        <div class="stats" aria-label="Model summary">
+          <div><strong>{dimensionCount}</strong><span>dimensions</span></div>
+          <div><strong>{dimensions.categories.length}</strong><span>architectural categories</span></div>
+          <div><strong>{preceptaCount}</strong><span>PRECEPTA patterns</span></div>
+        </div>
+      </section>
+
+      <section id="model" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">The origin space</p>
+          <h2>{dimensionCount} dimensions, not labels</h2>
+          <p>
+            Each dimension is continuous. No single dimension defines a person,
+            trait, or PRECEPTA pattern. Meaning comes from configurations,
+            context, interaction, and time.
+          </p>
+        </div>
+
+        <div class="category-grid">
+          {dimensions.categories.map((category) => (
+            <article class="card">
+              <h3>{category.name}</h3>
+              <p>{category.description}</p>
+              <div class="chips">
+                {category.dimensions.map((dimension) => (
+                  <span title={dimension.name}>{dimension.id}</span>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="precepta" class="section contrast">
+        <div class="section-heading">
+          <p class="eyebrow">Phenotypic interface layer</p>
+          <h2>PRECEPTA makes combinations readable</h2>
+          <p>
+            PRECEPTA translates combinations of DYNAMOS dimensions into
+            human-readable, stigma-free patterns. It is an interface layer,
+            not a diagnostic layer.
+          </p>
+        </div>
+
+        <div class="domain-list">
+          {precepta.domains.map((domain) => (
+            <div class="domain-row">
+              <span>{domain.name}</span>
+              <strong>{domain.patterns.length}</strong>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="principles" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Interpretation constraints</p>
+          <h2>The model is open. Its claims are bounded.</h2>
+        </div>
+
+        <ol class="principles">
+          {model.principles.map((principle) => <li>{principle}</li>)}
+        </ol>
+      </section>
+
+      <section id="open" class="section open-section">
+        <div>
+          <p class="eyebrow">Open framework</p>
+          <h2>Inspect it. Question it. Adapt it.</h2>
+        </div>
+        <div>
+          <p>
+            The canonical DYNAMOS specification is maintained as machine-readable
+            JSON in the repository. Documentation and the website are derived from
+            that model rather than acting as competing definitions.
+          </p>
+          <p>
+            Model and content: <strong>CC BY-SA 4.0</strong><br />
+            Software implementation: <strong>GPL-3.0-only</strong>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        <strong>DYNAMOS — Dynamic Neuro-Operational Systems Model</strong><br />
+        © {model.copyright.year} {model.copyright.holder}
+      </p>
+      <p>
+        Except where otherwise noted, DYNAMOS model content is licensed under
+        CC BY-SA 4.0.
+      </p>
+    </footer>
+  </body>
+</html>
