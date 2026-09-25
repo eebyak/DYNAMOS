@@ -3,7 +3,8 @@ import '../../styles/global.css';
 import model from '../../../model/dynamos-v2.json';
 import dimensions from '../../../model/dimensions.json';
 
-const base = import.meta.env.BASE_URL;
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
 
 const dimensionCount = dimensions.categories.reduce(
   (total, category) => total + category.dimensions.length,
