@@ -4,6 +4,8 @@ import model from '../../model/dynamos-v2.json';
 import dimensions from '../../model/dimensions.json';
 import precepta from '../../model/precepta.json';
 
+const base = import.meta.env.BASE_URL;
+
 const dimensionCount = dimensions.categories.reduce(
   (total, category) => total + category.dimensions.length,
   0
@@ -29,12 +31,13 @@ const preceptaCount = precepta.domains.reduce(
 
   <body>
     <header class="site-header">
-      <a class="wordmark" href="./">DYNAMOS</a>
+      <a class="wordmark" href={base}>DYNAMOS</a>
       <nav aria-label="Primary navigation">
         <a href="#model">Model</a>
         <a href="#precepta">PRECEPTA</a>
         <a href="#principles">Principles</a>
         <a href="#open">Open framework</a>
+        <a href={`${base}responsible-use/`}>Responsible use</a>
       </nav>
     </header>
 
@@ -51,6 +54,7 @@ const preceptaCount = precepta.domains.reduce(
         <div class="boundary">
           <strong>Not a personality test. Not a diagnosis. Not a performance evaluation.</strong>
           <span>DYNAMOS describes operating architecture rather than categories of people.</span>
+          <a class="boundary-link" href={`${base}responsible-use/`}>Read the responsible-use statement →</a>
         </div>
 
         <div class="stats" aria-label="Model summary">
@@ -138,14 +142,24 @@ const preceptaCount = precepta.domains.reduce(
     </main>
 
     <footer>
-      <p>
-        <strong>DYNAMOS — Dynamic Neuro-Operational Systems Model</strong><br />
-        © {model.copyright.year} {model.copyright.holder}
-      </p>
-      <p>
-        Except where otherwise noted, DYNAMOS model content is licensed under
-        CC BY-SA 4.0.
-      </p>
+      <div>
+        <p>
+          <strong>DYNAMOS — Dynamic Neuro-Operational Systems Model</strong><br />
+          © {model.copyright.year} {model.copyright.holder}
+        </p>
+        <p>
+          Except where otherwise noted, DYNAMOS model content is licensed under
+          CC BY-SA 4.0.
+        </p>
+      </div>
+
+      <div class="footer-notice">
+        <p>
+          <strong>Responsible use:</strong> DYNAMOS is non-diagnostic and is not
+          medical, psychological, legal, employment, or other professional advice.
+        </p>
+        <p><a href={`${base}responsible-use/`}>Read the full responsible-use and liability statement →</a></p>
+      </div>
     </footer>
   </body>
 </html>
