@@ -1,0 +1,788 @@
+---
+import '../../styles/global.css';
+import model from '../../../model/dynamos-v2.json';
+
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content="Frequently asked questions about DYNAMOS: what it measures, how it was developed, how PRECEPTA works, how it relates to diagnostic constructs, and what it does not do."
+    />
+    <title>FAQ — DYNAMOS</title>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <a class="wordmark" href={base}>DYNAMOS</a>
+      <nav aria-label="Primary navigation">
+        <a href={`${base}model/`}>Model</a>
+        <a href={`${base}precepta/`}>PRECEPTA</a>
+        <a href={`${base}explore/`}>Explore</a>
+        <a href={`${base}research/`}>Research</a>
+        <a aria-current="page" href={`${base}faq/`}>FAQ</a>
+        <a href={`${base}responsible-use/`}>Responsible use</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="faq-hero">
+        <p class="eyebrow">Start here</p>
+        <h1>Understanding DYNAMOS</h1>
+        <p class="lede">
+          DYNAMOS can look complicated because it begins below the level of familiar labels.
+          This page explains why, how the model was built, what PRECEPTA adds, what the research
+          is testing, and why a DYNAMOS profile is not a diagnosis.
+        </p>
+
+        <div class="faq-core">
+          <p>
+            <strong>The shortest explanation:</strong> DYNAMOS does not assume that a diagnostic
+            label is a mechanism. It asks which operating mechanisms can produce the phenomena
+            that diagnostic labels describe.
+          </p>
+        </div>
+      </section>
+
+      <section class="faq-map" aria-label="FAQ topics">
+        <a href="#basics">What is it?</a>
+        <a href="#origin">How was it developed?</a>
+        <a href="#precepta">What is PRECEPTA?</a>
+        <a href="#diagnosis">What about diagnosis?</a>
+        <a href="#research">What is the evidence?</a>
+        <a href="#use">How should it be used?</a>
+      </section>
+
+      <section id="basics" class="faq-section">
+        <div class="faq-section-heading">
+          <p class="eyebrow">01 · The basics</p>
+          <h2>What DYNAMOS is trying to describe</h2>
+        </div>
+
+        <div class="faq-list">
+          <details open>
+            <summary>What is DYNAMOS?</summary>
+            <div class="faq-answer">
+              <p>
+                DYNAMOS — the Dynamic Neuro-Operational Systems Model — is a non-diagnostic
+                systems-architecture framework. It describes how a human system operates under
+                meaning, load, interaction, context, and time.
+              </p>
+              <p>
+                Instead of asking whether someone resembles a predefined category, DYNAMOS asks
+                questions such as: How easy is it to enter a task state? How robustly is that state
+                maintained? What interrupts it? What does re-entry cost? How much social, cognitive,
+                sensory, or affective coupling can the system sustain? What changes with context?
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Is DYNAMOS a personality test?</summary>
+            <div class="faq-answer">
+              <p>
+                No. It is not intended to sort people into stable personality types. The dimensions
+                describe operating tendencies and costs that may change in expression across context,
+                load, relationships, and time.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Why 26 dimensions?</summary>
+            <div class="faq-answer">
+              <p>
+                The current model separates mechanisms that are often collapsed together. Starting a
+                task, sustaining it, being knocked out of it, and rebuilding the state after interruption
+                are not assumed to be the same process. Social, cognitive, sensory, and affective coupling
+                costs are also separated rather than treated as one general “difficulty.”
+              </p>
+              <p>
+                The 26-dimension version emerged from repeated model expansion when existing dimensions
+                could not adequately explain phenomena found in the literature without conflating distinct
+                mechanisms.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>What do the 1–10 scores mean?</summary>
+            <div class="faq-answer">
+              <p>
+                They are comparative self-estimates. You are describing your typical functioning relative
+                to what you perceive as typical among other adults. They are not population percentiles,
+                clinical thresholds, or statements of ability or worth.
+              </p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section id="origin" class="faq-section">
+        <div class="faq-section-heading">
+          <p class="eyebrow">02 · Where it came from</p>
+          <h2>From surface descriptions to operating mechanisms</h2>
+        </div>
+
+        <div class="faq-list">
+          <details open>
+            <summary>How did you come up with DYNAMOS?</summary>
+            <div class="faq-answer">
+              <p>
+                The starting point was not “invent 26 traits.” The starting point was the existing
+                research literature describing recurring experiences and observed patterns associated
+                with autism, ADHD, giftedness, masking, attentional regulation, sensory processing,
+                cognitive load, recovery, and related areas.
+              </p>
+              <p>
+                Instead of accepting those labels as the causal explanation, the development process
+                treated the reported phenomena as <em>phenomenological input</em>: things that needed to
+                be explained. The recurring question was:
+              </p>
+              <blockquote>What more elementary system dynamics could produce this pattern?</blockquote>
+              <p>
+                When one mechanism could not adequately explain distinct phenomena, the model was split
+                or extended. That process led from an earlier, lower-resolution architecture to the
+                current 26-dimensional model.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>So did DYNAMOS start from diagnostic language?</summary>
+            <div class="faq-answer">
+              <p>
+                In part, yes — but as a source of observations, not as the final explanatory structure.
+                Research on autism, ADHD, giftedness, camouflaging, attention, cognitive load, and other
+                areas supplied many of the phenomena that the model had to be able to represent.
+              </p>
+              <p>The development move was deliberately downward:</p>
+              <div class="concept-flow" aria-label="Development flow">
+                <span>Observed or reported phenomena</span>
+                <b>↓</b>
+                <span>Possible operating mechanisms</span>
+                <b>↓</b>
+                <span>DYNAMOS dimensions</span>
+                <b>↓</b>
+                <span>Combinations and PRECEPTA patterns</span>
+              </div>
+            </div>
+          </details>
+
+          <details>
+            <summary>What research traditions sit underneath the model?</summary>
+            <div class="faq-answer">
+              <p>
+                The theoretical foundation is deliberately plural rather than tied to one diagnostic
+                theory. Important strands include dynamic systems approaches to cognition and behavior,
+                cognitive load and compensatory control, work on masking and hidden performance cost,
+                idiographic approaches that distinguish within-person from between-person variation,
+                neurodiversity-informed work on deficit framing and environmental fit, and relational
+                accounts in which some difficulties emerge between systems rather than residing wholly
+                inside one person.
+              </p>
+              <p>
+                DYNAMOS is therefore best understood as a synthesis and model-building programme rather
+                than as a renamed version of any one existing test.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Why avoid stigmatizing or deficit-first wording?</summary>
+            <div class="faq-answer">
+              <p>
+                Because a surface description such as “poor attention,” “rigidity,” or “social deficit”
+                can hide several different mechanisms and can mix capability with cost. DYNAMOS tries to
+                describe what the system is doing before deciding whether that operation is helpful,
+                costly, sustainable, or mismatched to the environment.
+              </p>
+              <p>
+                This does not mean that difficulty, disability, or impairment are unreal. It means the
+                framework does not assume that deficit language is itself an explanation.
+              </p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section id="precepta" class="faq-section">
+        <div class="faq-section-heading">
+          <p class="eyebrow">03 · From dimensions to a recognizable person</p>
+          <h2>Why PRECEPTA exists</h2>
+        </div>
+
+        <div class="faq-list">
+          <details open>
+            <summary>Why not just show the 26 scores?</summary>
+            <div class="faq-answer">
+              <p>
+                Because people do not experience themselves as 26 independent measurements. The dimensions
+                are the lower-level architecture. PRECEPTA is the interface layer that asks what recognizable
+                patterns may emerge when several dimensions operate together.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>What is a PRECEPTA pattern?</summary>
+            <div class="faq-answer">
+              <p>
+                A PRECEPTA pattern is a higher-order description generated from combinations of dimensions.
+                Examples include Flow Diver, Meaning-Gated Performer, Social Cue Load, Precision Resolver,
+                Affective Decoupler, and Sensory-Seeking Stabilizer.
+              </p>
+              <p>
+                PRECEPTA patterns are not identities or diagnoses. They are candidate descriptions of how
+                an architecture may become visible in ordinary life.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Can one behavior come from different architectures?</summary>
+            <div class="faq-answer">
+              <p>
+                Yes. This is one of the most important ideas in DYNAMOS. Similar outward behavior can arise
+                from different internal mechanisms. Difficulty switching tasks, for example, might reflect
+                state friction, strong mode integrity, costly re-entry, high maintenance robustness, overload,
+                or a combination of these.
+              </p>
+              <p>
+                This is why DYNAMOS does not infer a mechanism from one visible behavior alone.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Why are some PRECEPTA patterns marked “context-sensitive”?</summary>
+            <div class="faq-answer">
+              <p>
+                Because the 26 static self-ratings can sometimes identify a compatible architecture without
+                directly observing the defining context or transition. For example, the model may see the
+                architecture that would support meaning-gated performance while still lacking a direct
+                observation that task entry changes specifically when meaning changes.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Why are some patterns not inferred automatically at all?</summary>
+            <div class="faq-answer">
+              <p>
+                Because the model should not claim to know what it did not measure. Some phenomena — such as
+                insight arriving before explanation, deadline-triggered activation, repetitive sensory
+                regulation, or subjective time-estimation problems — require information that the static
+                26-item questionnaire does not directly provide. Those patterns can be investigated through
+                optional follow-up questions rather than silently inferred.
+              </p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section id="diagnosis" class="faq-section diagnosis-section">
+        <div class="faq-section-heading">
+          <p class="eyebrow">04 · Diagnosis and clinical questions</p>
+          <h2>Can we go back from architecture to diagnostic ideas?</h2>
+        </div>
+
+        <div class="faq-list">
+          <details open>
+            <summary>Does DYNAMOS diagnose autism, ADHD, or any other condition?</summary>
+            <div class="faq-answer">
+              <p>
+                <strong>No.</strong> DYNAMOS is not a diagnostic instrument and does not produce a clinical
+                threshold, likelihood, risk score, or probability of having a condition.
+              </p>
+              <p>
+                A formal diagnosis requires a qualified healthcare professional using an appropriate clinical
+                assessment process. DYNAMOS should not replace that process and should not be used to make
+                medical, legal, employment, education, or accommodation decisions.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>But is there a way back from DYNAMOS to familiar diagnostic constructs?</summary>
+            <div class="faq-answer">
+              <p>
+                There is a legitimate research question, but not a current individual inference rule.
+                DYNAMOS was built partly by decomposing phenomena described in diagnostic and neurodiversity
+                literatures into lower-level mechanisms. In principle, research can now ask the inverse question:
+              </p>
+              <blockquote>
+                Which regions of DYNAMOS architecture are more common among people who meet established
+                diagnostic criteria, and which architectures occur across several diagnostic groups?
+              </blockquote>
+              <p>
+                The expected relationship is many-to-many, not one-to-one. People with the same diagnosis may
+                have quite different DYNAMOS architectures, while similar DYNAMOS mechanisms may occur in people
+                with different diagnoses or no diagnosis.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Could DYNAMOS eventually say “this profile looks autistic” or “this looks like ADHD”?</summary>
+            <div class="faq-answer">
+              <p>
+                Not responsibly on the evidence currently available. Doing that would require independent
+                clinical ground truth, sufficiently large and appropriate samples, prospective validation,
+                calibration, sensitivity/specificity analysis, replication, and careful study of comorbidity,
+                age, culture, masking, referral bias, and context.
+              </p>
+              <p>
+                The more interesting scientific use may be different: to investigate whether familiar diagnostic
+                categories contain several distinct operating architectures, and whether some architectures cut
+                across category boundaries.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>How does DYNAMOS relate to existing autism and ADHD questionnaires?</summary>
+            <div class="faq-answer">
+              <p>
+                There is <strong>content overlap</strong>, but there is currently no validated score conversion
+                between DYNAMOS and any established instrument.
+              </p>
+
+              <div class="comparison-table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Instrument</th>
+                      <th>What it is designed to address</th>
+                      <th>Relationship to DYNAMOS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>ASRS</strong></td>
+                      <td>Adult ADHD screening</td>
+                      <td>Some attention and activation territory overlaps conceptually with DYNAMOS dimensions such as entry, maintenance, interruption, re-entry, gating, and state friction.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>RAADS-R</strong></td>
+                      <td>Autism-related adult self-report used as an aid in assessment contexts</td>
+                      <td>Some social, sensory, and restricted-interest territory has DYNAMOS analogs, but DYNAMOS is not a score translation or autism screener.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>CAT-Q</strong></td>
+                      <td>Camouflaging strategies</td>
+                      <td>Conceptually close to DYNAMOS where outward performance and hidden internal cost are separated, but CAT-Q measures a specific construct and DYNAMOS generalizes the cost/capacity distinction more broadly.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p class="faq-note">
+                Content overlap is not score overlap. Two instruments can cover related territory while
+                producing very different measurements.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>I think I may need an autism or ADHD assessment. Where should I start?</summary>
+            <div class="faq-answer">
+              <p>
+                Start with a qualified healthcare professional who can advise on the appropriate diagnostic
+                pathway in your country or health system. A primary-care clinician can often help with referral;
+                specialist assessment may involve psychiatry, psychology, or another appropriately qualified
+                clinical service depending on jurisdiction.
+              </p>
+              <p>
+                If you want a preliminary self-screen before speaking with a clinician, commonly used tools
+                include the <strong>WHO Adult ADHD Self-Report Scale (ASRS)</strong> for adult ADHD screening.
+                In autism-related contexts you may encounter the <strong>RAADS-R</strong>; the
+                <strong>CAT-Q</strong> is specifically about camouflaging rather than diagnosis.
+              </p>
+              <p>
+                These questionnaires should not be treated as standalone diagnoses. A qualified clinician needs
+                to consider developmental history, current functioning, alternative explanations, co-occurring
+                conditions, context, and the relevant diagnostic criteria.
+              </p>
+              <p>
+                DYNAMOS can be useful alongside that process because it may help you describe your lived
+                operating patterns in neutral language. It cannot tell you whether you meet diagnostic criteria.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Does a DYNAMOS pattern mean I am neurodivergent?</summary>
+            <div class="faq-answer">
+              <p>
+                No. DYNAMOS dimensions and PRECEPTA patterns are intended to describe human operating
+                architecture across people. A pattern may occur in diagnosed, undiagnosed, self-identified,
+                or conventionally described populations. The model does not use a PRECEPTA pattern as proof
+                of diagnostic or identity status.
+              </p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section id="research" class="faq-section">
+        <div class="faq-section-heading">
+          <p class="eyebrow">05 · Evidence and research</p>
+          <h2>What we know, what we do not know, and what we are testing</h2>
+        </div>
+
+        <div class="faq-list">
+          <details open>
+            <summary>Is DYNAMOS scientifically validated?</summary>
+            <div class="faq-answer">
+              <p>
+                Not yet as a psychometric instrument. The current framework is theory-driven and
+                literature-anchored, but it does not yet have population norms, established factor
+                structure, test–retest estimates, diagnostic sensitivity/specificity, or a peer-reviewed
+                validation study demonstrating that its questionnaire behaves as claimed across populations.
+              </p>
+              <p>
+                That distinction matters: a strong theoretical basis is not the same thing as empirical
+                validation of a measurement instrument.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Then what is all the underlying research doing?</summary>
+            <div class="faq-answer">
+              <p>
+                The literature provides theoretical grounding, candidate mechanisms, known phenomena, and
+                constraints on model design. It helps answer whether a dimension or distinction is plausible
+                and whether it corresponds to something repeatedly observed in prior research.
+              </p>
+              <p>
+                The new DYNAMOS research programme asks a different question: when people provide their own
+                26-dimensional profile, do the higher-order PRECEPTA interpretations generated from that profile
+                actually describe them? And when they do not, where does the derivation fail?
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>What would proper validation look like?</summary>
+            <div class="faq-answer">
+              <p>
+                Several different studies are needed rather than one headline number. The planned agenda includes
+                reliability and state-sensitivity work; convergent and divergent validity against established
+                instruments; testing whether dimensions cluster or remain meaningfully distinct; longitudinal work;
+                and relational or dyadic studies where DYNAMOS makes claims standard individual-level tools do not.
+              </p>
+              <p>
+                For diagnostic-adjacent questions, the key study would administer DYNAMOS alongside established
+                measures and independently determined clinical outcomes. The goal would not be to force DYNAMOS
+                to reproduce a diagnosis, but to map where the architectures align, diverge, or reveal multiple
+                mechanisms underneath the same category.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>What does donating my data actually test?</summary>
+            <div class="faq-answer">
+              <p>
+                Your 26 responses are the input. The scientifically interesting step is what happens next:
+                DYNAMOS derives PRECEPTA patterns that you did not directly select, and you tell us whether you
+                recognize them. Rejection and missing-pattern reports are therefore just as valuable as agreement.
+              </p>
+              <p>
+                The public research dashboard reports aggregate model-development evidence. It should not be
+                read as diagnostic validity.
+              </p>
+              <p><a class="text-link" href={`${base}research/`}>See the live research status →</a></p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Why collect disagreement instead of only successful matches?</summary>
+            <div class="faq-answer">
+              <p>
+                Because a model that only records confirmation cannot improve. A rejected inferred pattern is a
+                possible false positive. A pattern reported as missing is a possible false negative. A targeted
+                follow-up may then show whether the problem is a derivation-rule gap or a measurement gap in the
+                26-item questionnaire.
+              </p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section id="use" class="faq-section">
+        <div class="faq-section-heading">
+          <p class="eyebrow">06 · Using DYNAMOS</p>
+          <h2>What the framework is for</h2>
+        </div>
+
+        <div class="faq-list">
+          <details open>
+            <summary>What is DYNAMOS useful for today?</summary>
+            <div class="faq-answer">
+              <p>
+                Its current intended uses are reflection, communication, education, research, and
+                system-aware design. It can help people describe why apparently simple tasks may differ
+                in cost, why the same person works differently in different contexts, or why two capable
+                people can create high coupling load for one another.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>What should DYNAMOS never be used for?</summary>
+            <div class="faq-answer">
+              <p>
+                It should not be used as the sole or determinative basis for diagnosis, treatment, hiring,
+                dismissal, promotion, grading, selection, exclusion, legal decisions, accommodations, access
+                to services, or judgments about competence, suitability, productivity, reliability, or worth.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>What if my result does not feel right?</summary>
+            <div class="faq-answer">
+              <p>
+                Say so. The result is a model hypothesis about your architecture, not an authority over your
+                experience. The research interface is designed specifically to capture partial recognition,
+                rejection, uncertainty, and important missing patterns.
+              </p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Where should I go next on the site?</summary>
+            <div class="faq-answer">
+              <div class="next-grid">
+                <a href={`${base}model/`}><strong>Model</strong><span>Explore the 26 dimensions.</span></a>
+                <a href={`${base}precepta/`}><strong>PRECEPTA</strong><span>Explore the higher-order patterns.</span></a>
+                <a href={`${base}explore/`}><strong>Explore</strong><span>Generate your own profile locally.</span></a>
+                <a href={`${base}research/`}><strong>Research</strong><span>See the live evidence programme.</span></a>
+                <a href={`${base}responsible-use/`}><strong>Responsible use</strong><span>Read the boundaries and safeguards.</span></a>
+              </div>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section class="faq-final">
+        <p class="eyebrow">One sentence</p>
+        <blockquote>
+          DYNAMOS does not test whether you match a diagnostic category; it maps how your system
+          appears to operate, then asks whether the higher-order interpretation actually describes you.
+        </blockquote>
+        <div class="faq-final-links">
+          <a class="primary-link" href={`${base}explore/`}>Explore your architecture →</a>
+          <a class="text-link" href={`${base}responsible-use/`}>Responsible use →</a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        <p><strong>DYNAMOS — Dynamic Neuro-Operational Systems Model</strong><br />© {model.copyright.year} {model.copyright.holder}</p>
+        <p>Model and content licensed under CC BY-SA 4.0.</p>
+      </div>
+      <div class="footer-notice">
+        <p><strong>Important:</strong> DYNAMOS is non-diagnostic and is not a substitute for professional medical or psychological assessment.</p>
+        <p><a href={`${base}responsible-use/`}>Responsible use →</a></p>
+      </div>
+    </footer>
+
+    <style>
+      .faq-hero { padding: 7rem 2rem 4.5rem; }
+
+      .faq-core {
+        max-width: 920px;
+        margin-top: 2.5rem;
+        padding: 1.35rem 1.5rem;
+        border-left: 4px solid currentColor;
+        font-size: 1.06rem;
+      }
+
+      .faq-map {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        padding: 0 2rem 4rem;
+      }
+
+      .faq-map a {
+        padding: 0.58rem 0.78rem;
+        border: 1px solid #b9b6ad;
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 0.86rem;
+      }
+
+      .faq-section {
+        display: grid;
+        grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.6fr);
+        gap: 4rem;
+        padding: 5rem 2rem;
+        border-top: 1px solid #b9b6ad;
+      }
+
+      .faq-section-heading {
+        position: sticky;
+        top: 1.5rem;
+        align-self: start;
+      }
+
+      .faq-section-heading h2 {
+        max-width: 520px;
+        margin-bottom: 0;
+      }
+
+      .faq-list { border-top: 1px solid #b9b6ad; }
+
+      .faq-list details { border-bottom: 1px solid #b9b6ad; }
+
+      .faq-list summary {
+        cursor: pointer;
+        list-style: none;
+        padding: 1.25rem 2.2rem 1.25rem 0;
+        font-size: 1.15rem;
+        font-weight: 750;
+        position: relative;
+      }
+
+      .faq-list summary::-webkit-details-marker { display: none; }
+
+      .faq-list summary::after {
+        content: '+';
+        position: absolute;
+        right: 0.2rem;
+        top: 1.1rem;
+        font-size: 1.45rem;
+        font-weight: 400;
+      }
+
+      .faq-list details[open] summary::after { content: '–'; }
+
+      .faq-answer {
+        max-width: 850px;
+        padding: 0 0 1.8rem;
+      }
+
+      .faq-answer p:first-child { margin-top: 0; }
+
+      .faq-answer blockquote,
+      .faq-final blockquote {
+        margin: 1.5rem 0;
+        padding-left: 1.2rem;
+        border-left: 3px solid currentColor;
+        font-size: 1.15rem;
+        line-height: 1.5;
+      }
+
+      .concept-flow {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+        gap: 0.75rem;
+        align-items: center;
+        margin: 1.7rem 0;
+        font-size: 0.92rem;
+      }
+
+      .concept-flow span {
+        padding: 0.85rem;
+        border: 1px solid #b9b6ad;
+        border-radius: 0.6rem;
+      }
+
+      .comparison-table-wrap {
+        overflow-x: auto;
+        margin: 1.5rem 0;
+      }
+
+      .comparison-table-wrap table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 720px;
+      }
+
+      .comparison-table-wrap th,
+      .comparison-table-wrap td {
+        text-align: left;
+        vertical-align: top;
+        padding: 0.85rem 0.75rem;
+        border-bottom: 1px solid #d2cfc6;
+      }
+
+      .comparison-table-wrap th {
+        font-size: 0.82rem;
+        letter-spacing: 0.02em;
+      }
+
+      .faq-note { font-size: 0.9rem; }
+
+      .next-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem;
+      }
+
+      .next-grid a {
+        display: grid;
+        gap: 0.25rem;
+        padding: 1rem;
+        border: 1px solid #b9b6ad;
+        border-radius: 0.65rem;
+        text-decoration: none;
+      }
+
+      .next-grid span { font-size: 0.86rem; }
+
+      .faq-final {
+        padding: 5rem 2rem 6rem;
+        border-top: 1px solid #b9b6ad;
+      }
+
+      .faq-final blockquote {
+        max-width: 980px;
+        font-size: clamp(1.4rem, 3vw, 2.3rem);
+      }
+
+      .faq-final-links {
+        display: flex;
+        gap: 1rem 1.5rem;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-top: 2rem;
+      }
+
+      .primary-link {
+        display: inline-block;
+        padding: 0.8rem 1rem;
+        border: 1px solid #17202a;
+        border-radius: 0.55rem;
+        background: #17202a;
+        color: #f7f5ef;
+        text-decoration: none;
+        font-weight: 750;
+      }
+
+      @media (max-width: 900px) {
+        .faq-section { grid-template-columns: 1fr; gap: 2rem; }
+        .faq-section-heading { position: static; }
+        .concept-flow { grid-template-columns: 1fr; }
+        .concept-flow b { text-align: center; }
+      }
+
+      @media (max-width: 620px) {
+        .faq-hero { padding-top: 4rem; }
+        .next-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </body>
+</html>
