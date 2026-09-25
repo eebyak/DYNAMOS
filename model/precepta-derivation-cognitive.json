@@ -1,0 +1,362 @@
+{
+  "id": "dynamos-precepta-cognitive-pilot",
+  "derivation_version": "0.2.0-pilot",
+  "model_version": "2.0.0",
+  "status": "experimental",
+  "scope": "Cognitive & Learning domain only",
+  "scale_definition": {
+    "type": "comparative_self_estimate",
+    "statement": "Scores express the respondent's estimate of their typical functioning relative to what they perceive as typical among other adults. They are not measured population percentiles.",
+    "bands": [
+      {
+        "min": 1,
+        "max": 2,
+        "label": "very_low",
+        "arrow": "↓↓"
+      },
+      {
+        "min": 3,
+        "max": 4,
+        "label": "low",
+        "arrow": "↓"
+      },
+      {
+        "min": 5,
+        "max": 6,
+        "label": "moderate",
+        "arrow": "↔"
+      },
+      {
+        "min": 7,
+        "max": 8,
+        "label": "high",
+        "arrow": "↑"
+      },
+      {
+        "min": 9,
+        "max": 10,
+        "label": "very_high",
+        "arrow": "↑↑"
+      }
+    ]
+  },
+  "role_assignment_status": "provisional model specification for testing",
+  "matching_rule": {
+    "core_gate": "A pattern is considered only when no core condition is in the opposite region. It is 'strong' when every core condition is directly satisfied and 'candidate' when one or more core conditions are adjacent but none conflict.",
+    "supporting": "Supporting conditions do not create or veto a pattern; they are used only to order candidates and explain why one fit is more complete than another.",
+    "modifiers": "Modifiers change the wording/cost interpretation but do not determine whether the pattern is present.",
+    "not_probability": true
+  },
+  "research_note": "Participant recognition or rejection of the resulting PRECEPTA interpretation is the intended empirical signal. Disagreement is evidence about the model, not participant error.",
+  "patterns": [
+    {
+      "id": "deep_systems_architect",
+      "name": "Deep Systems Architect",
+      "description": "Naturally perceives problems as systems rather than isolated elements. Excels at identifying structural gaps, dependencies, and long-term implications, especially in complex or abstract domains.",
+      "source_signature": "MR↑ RC↑ · IG↑ MI↑ · CD↑ · TD↑ CC↑ · IC-C↑ RSu↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "CD",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "IC-C",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "TD",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "MR",
+          "target": "high",
+          "role": "supporting"
+        },
+        {
+          "dimension": "MI",
+          "target": "high",
+          "role": "supporting"
+        },
+        {
+          "dimension": "CC",
+          "target": "high",
+          "role": "supporting"
+        },
+        {
+          "dimension": "IG",
+          "target": "high",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [
+        {
+          "dimension": "RC",
+          "if": "high",
+          "text": "Interruption and re-entry may be especially costly."
+        },
+        {
+          "dimension": "RSu",
+          "if": "low",
+          "text": "The depth pattern may be difficult to sustain under prolonged load."
+        },
+        {
+          "dimension": "RSu",
+          "if": "high",
+          "text": "The depth pattern appears comparatively sustainable over time."
+        }
+      ],
+      "portrait_clause": "you appear strongly drawn to understanding structure, dependencies, and long-range consequences rather than isolated elements.",
+      "role_rationale": "CD and IC-C carry the systems/synthesis mechanism; TD carries the long-range component. MR, MI, CC and IG support sustained depth. RC and RSu describe cost and sustainability rather than whether systems thinking exists."
+    },
+    {
+      "id": "precision_resolver",
+      "name": "Precision Resolver",
+      "description": "Experiences strong internal pressure to eliminate errors, inconsistencies, or unfinished structures. Thrives when problems can be refined to clarity and completion, but may find ambiguity or partial solutions costly.",
+      "source_signature": "MR↑ SF↑ RC↑ · IG↑ MI↑ · PH↑ CD↑ · IC-C↑ FB-I↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "PH",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "FB-I",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "IC-C",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "CD",
+          "target": "high",
+          "role": "supporting"
+        },
+        {
+          "dimension": "MR",
+          "target": "high",
+          "role": "supporting"
+        },
+        {
+          "dimension": "MI",
+          "target": "high",
+          "role": "supporting"
+        },
+        {
+          "dimension": "IG",
+          "target": "high",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [
+        {
+          "dimension": "SF",
+          "if": "high",
+          "text": "Switching away from unresolved work may itself carry noticeable cost."
+        },
+        {
+          "dimension": "RC",
+          "if": "high",
+          "text": "Returning to an interrupted precision task may feel like reconstructing the state."
+        }
+      ],
+      "portrait_clause": "unresolved errors, inconsistencies, or incomplete structures may create a strong internal pull toward clarification and closure.",
+      "role_rationale": "PH is the pressure toward resolution, FB-I supplies internal standards, and IC-C supplies coherent structure. Persistence/filtering dimensions support the pattern; SF and RC describe the transition cost around unfinished work."
+    },
+    {
+      "id": "fast_insight_slow_explanation",
+      "name": "Fast Insight / Slow Explanation",
+      "description": "Arrives at understanding rapidly and often non-linearly, but needs additional time or effort to translate insights into step-by-step explanations. Others may underestimate the depth of reasoning because intermediate steps are skipped internally.",
+      "source_signature": "ET↓ IC-C↑ · FB-S↓ · SF~",
+      "inference_status": "not_directly_inferable",
+      "core": [
+        {
+          "dimension": "IC-C",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "ET",
+          "target": "low",
+          "role": "supporting"
+        },
+        {
+          "dimension": "FB-S",
+          "target": "low",
+          "role": "supporting"
+        },
+        {
+          "dimension": "SF",
+          "target": "moderate",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "missing_measure": "The current 26 items do not directly measure the latency between arriving at an insight and being able to explain its intermediate steps.",
+      "portrait_clause": "",
+      "role_rationale": "The source signature offers correlates, but the defining 'slow explanation' mechanism is not directly measured. This pattern is therefore not used as an inferred result in the pilot."
+    },
+    {
+      "id": "divergent_idea_generator",
+      "name": "Divergent Idea Generator",
+      "description": "Generates novel ideas and unconventional approaches with ease, especially when exploration is encouraged. May prioritize creativity over completion and benefit from external structures that support follow-through.",
+      "source_signature": "CD↑ RS↑ · ET↓ · PH↓",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "CD",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "RS",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "ET",
+          "target": "low",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [
+        {
+          "dimension": "PH",
+          "if": "low",
+          "text": "Lower closure pressure may leave more room for open-ended exploration."
+        },
+        {
+          "dimension": "PH",
+          "if": "high",
+          "text": "Idea generation may coexist with a strong pull to refine, resolve, or formalize quickly."
+        }
+      ],
+      "portrait_clause": "meaningful complexity seems likely to generate alternative ideas and unconventional routes rather than only a single obvious solution.",
+      "role_rationale": "CD and RS provide the generative mechanism. ET can make exploration easier to enter. PH changes whether exploration remains open or is rapidly pulled toward closure, so it is treated as a modifier rather than a requirement."
+    },
+    {
+      "id": "domain_locked_expert",
+      "name": "Domain-Locked Expert",
+      "description": "Develops exceptional depth and expertise within specific interest areas. Performs best when work aligns closely with established domains of meaning and may disengage sharply outside those contexts.",
+      "source_signature": "CG↑↑ CD↑ MR↑ · ET↑ (outside domain)",
+      "inference_status": "context_sensitive",
+      "core": [
+        {
+          "dimension": "CG",
+          "target": "very_high",
+          "role": "core"
+        },
+        {
+          "dimension": "CD",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "MR",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [],
+      "modifiers": [],
+      "context_note": "The questionnaire measures overall Entry Threshold but does not separately measure Entry Threshold outside an aligned domain. This match should therefore be read as context-sensitive rather than fully resolved.",
+      "portrait_clause": "depth and sustained engagement may depend strongly on being in a domain or context that fits the system particularly well.",
+      "role_rationale": "CG supplies context dependence, CD supplies depth/complexity seeking, and MR supplies sustained engagement. The source additionally requires ET to rise outside the domain; that contrast is not separately observed in the current 26 items."
+    },
+    {
+      "id": "split_integration_thinker",
+      "name": "Split-Integration Thinker",
+      "description": "Shows strong conceptual reasoning while having limited access to emotional labeling or articulation. Emotions are present and influential but are processed indirectly rather than through explicit awareness.",
+      "source_signature": "IC-C↑ IC-A↓",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "IC-C",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "IC-A",
+          "target": "low",
+          "role": "core"
+        }
+      ],
+      "supporting": [],
+      "modifiers": [],
+      "portrait_clause": "conceptual integration may be substantially easier than identifying or putting emotional states into words in real time.",
+      "role_rationale": "The pattern is explicitly defined by the contrast between conceptual and affective integration, so both dimensions are core."
+    },
+    {
+      "id": "big_picture_synthesizer",
+      "name": "Big-Picture Synthesizer",
+      "description": "Naturally integrates information across time, domains, and perspectives. Prefers abstraction and synthesis over detail work and often contributes strategic or visionary insight.",
+      "source_signature": "IC-C↑ TD↑ CD↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "IC-C",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "CD",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "TD",
+          "target": "high",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "portrait_clause": "you appear inclined to connect ideas into larger conceptual structures, with a preference for abstraction and synthesis over isolated detail.",
+      "role_rationale": "IC-C and CD carry the synthesis/abstraction mechanism. TD strengthens the 'across time' component but is treated as supporting so cross-domain synthesis is not reduced to long-horizon planning alone."
+    },
+    {
+      "id": "executive_load_taxed",
+      "name": "Executive-Load Taxed",
+      "description": "Handles complexity well in principle but experiences high cost when multiple executive demands stack. Task switching, coordination, or administrative overhead can disproportionately reduce effectiveness.",
+      "source_signature": "CL-cog↑ RSu↓ SF↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "CL-cognitive",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "SF",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "RSu",
+          "target": "low",
+          "role": "core"
+        }
+      ],
+      "supporting": [],
+      "modifiers": [],
+      "portrait_clause": "stacked executive demands such as switching, coordination, or administrative overhead may accumulate cost quickly even when the underlying task itself is manageable.",
+      "role_rationale": "The canonical signature maps directly onto cognitive coupling cost, switching cost, and reduced sustainability. The pilot uses a conservative participant-facing description and does not infer general competence from these three dimensions."
+    }
+  ]
+}

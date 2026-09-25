@@ -2,6 +2,8 @@
 import '../../styles/global.css';
 import model from '../../../model/dynamos-v2.json';
 import dimensions from '../../../model/dimensions.json';
+import precepta from '../../../model/precepta.json';
+import cognitiveDerivation from '../../../model/precepta-derivation-cognitive.json';
 
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
@@ -14,7 +16,8 @@ const allDimensions = dimensions.categories.flatMap((category) =>
   }))
 );
 
-const questionnaireVersion = '1.0.0';
+const cognitivePatterns = precepta.domains.find((domain) => domain.id === 'cognitive_learning')?.patterns ?? [];
+const questionnaireVersion = '1.1.0-pilot';
 ---
 
 <!doctype html>
@@ -22,10 +25,7 @@ const questionnaireVersion = '1.0.0';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta
-      name="description"
-      content="Explore your DYNAMOS architecture with the 26-dimension reflective questionnaire. Phase 1 runs entirely in your browser."
-    />
+    <meta name="description" content="Explore your DYNAMOS architecture. This pilot derives the Cognitive & Learning PRECEPTA layer locally in your browser." />
     <title>Explore Your Architecture — DYNAMOS</title>
   </head>
 
@@ -42,40 +42,39 @@ const questionnaireVersion = '1.0.0';
 
     <main>
       <section class="explore-hero">
-        <p class="eyebrow">Private browser-based reflection · Phase 1</p>
+        <p class="eyebrow">Private browser-based reflection · Cognitive PRECEPTA pilot</p>
         <h1>Explore your architecture.</h1>
         <p class="lede">
-          Answer 26 questions about your typical functioning over time. Your answers
-          are turned into a DYNAMOS dimension profile on this device.
+          Answer 26 questions. DYNAMOS then uses the combination of your answers to
+          generate higher-order PRECEPTA hypotheses rather than simply repeating your scores back to you.
         </p>
 
         <div class="privacy-banner">
           <strong>Nothing is transmitted.</strong>
           <span>
-            In this first version, your answers and feedback stay in your browser.
-            The anonymous research-contribution system will be added separately.
+            This pilot runs entirely in your browser. Your scores and recognition feedback
+            remain on this device unless you choose to download them.
           </span>
         </div>
       </section>
 
       <section class="explore-intro">
         <div>
-          <p class="eyebrow">Before you begin</p>
-          <h2>This is reflection, not assessment.</h2>
+          <p class="eyebrow">How to rate yourself</p>
+          <h2>Use other adults as your mental reference point.</h2>
         </div>
         <div>
           <p>
-            Rate your <strong>typical functioning over time</strong>, rather than
-            your best day or worst day. There are no good or bad scores.
+            Score your <strong>typical functioning over time</strong>, not your best or worst day.
           </p>
           <p>
-            If one number cannot capture an important context difference, choose the
-            closest score for now. Context-sensitive interpretation is part of DYNAMOS,
-            but this first questionnaire intentionally keeps the input simple.
+            The scale is a comparative self-estimate: ask yourself how strongly each statement
+            characterizes you <strong>relative to what you perceive as typical among other adults</strong>.
+            The result is not a population percentile; it is your own comparative estimate.
           </p>
           <p>
-            You can download your profile when you finish and tell the model where
-            its descriptions do or do not fit you.
+            There are no good or bad patterns. The research question comes later:
+            does the higher-order interpretation generated from these answers actually describe you?
           </p>
         </div>
       </section>
@@ -84,11 +83,11 @@ const questionnaireVersion = '1.0.0';
         <div class="questionnaire-head">
           <div>
             <p class="eyebrow">26 dimensions · 8 categories</p>
-            <h2 id="step-title">Questionnaire</h2>
+            <h2>Questionnaire</h2>
           </div>
           <div class="progress-box" aria-live="polite">
-            <span id="progress-label">Category 1 of {dimensions.categories.length}</span>
-            <progress id="category-progress" value="1" max={dimensions.categories.length}></progress>
+            <span id="progress-label">0 of 26 answered</span>
+            <progress id="answer-progress-top" value="0" max="26"></progress>
           </div>
         </div>
 
@@ -103,11 +102,7 @@ const questionnaireVersion = '1.0.0';
 
         <form id="dynamos-form" novalidate>
           {dimensions.categories.map((category, categoryIndex) => (
-            <fieldset
-              class="category-step"
-              data-step={categoryIndex}
-              hidden={categoryIndex !== 0}
-            >
+            <fieldset class="category-step" data-step={categoryIndex} hidden={categoryIndex !== 0}>
               <legend>
                 <span class="category-step-number">{String(categoryIndex + 1).padStart(2, '0')}</span>
                 <span>
@@ -119,36 +114,25 @@ const questionnaireVersion = '1.0.0';
               <div class="question-stack">
                 {category.dimensions.map((dimension, dimensionIndex) => (
                   <article class="question-card" data-dimension={dimension.id}>
-                    <div class="question-number">
-                      {String(dimensionIndex + 1).padStart(2, '0')}
-                    </div>
+                    <div class="question-number">{String(dimensionIndex + 1).padStart(2, '0')}</div>
 
                     <div class="question-main">
                       <p class="dimension-kicker">{dimension.id} · {dimension.name}</p>
                       <h3>{dimension.short}</h3>
                       <p>{dimension.description}</p>
 
-                      <div
-                        class="score-options"
-                        role="radiogroup"
-                        aria-label={`${dimension.id} ${dimension.name}`}
-                      >
+                      <div class="score-options" role="radiogroup" aria-label={`${dimension.id} ${dimension.name}`}>
                         {Array.from({ length: 10 }, (_, i) => i + 1).map((score) => (
                           <label class="score-choice">
-                            <input
-                              type="radio"
-                              name={dimension.id}
-                              value={score}
-                              required
-                            />
+                            <input type="radio" name={dimension.id} value={score} required />
                             <span>{score}</span>
                           </label>
                         ))}
                       </div>
 
                       <div class="score-ends" aria-hidden="true">
-                        <span>Very low</span>
-                        <span>Very high</span>
+                        <span>Very low compared with others</span>
+                        <span>Very high compared with others</span>
                       </div>
                     </div>
                   </article>
@@ -160,14 +144,17 @@ const questionnaireVersion = '1.0.0';
               </p>
 
               <div class="step-actions">
-                <button
-                  class="secondary-button"
-                  type="button"
-                  data-prev
-                  hidden={categoryIndex === 0}
-                >
+                <button class="secondary-button" type="button" data-prev hidden={categoryIndex === 0}>
                   ← Previous
                 </button>
+
+                <div class="bottom-progress" aria-live="polite">
+                  <div class="bottom-progress-row">
+                    <span data-bottom-progress-label>0 / 26</span>
+                    <span data-bottom-progress-percent>0%</span>
+                  </div>
+                  <progress data-bottom-progress value="0" max="26"></progress>
+                </div>
 
                 {categoryIndex < dimensions.categories.length - 1 ? (
                   <button class="primary-button" type="button" data-next>
@@ -175,7 +162,7 @@ const questionnaireVersion = '1.0.0';
                   </button>
                 ) : (
                   <button class="primary-button" type="submit">
-                    Generate my profile →
+                    Interpret my profile →
                   </button>
                 )}
               </div>
@@ -187,120 +174,102 @@ const questionnaireVersion = '1.0.0';
       <section id="results" class="results-section" hidden>
         <div class="results-head">
           <div>
-            <p class="eyebrow">Your local DYNAMOS profile</p>
-            <h2>Your 26-dimension architecture</h2>
+            <p class="eyebrow">PRECEPTA pilot · Cognitive & Learning only</p>
+            <h2>Your first higher-order interpretation</h2>
             <p>
-              This is a descriptive fingerprint of the scores you entered. It is not a
-              diagnosis, ranking, or performance score.
+              This pilot currently tests only 8 Cognitive & Learning PRECEPTA patterns.
+              The remaining PRECEPTA domains will be added after this derivation method is tested.
             </p>
           </div>
 
           <div class="results-actions">
-            <button id="change-answers" class="secondary-button" type="button">
-              ← Change answers
-            </button>
-            <button id="download-json" class="secondary-button" type="button">
-              Download JSON
-            </button>
-            <button id="print-results" class="primary-button" type="button">
-              Print / save as PDF
-            </button>
+            <button id="change-answers" class="secondary-button" type="button">← Change answers</button>
+            <button id="download-json" class="secondary-button" type="button">Download result</button>
+            <button id="print-results" class="primary-button" type="button">Print / save as PDF</button>
           </div>
         </div>
 
-        <div class="overall-feedback">
-          <p class="eyebrow">Recognition feedback</p>
-          <h3>Overall, how accurately does this dimension profile reflect how you see yourself?</h3>
-          <p>
-            This feedback is optional and currently stays on your device. Later, with
-            explicit consent, it can become part of the anonymous model-development dataset.
+        <section class="portrait-panel">
+          <p class="eyebrow">Integrated cognitive portrait</p>
+          <p id="portrait-text" class="portrait-text"></p>
+          <p class="portrait-caveat">
+            This is a model hypothesis generated from combinations of your self-ratings.
+            It is not a diagnosis, category, probability, or performance judgment.
           </p>
+        </section>
 
-          <div class="fit-options" id="overall-fit" role="radiogroup" aria-label="Overall descriptive fit">
+        <section class="pattern-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">What DYNAMOS inferred</p>
+              <h2>Candidate PRECEPTA patterns</h2>
+            </div>
+            <p>
+              “Strong” means all current core conditions were directly satisfied.
+              “Candidate” means the core pattern was compatible but at least one condition sat in the adjacent score band.
+            </p>
+          </div>
+
+          <div id="pattern-results" class="pattern-results"></div>
+        </section>
+
+        <section class="overall-feedback">
+          <p class="eyebrow">The actual research question</p>
+          <h3>Overall, how well does this higher-order Cognitive & Learning interpretation describe your experience?</h3>
+          <div class="fit-options" role="radiogroup" aria-label="Overall PRECEPTA fit">
             {[
-              ['very_accurate', 'Very accurate'],
-              ['mostly_accurate', 'Mostly accurate'],
-              ['partly_accurate', 'Partly accurate'],
-              ['mostly_inaccurate', 'Mostly inaccurate'],
-              ['very_inaccurate', 'Very inaccurate'],
+              ['strongly_recognize', 'Strongly recognize it'],
+              ['mostly_recognize', 'Mostly recognize it'],
+              ['partly_recognize', 'Partly recognize it'],
+              ['do_not_recognize', 'Do not recognize it'],
+              ['do_not_understand', 'I do not understand it'],
             ].map(([value, label]) => (
               <label>
-                <input type="radio" name="overall_fit" value={value} />
+                <input type="radio" name="overall_precepta_fit" value={value} />
                 <span>{label}</span>
               </label>
             ))}
           </div>
-        </div>
+        </section>
 
-        <div class="result-categories">
-          {dimensions.categories.map((category) => (
-            <section class="result-category">
-              <div class="result-category-heading">
-                <p class="eyebrow">{category.name}</p>
-                <p>{category.description}</p>
-              </div>
-
-              <div class="result-grid">
-                {category.dimensions.map((dimension) => (
-                  <article class="result-card" data-result={dimension.id}>
-                    <div class="result-topline">
-                      <div>
-                        <span class="result-code">{dimension.id}</span>
-                        <h3>{dimension.name}</h3>
-                      </div>
-                      <strong class="result-score" data-score>—</strong>
-                    </div>
-
-                    <p class="result-short">{dimension.short}</p>
-
-                    <div class="result-meter" aria-hidden="true">
-                      <span data-meter></span>
-                    </div>
-
-                    <p class="result-anchor" data-anchor></p>
-                    <p class="result-description">{dimension.description}</p>
-
-                    <div class="dimension-fit">
-                      <span>Does this description fit your experience?</span>
-                      <div class="dimension-fit-options" data-fit-for={dimension.id}>
-                        {[
-                          ['fits', 'Yes'],
-                          ['partly', 'Partly'],
-                          ['does_not_fit', 'No'],
-                          ['unsure', 'Unsure'],
-                        ].map(([value, label]) => (
-                          <label>
-                            <input
-                              type="radio"
-                              name={`fit_${dimension.id}`}
-                              value={value}
-                            />
-                            <span>{label}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
-
-        <section class="research-preview">
+        <section class="missing-section">
           <div>
-            <p class="eyebrow">Next phase</p>
-            <h2>Anonymous contribution, by explicit opt-in.</h2>
+            <p class="eyebrow">False negatives matter too</p>
+            <h2>Did DYNAMOS miss an important Cognitive & Learning pattern?</h2>
+            <p>
+              Select a pattern only if its description feels important to you but it did not appear above.
+              This lets later research distinguish missed patterns from false-positive ones.
+            </p>
+          </div>
+
+          <div class="missing-grid">
+            {cognitivePatterns.map((pattern) => (
+              <label class="missing-choice">
+                <input type="checkbox" name="missing_pattern" value={pattern.id} />
+                <span>
+                  <strong>{pattern.name}</strong>
+                  <small>{pattern.description}</small>
+                </span>
+              </label>
+            ))}
+          </div>
+        </section>
+
+        <details class="raw-profile">
+          <summary>See the 26 self-ratings used underneath this interpretation</summary>
+          <div id="raw-score-grid" class="raw-score-grid"></div>
+        </details>
+
+        <section class="pilot-note">
+          <div>
+            <p class="eyebrow">Important pilot limitation</p>
+            <h2>One Cognitive pattern is deliberately not inferred yet.</h2>
           </div>
           <div>
             <p>
-              The next version will let you choose whether to contribute a minimal
-              research record containing your 26 scores, model version, and recognition
-              feedback. No contribution will happen automatically.
-            </p>
-            <p>
-              Until that backend is connected, this page does not send questionnaire
-              data anywhere.
+              <strong>Fast Insight / Slow Explanation</strong> is currently excluded from automatic inference.
+              The existing 26 questions do not directly measure the defining gap between arriving at an insight
+              and being able to explain its intermediate steps. We would rather expose that gap than fake a precise inference.
             </p>
           </div>
         </section>
@@ -309,18 +278,11 @@ const questionnaireVersion = '1.0.0';
 
     <footer>
       <div>
-        <p>
-          <strong>DYNAMOS — Dynamic Neuro-Operational Systems Model</strong><br />
-          © {model.copyright.year} {model.copyright.holder}
-        </p>
+        <p><strong>DYNAMOS — Dynamic Neuro-Operational Systems Model</strong><br />© {model.copyright.year} {model.copyright.holder}</p>
         <p>Model and content licensed under CC BY-SA 4.0.</p>
       </div>
-
       <div class="footer-notice">
-        <p>
-          <strong>Responsible use:</strong> DYNAMOS is non-diagnostic and is not a
-          performance evaluation.
-        </p>
+        <p><strong>Responsible use:</strong> DYNAMOS is non-diagnostic and is not a performance evaluation.</p>
         <p><a href={`${base}responsible-use/`}>Responsible-use statement →</a></p>
       </div>
     </footer>
@@ -333,46 +295,54 @@ const questionnaireVersion = '1.0.0';
         modelVersion: model.version,
         questionnaireVersion,
         dimensionIds: allDimensions.map((d) => d.id),
-        scaleAnchors: model.scoring.scale.anchors,
+        dimensions: allDimensions.map((d) => ({ id: d.id, name: d.name })),
+        derivation: cognitiveDerivation,
       })}
     ></script>
 
     <script>
       const form = document.querySelector('#dynamos-form');
       const steps = Array.from(document.querySelectorAll('.category-step'));
-      const progress = document.querySelector('#category-progress');
-      const progressLabel = document.querySelector('#progress-label');
       const questionnaire = document.querySelector('#questionnaire');
       const results = document.querySelector('#results');
-      const metadata = JSON.parse(
-        document.querySelector('#dynamos-questionnaire-meta').textContent
-      );
+      const metadata = JSON.parse(document.querySelector('#dynamos-questionnaire-meta').textContent);
 
       let activeStep = 0;
+      let latestDerivation = [];
+
+      function answeredCount() {
+        return metadata.dimensionIds.filter((id) =>
+          form.querySelector(`input[name="${CSS.escape(id)}"]:checked`)
+        ).length;
+      }
+
+      function updateProgress() {
+        const answered = answeredCount();
+        const pct = Math.round((answered / metadata.dimensionIds.length) * 100);
+
+        document.querySelector('#progress-label').textContent = `${answered} of ${metadata.dimensionIds.length} answered`;
+        document.querySelector('#answer-progress-top').value = answered;
+
+        document.querySelectorAll('[data-bottom-progress]').forEach((el) => el.value = answered);
+        document.querySelectorAll('[data-bottom-progress-label]').forEach((el) => el.textContent = `${answered} / ${metadata.dimensionIds.length}`);
+        document.querySelectorAll('[data-bottom-progress-percent]').forEach((el) => el.textContent = `${pct}%`);
+      }
 
       function showStep(index) {
         activeStep = Math.max(0, Math.min(index, steps.length - 1));
-
-        steps.forEach((step, i) => {
-          step.hidden = i !== activeStep;
-        });
-
-        progress.value = activeStep + 1;
-        progressLabel.textContent = `Category ${activeStep + 1} of ${steps.length}`;
+        steps.forEach((step, i) => step.hidden = i !== activeStep);
         steps[activeStep].querySelector('[data-error]').hidden = true;
         steps[activeStep].scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
       function unansweredInputs(step) {
         const names = [...new Set(
-          Array.from(step.querySelectorAll('input[type="radio"][required]'))
-            .map((input) => input.name)
+          Array.from(step.querySelectorAll('input[type="radio"][required]')).map((input) => input.name)
         )];
-
-        return names.filter(
-          (name) => !step.querySelector(`input[name="${CSS.escape(name)}"]:checked`)
-        );
+        return names.filter((name) => !step.querySelector(`input[name="${CSS.escape(name)}"]:checked`));
       }
+
+      form.addEventListener('change', updateProgress);
 
       steps.forEach((step, index) => {
         const next = step.querySelector('[data-next]');
@@ -385,7 +355,6 @@ const questionnaireVersion = '1.0.0';
             step.querySelector(`input[name="${CSS.escape(missing[0])}"]`)?.focus();
             return;
           }
-
           showStep(index + 1);
         });
 
@@ -401,23 +370,213 @@ const questionnaireVersion = '1.0.0';
         return scores;
       }
 
-      function anchorFor(score) {
-        if (score <= 2) return metadata.scaleAnchors['1-2'];
-        if (score <= 4) return metadata.scaleAnchors['3-4'];
-        if (score <= 6) return metadata.scaleAnchors['5-6'];
-        if (score <= 8) return metadata.scaleAnchors['7-8'];
-        return metadata.scaleAnchors['9-10'];
+      function band(score) {
+        if (score <= 2) return 'very_low';
+        if (score <= 4) return 'low';
+        if (score <= 6) return 'moderate';
+        if (score <= 8) return 'high';
+        return 'very_high';
+      }
+
+      function arrow(score) {
+        if (score <= 2) return '↓↓';
+        if (score <= 4) return '↓';
+        if (score <= 6) return '↔';
+        if (score <= 8) return '↑';
+        return '↑↑';
+      }
+
+      function conditionState(score, target) {
+        const b = band(score);
+
+        if (target === 'high') {
+          if (b === 'high' || b === 'very_high') return 'hit';
+          if (b === 'moderate') return 'near';
+          return 'miss';
+        }
+
+        if (target === 'very_high') {
+          if (b === 'very_high') return 'hit';
+          if (b === 'high') return 'near';
+          return 'miss';
+        }
+
+        if (target === 'low') {
+          if (b === 'very_low' || b === 'low') return 'hit';
+          if (b === 'moderate') return 'near';
+          return 'miss';
+        }
+
+        if (target === 'moderate') {
+          if (b === 'moderate') return 'hit';
+          if (b === 'low' || b === 'high') return 'near';
+          return 'miss';
+        }
+
+        return 'miss';
+      }
+
+      function inferPatterns(scores) {
+        const candidates = [];
+
+        for (const pattern of metadata.derivation.patterns) {
+          if (pattern.inference_status === 'not_directly_inferable') continue;
+
+          const coreStates = pattern.core.map((c) => ({
+            ...c,
+            state: conditionState(scores[c.dimension], c.target),
+            score: scores[c.dimension],
+          }));
+
+          if (coreStates.some((c) => c.state === 'miss')) continue;
+
+          const supportingStates = pattern.supporting.map((c) => ({
+            ...c,
+            state: conditionState(scores[c.dimension], c.target),
+            score: scores[c.dimension],
+          }));
+
+          const strength = coreStates.every((c) => c.state === 'hit') ? 'strong' : 'candidate';
+          const supportHits = supportingStates.filter((c) => c.state === 'hit').length;
+          const supportNear = supportingStates.filter((c) => c.state === 'near').length;
+
+          const activeModifiers = (pattern.modifiers ?? []).filter((m) =>
+            conditionState(scores[m.dimension], m.if) === 'hit'
+          );
+
+          candidates.push({
+            ...pattern,
+            strength,
+            coreStates,
+            supportingStates,
+            supportHits,
+            supportNear,
+            activeModifiers,
+          });
+        }
+
+        candidates.sort((a, b) => {
+          const strengthRank = { strong: 2, candidate: 1 };
+          return (
+            strengthRank[b.strength] - strengthRank[a.strength] ||
+            b.supportHits - a.supportHits ||
+            b.supportNear - a.supportNear ||
+            a.name.localeCompare(b.name)
+          );
+        });
+
+        return candidates.slice(0, 4);
+      }
+
+      function humanTarget(target) {
+        return {
+          high: 'high',
+          very_high: 'very high',
+          low: 'low',
+          moderate: 'moderate',
+        }[target] ?? target;
+      }
+
+      function renderPatternCard(pattern, index) {
+        const core = pattern.coreStates.map((c) =>
+          `<li><strong>${c.dimension} ${arrow(c.score)}</strong> — core target ${humanTarget(c.target)} <span class="condition-state ${c.state}">${c.state}</span></li>`
+        ).join('');
+
+        const supporting = pattern.supportingStates.length
+          ? `<div class="why-block"><h4>Supporting signals</h4><ul>${pattern.supportingStates.map((c) =>
+              `<li><strong>${c.dimension} ${arrow(c.score)}</strong> — target ${humanTarget(c.target)} <span class="condition-state ${c.state}">${c.state}</span></li>`
+            ).join('')}</ul></div>`
+          : '';
+
+        const modifiers = pattern.activeModifiers.length
+          ? `<div class="modifier-note">${pattern.activeModifiers.map((m) => `<p>${m.text}</p>`).join('')}</div>`
+          : '';
+
+        const context = pattern.context_note
+          ? `<p class="context-note"><strong>Context caveat:</strong> ${pattern.context_note}</p>`
+          : '';
+
+        return `
+          <article class="pattern-card">
+            <div class="pattern-card-head">
+              <div>
+                <span class="pattern-rank">${String(index + 1).padStart(2, '0')}</span>
+                <span class="pattern-strength">${pattern.strength === 'strong' ? 'Strong current match' : 'Current candidate'}</span>
+              </div>
+              <h3>${pattern.name}</h3>
+            </div>
+
+            <p class="pattern-description">${pattern.description}</p>
+            ${modifiers}
+            ${context}
+
+            <details class="why-details">
+              <summary>Why DYNAMOS inferred this</summary>
+              <div class="why-block">
+                <h4>Core conditions</h4>
+                <ul>${core}</ul>
+              </div>
+              ${supporting}
+              <p class="role-rationale">${pattern.role_rationale}</p>
+            </details>
+
+            <div class="pattern-feedback">
+              <strong>Do you recognize this pattern in yourself?</strong>
+              <div class="dimension-fit-options" data-pattern-fit="${pattern.id}">
+                ${[
+                  ['strongly_recognize', 'Strongly'],
+                  ['mostly_recognize', 'Mostly'],
+                  ['partly_recognize', 'Partly'],
+                  ['do_not_recognize', 'No'],
+                  ['do_not_understand', 'Unclear'],
+                ].map(([value, label]) =>
+                  `<label><input type="radio" name="fit_${pattern.id}" value="${value}" /><span>${label}</span></label>`
+                ).join('')}
+              </div>
+            </div>
+          </article>
+        `;
+      }
+
+      function renderRawScores(scores) {
+        const grid = document.querySelector('#raw-score-grid');
+        grid.innerHTML = metadata.dimensions.map((d) =>
+          `<div class="raw-score-item"><strong>${d.id}</strong><span>${scores[d.id]}/10 · ${arrow(scores[d.id])}</span><small>${d.name}</small></div>`
+        ).join('');
       }
 
       function renderResults(scores) {
-        for (const [id, score] of Object.entries(scores)) {
-          const card = document.querySelector(`[data-result="${CSS.escape(id)}"]`);
-          if (!card) continue;
+        latestDerivation = inferPatterns(scores);
+        const container = document.querySelector('#pattern-results');
 
-          card.querySelector('[data-score]').textContent = `${score}/10`;
-          card.querySelector('[data-anchor]').textContent = anchorFor(score);
-          card.querySelector('[data-meter]').style.width = `${score * 10}%`;
+        if (!latestDerivation.length) {
+          container.innerHTML = `
+            <div class="no-patterns">
+              <h3>No Cognitive & Learning PRECEPTA pattern passed the current core gate.</h3>
+              <p>This is a useful pilot outcome rather than an error. The raw dimensions remain available below.</p>
+            </div>`;
+          document.querySelector('#portrait-text').textContent =
+            'Within the Cognitive & Learning pilot, your current combination did not produce a clear higher-order PRECEPTA candidate under the provisional core rules.';
+        } else {
+          container.innerHTML = latestDerivation.map(renderPatternCard).join('');
+
+          const clauses = latestDerivation.slice(0, 3)
+            .map((p) => p.portrait_clause)
+            .filter(Boolean);
+
+          const names = latestDerivation.slice(0, 3).map((p) => p.name);
+          const lead = names.length === 1
+            ? `Your current Cognitive & Learning profile most clearly aligns with ${names[0]}.`
+            : `Your current Cognitive & Learning profile is best described by the combination of ${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}.`;
+
+          const synthesis = clauses.length
+            ? ` Taken together, this suggests that ${clauses.join(' At the same time, ')}`
+            : '';
+
+          document.querySelector('#portrait-text').textContent = lead + synthesis;
         }
+
+        renderRawScores(scores);
       }
 
       form.addEventListener('submit', (event) => {
@@ -425,7 +584,6 @@ const questionnaireVersion = '1.0.0';
 
         const finalStep = steps[steps.length - 1];
         const missing = unansweredInputs(finalStep);
-
         if (missing.length) {
           finalStep.querySelector('[data-error]').hidden = false;
           finalStep.querySelector(`input[name="${CSS.escape(missing[0])}"]`)?.focus();
@@ -433,7 +591,6 @@ const questionnaireVersion = '1.0.0';
         }
 
         const scores = getScores();
-
         if (Object.keys(scores).length !== metadata.dimensionIds.length) {
           const firstIncomplete = steps.findIndex((step) => unansweredInputs(step).length);
           if (firstIncomplete >= 0) showStep(firstIncomplete);
@@ -459,55 +616,60 @@ const questionnaireVersion = '1.0.0';
       }
 
       function buildDownloadPayload() {
-        const dimensionFeedback = {};
-
-        for (const id of metadata.dimensionIds) {
-          dimensionFeedback[id] = selectedValue(`fit_${id}`);
+        const patternFeedback = {};
+        for (const pattern of latestDerivation) {
+          patternFeedback[pattern.id] = selectedValue(`fit_${pattern.id}`);
         }
 
+        const missingPatterns = Array.from(
+          document.querySelectorAll('input[name="missing_pattern"]:checked')
+        ).map((input) => input.value);
+
         return {
-          schema: 'dynamos-local-profile',
+          schema: 'dynamos-cognitive-precepta-pilot',
           schema_version: '1.0.0',
           generated_at: new Date().toISOString(),
-          model: metadata.model,
           model_version: metadata.modelVersion,
           questionnaire_version: metadata.questionnaireVersion,
+          derivation_version: metadata.derivation.derivation_version,
           privacy_mode: 'local_only_no_transmission',
           scores: getScores(),
-          recognition_feedback: {
-            overall_fit: selectedValue('overall_fit'),
-            dimensions: dimensionFeedback,
+          derived_precepta: latestDerivation.map((p) => ({
+            id: p.id,
+            name: p.name,
+            strength: p.strength,
+            core: p.coreStates.map((c) => ({ dimension: c.dimension, target: c.target, state: c.state })),
+            supporting: p.supportingStates.map((c) => ({ dimension: c.dimension, target: c.target, state: c.state })),
+          })),
+          participant_feedback: {
+            overall_precepta_fit: selectedValue('overall_precepta_fit'),
+            pattern_recognition: patternFeedback,
+            missing_patterns: missingPatterns,
           },
-          note:
-            'This file was generated locally in the browser. It is a reflective DYNAMOS profile, not a diagnosis or performance evaluation.',
+          note: 'Experimental Cognitive & Learning PRECEPTA pilot. Not diagnostic and not a validated psychometric result.',
         };
       }
 
       document.querySelector('#download-json').addEventListener('click', () => {
         const payload = buildDownloadPayload();
-        const blob = new Blob([JSON.stringify(payload, null, 2)], {
-          type: 'application/json',
-        });
-
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `dynamos-profile-${metadata.modelVersion}.json`;
+        a.download = `dynamos-cognitive-precepta-pilot-${metadata.modelVersion}.json`;
         document.body.appendChild(a);
         a.click();
         a.remove();
         URL.revokeObjectURL(url);
       });
 
-      document.querySelector('#print-results').addEventListener('click', () => {
-        window.print();
-      });
+      document.querySelector('#print-results').addEventListener('click', () => window.print());
+
+      updateProgress();
     </script>
 
     <style>
-      .explore-hero {
-        padding: 7rem 2rem 5rem;
-      }
+      .explore-hero { padding: 7rem 2rem 5rem; }
 
       .privacy-banner {
         max-width: 850px;
@@ -519,7 +681,7 @@ const questionnaireVersion = '1.0.0';
       }
 
       .explore-intro,
-      .research-preview {
+      .pilot-note {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 4rem;
@@ -529,18 +691,19 @@ const questionnaireVersion = '1.0.0';
       }
 
       .questionnaire-section,
-      .results-section {
-        padding: 5rem 2rem 7rem;
-      }
+      .results-section { padding: 5rem 2rem 7rem; }
 
       .questionnaire-head,
-      .results-head {
+      .results-head,
+      .section-heading {
         display: flex;
         justify-content: space-between;
         gap: 3rem;
         align-items: end;
         margin-bottom: 2rem;
       }
+
+      .section-heading > p { max-width: 620px; }
 
       .progress-box {
         min-width: 230px;
@@ -568,19 +731,10 @@ const questionnaireVersion = '1.0.0';
         gap: 0.2rem;
       }
 
-      .scale-reference strong {
-        font-size: 1.1rem;
-      }
+      .scale-reference strong { font-size: 1.1rem; }
+      .scale-reference span { font-size: 0.82rem; }
 
-      .scale-reference span {
-        font-size: 0.82rem;
-      }
-
-      fieldset {
-        padding: 0;
-        margin: 0;
-        border: 0;
-      }
+      fieldset { padding: 0; margin: 0; border: 0; }
 
       legend {
         width: 100%;
@@ -607,14 +761,9 @@ const questionnaireVersion = '1.0.0';
       }
 
       .category-step-number,
-      .question-number {
-        font-weight: 800;
-        letter-spacing: 0.08em;
-      }
+      .question-number { font-weight: 800; letter-spacing: 0.08em; }
 
-      .question-stack {
-        border-top: 1px solid #b9b6ad;
-      }
+      .question-stack { border-top: 1px solid #b9b6ad; }
 
       .question-card {
         display: grid;
@@ -632,14 +781,8 @@ const questionnaireVersion = '1.0.0';
         font-weight: 750;
       }
 
-      .question-card h3 {
-        margin: 0;
-        font-size: clamp(1.35rem, 2.7vw, 2rem);
-      }
-
-      .question-card p {
-        max-width: 850px;
-      }
+      .question-card h3 { margin: 0; font-size: clamp(1.35rem, 2.7vw, 2rem); }
+      .question-card p { max-width: 850px; }
 
       .score-options {
         display: grid;
@@ -650,7 +793,8 @@ const questionnaireVersion = '1.0.0';
 
       .score-choice input,
       .fit-options input,
-      .dimension-fit-options input {
+      .dimension-fit-options input,
+      .missing-choice input {
         position: absolute;
         opacity: 0;
         pointer-events: none;
@@ -674,32 +818,47 @@ const questionnaireVersion = '1.0.0';
         border-color: #17202a;
       }
 
-      .score-choice span:hover {
-        border-color: #17202a;
-      }
+      .score-choice span:hover { border-color: #17202a; }
 
       .score-ends {
         display: flex;
         justify-content: space-between;
+        gap: 1rem;
         margin-top: 0.45rem;
         font-size: 0.78rem;
       }
 
-      .step-actions,
-      .results-actions {
-        display: flex;
-        gap: 0.8rem;
-        flex-wrap: wrap;
-      }
-
       .step-actions {
-        justify-content: flex-end;
+        display: grid;
+        grid-template-columns: minmax(130px, auto) minmax(220px, 1fr) minmax(160px, auto);
+        gap: 1rem;
+        align-items: end;
         margin-top: 2.5rem;
       }
 
-      button {
-        font: inherit;
+      .bottom-progress {
+        width: 100%;
+        max-width: 620px;
+        justify-self: center;
       }
+
+      .bottom-progress-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.4rem;
+        font-size: 0.82rem;
+        font-weight: 750;
+      }
+
+      .results-actions,
+      .fit-options,
+      .dimension-fit-options {
+        display: flex;
+        gap: 0.55rem;
+        flex-wrap: wrap;
+      }
+
+      button { font: inherit; }
 
       .primary-button,
       .secondary-button {
@@ -722,11 +881,6 @@ const questionnaireVersion = '1.0.0';
         color: inherit;
       }
 
-      .primary-button:hover,
-      .secondary-button:hover {
-        transform: translateY(-1px);
-      }
-
       .step-error {
         margin: 1rem 0 0;
         padding: 0.8rem 1rem;
@@ -734,24 +888,91 @@ const questionnaireVersion = '1.0.0';
         font-weight: 700;
       }
 
-      .overall-feedback {
+      .portrait-panel {
         margin: 3rem 0 5rem;
-        padding: 1.5rem;
+        padding: clamp(1.5rem, 4vw, 3rem);
         border: 1px solid #b9b6ad;
-        border-radius: 0.75rem;
+        border-radius: 0.8rem;
       }
 
-      .overall-feedback h3 {
-        max-width: 850px;
-        font-size: clamp(1.4rem, 2.8vw, 2rem);
+      .portrait-text {
+        max-width: 1000px;
+        font-size: clamp(1.45rem, 3vw, 2.4rem);
+        line-height: 1.28;
+        letter-spacing: -0.02em;
       }
 
-      .fit-options,
-      .dimension-fit-options {
-        display: flex;
-        gap: 0.55rem;
-        flex-wrap: wrap;
+      .portrait-caveat { max-width: 800px; font-size: 0.9rem; }
+
+      .pattern-section { margin: 0 0 5rem; }
+
+      .pattern-results {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
       }
+
+      .pattern-card {
+        border: 1px solid #b9b6ad;
+        border-radius: 0.8rem;
+        padding: 1.5rem;
+      }
+
+      .pattern-card-head { border-bottom: 1px solid #d2cfc6; padding-bottom: 1rem; }
+      .pattern-card-head > div { display: flex; justify-content: space-between; gap: 1rem; align-items: center; }
+      .pattern-card h3 { margin: 0.6rem 0 0; font-size: clamp(1.5rem, 2.8vw, 2.2rem); }
+
+      .pattern-rank { font-weight: 850; letter-spacing: 0.08em; }
+      .pattern-strength {
+        border: 1px solid #b9b6ad;
+        border-radius: 999px;
+        padding: 0.35rem 0.6rem;
+        font-size: 0.75rem;
+        font-weight: 750;
+      }
+
+      .pattern-description { font-size: 1.02rem; line-height: 1.6; }
+
+      .modifier-note,
+      .context-note {
+        margin-top: 1rem;
+        padding: 0.85rem 1rem;
+        border-left: 3px solid #17202a;
+        font-size: 0.9rem;
+      }
+
+      .modifier-note p { margin: 0.2rem 0; }
+
+      .why-details {
+        margin-top: 1.2rem;
+        border-top: 1px solid #d2cfc6;
+        padding-top: 1rem;
+      }
+
+      .why-details summary { cursor: pointer; font-weight: 750; }
+
+      .why-block { margin-top: 1rem; }
+      .why-block h4 { margin-bottom: 0.4rem; }
+      .why-block ul { margin-top: 0.4rem; padding-left: 1.2rem; }
+
+      .condition-state {
+        display: inline-block;
+        margin-left: 0.4rem;
+        border: 1px solid #b9b6ad;
+        border-radius: 999px;
+        padding: 0.1rem 0.4rem;
+        font-size: 0.72rem;
+      }
+
+      .role-rationale { font-size: 0.86rem; line-height: 1.5; }
+
+      .pattern-feedback {
+        margin-top: 1.2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #d2cfc6;
+      }
+
+      .pattern-feedback > strong { display: block; margin-bottom: 0.75rem; }
 
       .fit-options label span,
       .dimension-fit-options label span {
@@ -772,142 +993,108 @@ const questionnaireVersion = '1.0.0';
         border-color: #17202a;
       }
 
-      .result-category {
-        padding: 4rem 0;
-        border-top: 1px solid #b9b6ad;
-      }
-
-      .result-category-heading {
-        max-width: 760px;
-        margin-bottom: 2rem;
-      }
-
-      .result-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-      }
-
-      .result-card {
-        padding: 1.4rem;
+      .overall-feedback {
+        margin: 5rem 0;
+        padding: 1.5rem;
         border: 1px solid #b9b6ad;
         border-radius: 0.75rem;
       }
 
-      .result-topline {
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
+      .overall-feedback h3 {
+        max-width: 950px;
+        font-size: clamp(1.4rem, 2.8vw, 2rem);
       }
 
-      .result-topline h3 {
-        margin: 0.2rem 0 0;
+      .missing-section {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 3rem;
+        padding: 4rem 0;
+        border-top: 1px solid #b9b6ad;
       }
 
-      .result-code {
-        font-size: 0.78rem;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-      }
+      .missing-grid { display: grid; gap: 0.7rem; }
 
-      .result-score {
-        font-size: 1.45rem;
-      }
-
-      .result-short {
-        font-weight: 700;
-      }
-
-      .result-meter {
-        height: 0.6rem;
-        margin: 1rem 0 0.5rem;
-        background: #dedbd2;
-        overflow: hidden;
-        border-radius: 999px;
-      }
-
-      .result-meter span {
+      .missing-choice span {
         display: block;
-        height: 100%;
-        width: 0;
+        padding: 1rem;
+        border: 1px solid #b9b6ad;
+        border-radius: 0.65rem;
+        cursor: pointer;
+      }
+
+      .missing-choice strong,
+      .missing-choice small { display: block; }
+
+      .missing-choice small { margin-top: 0.35rem; line-height: 1.45; }
+
+      .missing-choice input:checked + span {
         background: #17202a;
+        color: #f7f5ef;
+        border-color: #17202a;
       }
 
-      .result-anchor {
-        margin-top: 0.2rem;
-        font-size: 0.82rem;
-        font-weight: 750;
+      .raw-profile {
+        margin: 3rem 0 5rem;
+        border-top: 1px solid #b9b6ad;
+        border-bottom: 1px solid #b9b6ad;
+        padding: 1.2rem 0;
       }
 
-      .result-description {
-        font-size: 0.95rem;
+      .raw-profile summary { cursor: pointer; font-weight: 750; }
+
+      .raw-score-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.7rem;
+        margin-top: 1rem;
       }
 
-      .dimension-fit {
-        margin-top: 1.3rem;
-        padding-top: 1.1rem;
-        border-top: 1px solid #d2cfc6;
+      .raw-score-item {
+        border: 1px solid #d2cfc6;
+        padding: 0.8rem;
+        border-radius: 0.55rem;
+        display: grid;
+        gap: 0.15rem;
       }
 
-      .dimension-fit > span {
-        display: block;
-        margin-bottom: 0.75rem;
-        font-size: 0.86rem;
-        font-weight: 700;
-      }
+      .raw-score-item strong { font-size: 0.8rem; }
+      .raw-score-item small { line-height: 1.3; }
 
-      .research-preview {
-        margin-top: 5rem;
-      }
+      .no-patterns { padding: 2rem; border: 1px solid #b9b6ad; border-radius: 0.8rem; }
 
-      @media (max-width: 820px) {
+      @media (max-width: 900px) {
+        .pattern-results,
+        .missing-section,
         .explore-intro,
-        .research-preview,
-        .result-grid {
+        .pilot-note {
           grid-template-columns: 1fr;
         }
 
+        .raw-score-grid { grid-template-columns: repeat(2, 1fr); }
+
         .questionnaire-head,
-        .results-head {
+        .results-head,
+        .section-heading {
           align-items: start;
           flex-direction: column;
         }
 
-        .scale-reference {
+        .step-actions {
           grid-template-columns: 1fr;
         }
 
-        .scale-reference div + div {
-          border-top: 1px solid #d2cfc6;
-        }
-
-        .score-options {
-          grid-template-columns: repeat(5, 1fr);
-        }
+        .bottom-progress { order: -1; max-width: none; }
       }
 
       @media (max-width: 560px) {
-        .explore-hero {
-          padding-top: 4rem;
-        }
+        .explore-hero { padding-top: 4rem; }
 
         legend,
-        .question-card {
-          grid-template-columns: 1fr;
-          gap: 0.8rem;
-        }
+        .question-card { grid-template-columns: 1fr; gap: 0.8rem; }
 
-        .score-options {
-          grid-template-columns: repeat(5, 1fr);
-        }
-
-        .step-actions {
-          justify-content: stretch;
-        }
-
-        .step-actions button {
-          flex: 1;
-        }
+        .score-options { grid-template-columns: repeat(5, 1fr); }
+        .raw-score-grid { grid-template-columns: 1fr; }
       }
 
       @media print {
@@ -917,24 +1104,15 @@ const questionnaireVersion = '1.0.0';
         #questionnaire,
         .results-actions,
         .overall-feedback,
-        .dimension-fit,
-        .research-preview,
+        .missing-section,
+        .pattern-feedback,
+        .pilot-note,
         footer {
           display: none !important;
         }
 
-        body {
-          background: white;
-        }
-
-        #results {
-          display: block !important;
-          padding: 0;
-        }
-
-        .result-card {
-          break-inside: avoid;
-        }
+        #results { display: block !important; padding: 0; }
+        .pattern-card { break-inside: avoid; }
       }
     </style>
   </body>
