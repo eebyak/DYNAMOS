@@ -1,4 +1,4 @@
 {
-  "api_base": "",
+  "api_base": "https://dynamos-research-api.berkling-kay.workers.dev",
   "note": "After deploying the Cloudflare Worker, paste its public workers.dev URL here without a trailing slash. This is public configuration, not a secret."
 }
