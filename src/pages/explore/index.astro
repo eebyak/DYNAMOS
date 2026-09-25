@@ -5,6 +5,7 @@ import dimensions from '../../../model/dimensions.json';
 import precepta from '../../../model/precepta.json';
 import cognitiveDerivation from '../../../model/precepta-derivation-cognitive.json';
 import cognitiveFollowups from '../../../model/research/cognitive-missing-followups.json';
+import researchBackend from '../../../model/research/backend.json';
 
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
@@ -186,7 +187,7 @@ const questionnaireVersion = '1.1.0-pilot';
           <div class="results-actions">
             <button id="change-answers" class="secondary-button" type="button">← Change answers</button>
             <button id="download-json" class="secondary-button" type="button">Download result</button>
-            <button id="print-results" class="primary-button" type="button">Print / save as PDF</button>
+            <button id="print-results" class="primary-button" type="button">Print / save report as PDF</button>
           </div>
         </div>
 
@@ -287,11 +288,15 @@ const questionnaireVersion = '1.1.0-pilot';
             </button>
 
             <button id="donate-result" class="secondary-button" type="button" disabled>
-              Donation endpoint not connected yet
+              Donate my result
+            </button>
+
+            <button id="download-withdrawal-receipt" class="secondary-button" type="button" hidden>
+              Download withdrawal receipt
             </button>
 
             <p id="donation-status" class="small-note">
-              This pilot only prepares and validates the research payload locally. It does not send data.
+              The donation endpoint is not connected yet. You can still prepare and inspect the contribution locally.
             </p>
           </div>
         </section>
@@ -313,6 +318,25 @@ const questionnaireVersion = '1.1.0-pilot';
               and being able to explain its intermediate steps. We would rather expose that gap than fake a precise inference.
             </p>
           </div>
+
+        <section id="print-report" class="print-report">
+          <div class="print-report-header">
+            <p class="print-report-mark">DYNAMOS</p>
+            <h1>DYNAMOS Result Report</h1>
+            <p>Dynamic Neuro-Operational Systems Model</p>
+            <p id="print-report-meta" class="print-report-meta"></p>
+          </div>
+
+          <section><h2>Integrated Cognitive & Learning interpretation</h2><p id="print-portrait" class="print-portrait"></p></section>
+          <section><h2>PRECEPTA results and your feedback</h2><div id="print-precepta"></div></section>
+          <section><h2>Your 26 comparative self-ratings</h2><p class="print-note">Scores are your estimates of typical functioning relative to what you perceive as typical among other adults.</p><div id="print-scores"></div></section>
+          <section><h2>Missing-pattern feedback</h2><div id="print-missing"></div></section>
+          <section><h2>Research contribution summary</h2><div id="print-donation-summary"></div></section>
+          <section class="print-disclaimer">
+            <h2>Interpretive status</h2>
+            <p>DYNAMOS is exploratory, non-diagnostic, and not a validated psychometric instrument. This report records the self-ratings, higher-order PRECEPTA interpretation, and feedback produced in this session.</p>
+          </section>
+        </section>
         </section>
       </section>
     </main>
@@ -336,9 +360,10 @@ const questionnaireVersion = '1.1.0-pilot';
         modelVersion: model.version,
         questionnaireVersion,
         dimensionIds: allDimensions.map((d) => d.id),
-        dimensions: allDimensions.map((d) => ({ id: d.id, name: d.name })),
+        dimensions: allDimensions.map((d) => ({ id: d.id, name: d.name, categoryName: d.categoryName })),
         derivation: cognitiveDerivation,
         followups: cognitiveFollowups,
+        researchApiBase: (researchBackend.api_base ?? '').replace(/\/$/, ''),
       })}
     ></script>
 
@@ -726,6 +751,7 @@ const questionnaireVersion = '1.1.0-pilot';
       }
 
       let donationSecrets = null;
+      let donationReceipt = null;
 
       async function buildResearchContribution() {
         if (!donationSecrets) {
@@ -861,18 +887,185 @@ const questionnaireVersion = '1.1.0-pilot';
       document.querySelector('#prepare-donation').addEventListener('click', async () => {
         const status = document.querySelector('#donation-status');
         const preview = document.querySelector('#donation-preview');
-
         if (!allConsentChecked()) {
           status.textContent = 'Please tick all five consent statements before preparing a donation.';
           return;
         }
-
         const contribution = await buildResearchContribution();
         preview.textContent = JSON.stringify(contribution, null, 2);
-        status.textContent = 'Donation record prepared locally. Nothing has been sent.';
+        status.textContent = metadata.researchApiBase
+          ? 'Donation record prepared locally. Review it above, then choose Donate my result.'
+          : 'Donation record prepared locally. Nothing has been sent; the research endpoint is not connected yet.';
       });
 
-      document.querySelector('#print-results').addEventListener('click', () => window.print());
+      const donateButton = document.querySelector('#donate-result');
+      if (metadata.researchApiBase) {
+        donateButton.disabled = false;
+        document.querySelector('#donation-status').textContent =
+          'The private research endpoint is connected. Prepare the donation first so you can inspect the exact record.';
+      }
+
+      donateButton.addEventListener('click', async () => {
+        const status = document.querySelector('#donation-status');
+        if (!metadata.researchApiBase) {
+          status.textContent = 'The research endpoint is not connected yet.';
+          return;
+        }
+        if (!allConsentChecked()) {
+          status.textContent = 'Please tick all five consent statements before donating.';
+          return;
+        }
+
+        donateButton.disabled = true;
+        status.textContent = 'Submitting contribution…';
+
+        try {
+          const contribution = await buildResearchContribution();
+          const response = await fetch(`${metadata.researchApiBase}/v1/contributions`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(contribution),
+          });
+          const body = await response.json().catch(() => ({}));
+          if (!response.ok || !body.accepted) throw new Error(body?.error || `Submission failed (${response.status})`);
+
+          donationReceipt = {
+            schema: 'dynamos-withdrawal-receipt',
+            schema_version: '1.0.0',
+            submission_id: contribution.submission_id,
+            withdrawal_token: donationSecrets.withdrawalToken,
+            research_api: metadata.researchApiBase,
+            model_version: metadata.modelVersion,
+            questionnaire_version: metadata.questionnaireVersion,
+            derivation_version: metadata.derivation.derivation_version,
+            note: 'Keep this private. DYNAMOS cannot identify your contribution for withdrawal without this token.',
+          };
+
+          status.textContent = body.duplicate
+            ? 'This contribution had already been accepted. Your withdrawal receipt is available below.'
+            : 'Thank you. Your contribution was accepted. Download and keep the withdrawal receipt if you may want to remove it later.';
+          document.querySelector('#download-withdrawal-receipt').hidden = false;
+          donateButton.textContent = 'Contribution accepted';
+        } catch (error) {
+          status.textContent = `Contribution was not accepted: ${error.message}`;
+          donateButton.disabled = false;
+        }
+      });
+
+      document.querySelector('#download-withdrawal-receipt').addEventListener('click', () => {
+        if (!donationReceipt) return;
+        const blob = new Blob([JSON.stringify(donationReceipt, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `dynamos-withdrawal-receipt-${donationReceipt.submission_id}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      });
+
+      const recognitionLabels = {
+        strongly_recognize: 'Strongly recognize',
+        mostly_recognize: 'Mostly recognize',
+        partly_recognize: 'Partly recognize',
+        do_not_recognize: 'Do not recognize',
+        do_not_understand: 'Unclear / do not understand',
+      };
+
+      const followupLabels = {
+        strongly_agree: 'Strongly agree',
+        mostly_agree: 'Mostly agree',
+        partly_agree: 'Partly agree',
+        disagree: 'Disagree',
+        unsure: 'Unsure',
+      };
+
+      function esc(value) {
+        return String(value ?? '')
+          .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+      }
+
+      function renderPrintableReport() {
+        const scores = getScores();
+        const missing = getMissingFeedback();
+        const overall = selectedValue('overall_precepta_fit');
+
+        document.querySelector('#print-report-meta').textContent =
+          `Model ${metadata.modelVersion} · Questionnaire ${metadata.questionnaireVersion} · Derivation ${metadata.derivation.derivation_version} · ${new Date().toLocaleDateString()}`;
+        document.querySelector('#print-portrait').textContent =
+          document.querySelector('#portrait-text').textContent || 'No higher-order Cognitive & Learning candidate was presented.';
+
+        document.querySelector('#print-precepta').innerHTML = latestDerivation.length
+          ? latestDerivation.map((p, i) => `
+              <article class="print-pattern">
+                <div class="print-pattern-heading">
+                  <strong>${i + 1}. ${esc(p.name)}</strong>
+                  <span>${p.inference_status === 'context_sensitive' ? 'Context-sensitive candidate' : (p.strength === 'strong' ? 'Strong current match' : 'Current candidate')}</span>
+                </div>
+                <p>${esc(p.description)}</p>
+                <p><strong>Your feedback:</strong> ${esc(recognitionLabels[selectedValue(`fit_${p.id}`)] ?? 'Not answered')}</p>
+              </article>
+            `).join('') + `<p class="print-overall"><strong>Overall interpretation feedback:</strong> ${esc(recognitionLabels[overall] ?? 'Not answered')}</p>`
+          : `<p>No Cognitive & Learning PRECEPTA candidate was presented.</p>
+             <p><strong>Overall interpretation feedback:</strong> ${esc(recognitionLabels[overall] ?? 'Not answered')}</p>`;
+
+        const grouped = new Map();
+        for (const d of metadata.dimensions) {
+          if (!grouped.has(d.categoryName)) grouped.set(d.categoryName, []);
+          grouped.get(d.categoryName).push(d);
+        }
+
+        document.querySelector('#print-scores').innerHTML = [...grouped.entries()].map(([category, items]) => `
+          <div class="print-score-group">
+            <h3>${esc(category)}</h3>
+            <table>
+              <thead><tr><th>Code</th><th>Dimension</th><th>Score</th><th>Band</th></tr></thead>
+              <tbody>${items.map(d => `<tr><td>${esc(d.id)}</td><td>${esc(d.name)}</td><td>${scores[d.id]}/10</td><td>${arrow(scores[d.id])}</td></tr>`).join('')}</tbody>
+            </table>
+          </div>
+        `).join('');
+
+        const missingNames = missing.selected_patterns.map(id =>
+          metadata.derivation.patterns.find(p => p.id === id)?.name ?? id
+        );
+        const followupHtml = missing.followups.length
+          ? `<ul>${missing.followups.map(f => {
+              const q = metadata.followups.questions.find(x => x.question_id === f.question_id);
+              return `<li><strong>${esc(q?.prompt ?? f.question_id)}</strong><br />${esc(followupLabels[f.response] ?? f.response)}</li>`;
+            }).join('')}</ul>`
+          : '<p>No targeted follow-up response recorded.</p>';
+
+        document.querySelector('#print-missing').innerHTML = `
+          <p><strong>Important part missing?</strong> ${esc(missing.important_part_missing ?? 'Not answered')}</p>
+          <p><strong>Patterns selected as missing:</strong> ${missingNames.length ? esc(missingNames.join(', ')) : 'None selected'}</p>
+          ${followupHtml}
+        `;
+
+        const submitted = donationReceipt
+          ? `<p><strong>Contribution status:</strong> Accepted.</p><p><strong>Submission ID:</strong> ${esc(donationReceipt.submission_id)}</p>`
+          : '<p><strong>Contribution status:</strong> Not submitted at the time this report was generated.</p>';
+
+        document.querySelector('#print-donation-summary').innerHTML = `
+          <p>A contribution contains the 26 scores above, version identifiers, the PRECEPTA patterns shown, your recognition feedback, and structured missing-pattern/follow-up responses. The contribution schema contains no name, email, employer, diagnosis, exact location, or free-text biography.</p>
+          ${submitted}
+          <p><strong>Consent state:</strong></p>
+          <ul>
+            <li>${document.querySelector('input[name="consent_voluntary"]').checked ? 'Yes' : 'No'} — voluntary contribution</li>
+            <li>${document.querySelector('input[name="consent_exploratory"]').checked ? 'Yes' : 'No'} — exploratory/non-diagnostic status understood</li>
+            <li>${document.querySelector('input[name="consent_no_identity"]').checked ? 'Yes' : 'No'} — no identity requested in research record</li>
+            <li>${document.querySelector('input[name="consent_aggregate"]').checked ? 'Yes' : 'No'} — aggregate publication understood</li>
+            <li>${document.querySelector('input[name="consent_withdrawal"]').checked ? 'Yes' : 'No'} — withdrawal-token requirement understood</li>
+          </ul>
+          <p class="print-note">The withdrawal token is issued separately after successful donation and is not itself submitted to the research database.</p>
+        `;
+      }
+
+      document.querySelector('#print-results').addEventListener('click', () => {
+        renderPrintableReport();
+        window.print();
+      });
 
       updateProgress();
     </script>
@@ -1372,24 +1565,5 @@ const questionnaireVersion = '1.1.0-pilot';
         .score-options { grid-template-columns: repeat(5, 1fr); }
         .raw-score-grid { grid-template-columns: 1fr; }
       }
-
-      @media print {
-        .site-header,
-        .explore-hero,
-        .explore-intro,
-        #questionnaire,
-        .results-actions,
-        .overall-feedback,
-        .missing-section,
-        .pattern-feedback,
-        .pilot-note,
-        footer {
-          display: none !important;
-        }
-
-        #results { display: block !important; padding: 0; }
-        .pattern-card { break-inside: avoid; }
-      }
-    </style>
   </body>
 </html>

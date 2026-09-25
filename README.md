@@ -1,29 +1,31 @@
-# DYNAMOS research donation contract — v0.1
+# DYNAMOS collection backend + readable report patch
 
-This package defines the provider-agnostic research donation boundary and adds a **local-only donation preview** to the Cognitive PRECEPTA pilot.
+This package adds two things.
 
-## Add / replace
+## 1. Dedicated printable DYNAMOS Result Report
 
-- `src/pages/explore/index.astro`
-- `model/precepta-derivation-cognitive.json`
-- `model/research/research-contribution.schema.json`
-- `model/research/public-stats.schema.json`
-- `model/research/research-api-contract.json`
-- `model/research/cognitive-missing-followups.json`
-- `docs/RESEARCH_CONTRIBUTION_PROTOCOL.md`
-- `docs/RESEARCH_CONSENT_V0.1.md`
+The Print button now prints only a readable result report, not the website. The report contains:
 
-## Important
+- model/questionnaire/derivation versions;
+- integrated PRECEPTA interpretation;
+- PRECEPTA results and participant feedback;
+- all 26 scores grouped by category;
+- missing-pattern selections;
+- targeted follow-up answers;
+- a readable explanation of what the research contribution contains;
+- contribution status and submission ID if already donated.
 
-The website patch **does not send data yet**. The Donate button remains disabled until a private backend is connected.
+## 2. Serverless private collection backend
 
-It does let you test:
+`research-backend/` contains a Cloudflare Worker + D1 implementation for:
 
-- staged missing-pattern feedback;
-- targeted follow-ups for selected missing patterns;
-- consent wording;
-- exact donated-record preview;
-- random submission id;
-- locally generated withdrawal token hash.
+- POST `/v1/contributions`
+- POST `/v1/withdraw`
+- GET `/v1/stats`
+- GET `/v1/health`
 
-The next implementation step is to choose/configure the private backend against this contract.
+No server machine is required.
+
+Start with `docs/DEPLOY_RESEARCH_BACKEND.md`.
+
+`model/research/backend.json` is intentionally blank until the Worker is deployed, so the website cannot accidentally transmit data.

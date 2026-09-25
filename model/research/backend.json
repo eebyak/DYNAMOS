@@ -1,0 +1,4 @@
+{
+  "api_base": "",
+  "note": "After deploying the Cloudflare Worker, paste its public workers.dev URL here without a trailing slash. This is public configuration, not a secret."
+}
