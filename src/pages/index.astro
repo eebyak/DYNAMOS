@@ -42,13 +42,18 @@ const researchConfig = {
     <meta property="og:title" content="DYNAMOS — How does a human system operate?" />
     <meta
       property="og:description"
-      content="DYNAMOS is an open, non-diagnostic systems-architecture framework for describing cognitive and behavioral dynamics under meaning, load, interaction, context, and time."
+      content="An open, non-diagnostic systems-architecture framework for describing cognitive and behavioral dynamics under meaning, load, interaction, context, and time."
     />
     <meta property="og:url" content="https://eebyak.github.io/DYNAMOS/" />
     <meta
       property="og:image"
-      content="https://eebyak.github.io/DYNAMOS/social/dynamos-link-preview.png"
+      content="https://eebyak.github.io/DYNAMOS/social/dynamos-link-preview-v2.png"
     />
+    <meta
+      property="og:image:secure_url"
+      content="https://eebyak.github.io/DYNAMOS/social/dynamos-link-preview-v2.png"
+    />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="627" />
     <meta
@@ -59,11 +64,11 @@ const researchConfig = {
     <meta name="twitter:title" content="DYNAMOS — How does a human system operate?" />
     <meta
       name="twitter:description"
-      content="DYNAMOS is an open, non-diagnostic systems-architecture framework for describing cognitive and behavioral dynamics under meaning, load, interaction, context, and time."
+      content="An open, non-diagnostic systems-architecture framework for describing cognitive and behavioral dynamics under meaning, load, interaction, context, and time."
     />
     <meta
       name="twitter:image"
-      content="https://eebyak.github.io/DYNAMOS/social/dynamos-link-preview.png"
+      content="https://eebyak.github.io/DYNAMOS/social/dynamos-link-preview-v2.png"
     />
 
   </head>
@@ -82,7 +87,13 @@ const researchConfig = {
     </header>
 
     <main>
-      <section class="hero">
+      <section class="hero hero-with-system-background">
+        <img
+          class="hero-system-background"
+          src={`${base}social/dynamos-system-background.png`}
+          alt=""
+          aria-hidden="true"
+        />
         <p class="eyebrow">Dynamic Neuro-Operational Systems Model · v{model.version}</p>
         <h1>How does a human system operate?</h1>
         <p class="lede">
@@ -288,6 +299,45 @@ const researchConfig = {
     </script>
 
   <style>
+
+
+      .hero-with-system-background {
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+      }
+
+      .hero-system-background {
+        position: absolute;
+        z-index: -1;
+        top: 2.2rem;
+        right: -4rem;
+        width: min(78vw, 980px);
+        height: auto;
+        opacity: 0.11;
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .hero-with-system-background > :not(.hero-system-background) {
+        position: relative;
+        z-index: 1;
+      }
+
+      @media (max-width: 800px) {
+        .hero-system-background {
+          top: 6rem;
+          right: -15rem;
+          width: 950px;
+          opacity: 0.07;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .hero-system-background {
+          transform: none;
+        }
+      }
 
       .research-home {
         display: grid;

@@ -1,36 +1,43 @@
-# DYNAMOS LinkedIn / social preview update
+# DYNAMOS social preview + subtle homepage background fix
 
-This update changes **only link-preview metadata**. It does not alter the visible website design.
+This patch combines the current FAQ-enabled site with the social-preview metadata and the new transparent systems graphic.
+
+## Why LinkedIn probably stopped working
+
+The later FAQ update replaced `src/pages/index.astro` with a version that did not yet contain the Open Graph metadata from the earlier LinkedIn patch. This package combines both changes, so the FAQ/navigation is preserved and the social tags are restored.
 
 ## Add
 
-- `public/social/dynamos-link-preview.png`
+- `public/social/dynamos-system-background.png`
+- `public/social/dynamos-link-preview-v2.png`
 
 ## Replace
 
 - `src/pages/index.astro`
 
-## What the homepage now exposes to LinkedIn and other social platforms
+Nothing else needs to change. No Cloudflare or D1 changes are required.
 
-- Open Graph title
-- Open Graph description
-- canonical URL
-- 1200 × 627 social preview image
-- image dimensions and alt text
-- `summary_large_image` metadata for platforms that also read Twitter/X-style card tags
+## Visible website change
 
-## Suggested commit
+Only the homepage hero gets the new systems graphic, at very low opacity. The rest of the site stays unchanged.
 
-`Add DYNAMOS social link preview`
+## LinkedIn fix
 
-## After GitHub Pages deploys
+The homepage now contains:
+- `og:title`
+- `og:description`
+- `og:url`
+- `og:image`
+- `og:image:secure_url`
+- image MIME type and 1200×627 dimensions
+- Twitter/X large-card fallbacks
 
-Paste the homepage URL into LinkedIn's Post Inspector to force a fresh scrape:
+The social image uses a new filename (`dynamos-link-preview-v2.png`) so LinkedIn does not keep requesting the old image asset.
 
-`https://www.linkedin.com/post-inspector/`
+After GitHub Pages deploys successfully, run the clean homepage URL through LinkedIn Post Inspector:
 
-Inspect:
+https://eebyak.github.io/DYNAMOS/
 
-`https://eebyak.github.io/DYNAMOS/`
+Suggested commit:
 
-If LinkedIn had already cached the old preview, the inspector is the cleanest way to refresh it.
+`Add systems background and restore social preview`
