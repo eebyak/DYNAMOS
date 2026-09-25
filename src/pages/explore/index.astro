@@ -3,8 +3,8 @@ import '../../styles/global.css';
 import model from '../../../model/dynamos-v2.json';
 import dimensions from '../../../model/dimensions.json';
 import precepta from '../../../model/precepta.json';
-import cognitiveDerivation from '../../../model/precepta-derivation-cognitive.json';
-import cognitiveFollowups from '../../../model/research/cognitive-missing-followups.json';
+import preceptaDerivation from '../../../model/precepta-derivation.json';
+import preceptaFollowups from '../../../model/research/precepta-followups.json';
 import researchBackend from '../../../model/research/backend.json';
 
 const rawBase = import.meta.env.BASE_URL;
@@ -18,7 +18,8 @@ const allDimensions = dimensions.categories.flatMap((category) =>
   }))
 );
 
-const cognitivePatterns = precepta.domains.find((domain) => domain.id === 'cognitive_learning')?.patterns ?? [];
+const allPreceptaPatterns = precepta.domains.flatMap((domain) => domain.patterns);
+const nonDirectPatterns = preceptaDerivation.patterns.filter((pattern) => pattern.inference_status === 'not_directly_inferable');
 const questionnaireVersion = '1.1.0-pilot';
 ---
 
@@ -27,7 +28,7 @@ const questionnaireVersion = '1.1.0-pilot';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Explore your DYNAMOS architecture. This pilot derives the Cognitive & Learning PRECEPTA layer locally in your browser." />
+    <meta name="description" content="Explore your DYNAMOS architecture. This pilot derives all 32 PRECEPTA patterns locally in your browser." />
     <title>Explore Your Architecture — DYNAMOS</title>
   </head>
 
@@ -44,7 +45,7 @@ const questionnaireVersion = '1.1.0-pilot';
 
     <main>
       <section class="explore-hero">
-        <p class="eyebrow">Private browser-based reflection · Cognitive PRECEPTA pilot</p>
+        <p class="eyebrow">Private browser-based reflection · Full PRECEPTA pilot</p>
         <h1>Explore your architecture.</h1>
         <p class="lede">
           Answer 26 questions. DYNAMOS then uses the combination of your answers to
@@ -176,11 +177,10 @@ const questionnaireVersion = '1.1.0-pilot';
       <section id="results" class="results-section" hidden>
         <div class="results-head">
           <div>
-            <p class="eyebrow">PRECEPTA pilot · Cognitive & Learning only</p>
-            <h2>Your first higher-order interpretation</h2>
+            <p class="eyebrow">PRECEPTA pilot · 32 patterns · 5 domains</p>
+            <h2>Your higher-order PRECEPTA interpretation</h2>
             <p>
-              This pilot currently tests only 8 Cognitive & Learning PRECEPTA patterns.
-              The remaining PRECEPTA domains will be added after this derivation method is tested.
+              This pilot now evaluates all 32 PRECEPTA patterns across five domains. Some patterns depend on contextual or dynamic information that the 26 static items cannot directly observe; those are marked explicitly rather than being silently inferred.
             </p>
           </div>
 
@@ -192,7 +192,7 @@ const questionnaireVersion = '1.1.0-pilot';
         </div>
 
         <section class="portrait-panel">
-          <p class="eyebrow">Integrated cognitive portrait</p>
+          <p class="eyebrow">Integrated architecture portrait</p>
           <p id="portrait-text" class="portrait-text"></p>
           <p class="portrait-caveat">
             This is a model hypothesis generated from combinations of your self-ratings.
@@ -217,7 +217,7 @@ const questionnaireVersion = '1.1.0-pilot';
 
         <section class="overall-feedback">
           <p class="eyebrow">The actual research question</p>
-          <h3>Overall, how well does this higher-order Cognitive & Learning interpretation describe your experience?</h3>
+          <h3>Overall, how well does this higher-order PRECEPTA interpretation describe your experience?</h3>
           <div class="fit-options" role="radiogroup" aria-label="Overall PRECEPTA fit">
             {[
               ['strongly_recognize', 'Strongly recognize it'],
@@ -308,15 +308,19 @@ const questionnaireVersion = '1.1.0-pilot';
 
         <section class="pilot-note">
           <div>
-            <p class="eyebrow">Important pilot limitation</p>
-            <h2>One Cognitive pattern is deliberately not inferred yet.</h2>
+            <p class="eyebrow">Deliberate inference limits</p>
+            <h2>Some PRECEPTA patterns are not inferred from static scores alone.</h2>
           </div>
           <div>
             <p>
-              <strong>Fast Insight / Slow Explanation</strong> is currently excluded from automatic inference.
-              The existing 26 questions do not directly measure the defining gap between arriving at an insight
-              and being able to explain its intermediate steps. We would rather expose that gap than fake a precise inference.
+              The current model refuses to infer a pattern automatically when its defining phenomenon
+              is not actually measured by the 26-item questionnaire. These patterns remain available
+              in the structured “something is missing” interaction, where a targeted follow-up can
+              test the missing mechanism.
             </p>
+            <ul>
+              {nonDirectPatterns.map((pattern) => <li><strong>{pattern.name}</strong></li>)}
+            </ul>
           </div>
         </section>
 
@@ -328,7 +332,7 @@ const questionnaireVersion = '1.1.0-pilot';
             <p id="print-report-meta" class="print-report-meta"></p>
           </div>
 
-          <section><h2>Integrated Cognitive & Learning interpretation</h2><p id="print-portrait" class="print-portrait"></p></section>
+          <section><h2>Integrated PRECEPTA interpretation</h2><p id="print-portrait" class="print-portrait"></p></section>
           <section><h2>PRECEPTA results and your feedback</h2><div id="print-precepta"></div></section>
           <section><h2>Your 26 comparative self-ratings</h2><p class="print-note">Scores are your estimates of typical functioning relative to what you perceive as typical among other adults.</p><div id="print-scores"></div></section>
           <section><h2>Missing-pattern feedback</h2><div id="print-missing"></div></section>
@@ -361,9 +365,10 @@ const questionnaireVersion = '1.1.0-pilot';
         questionnaireVersion,
         dimensionIds: allDimensions.map((d) => d.id),
         dimensions: allDimensions.map((d) => ({ id: d.id, name: d.name, categoryName: d.categoryName })),
-        derivation: cognitiveDerivation,
-        followups: cognitiveFollowups,
+        derivation: preceptaDerivation,
+        followups: preceptaFollowups,
         researchApiBase: (researchBackend.api_base ?? '').replace(/\/$/, ''),
+        domains: preceptaDerivation.domains,
       })}
     ></script>
 
@@ -532,7 +537,41 @@ const questionnaireVersion = '1.1.0-pilot';
           );
         });
 
-        return candidates.slice(0, 4);
+        const selected = [];
+        const selectedIds = new Set();
+
+        // Keep all strong compatible patterns first.
+        for (const pattern of candidates.filter((p) => p.strength === 'strong')) {
+          if (selected.length >= 12) break;
+          selected.push(pattern);
+          selectedIds.add(pattern.id);
+        }
+
+        // Ensure the profile can still represent every domain where there is at least
+        // one compatible candidate, without flooding the participant with weak matches.
+        for (const domain of metadata.domains) {
+          if (selected.length >= 12) break;
+          if (selected.some((p) => p.domain_id === domain.id)) continue;
+
+          const candidate = candidates.find(
+            (p) => p.domain_id === domain.id && !selectedIds.has(p.id)
+          );
+
+          if (candidate) {
+            selected.push(candidate);
+            selectedIds.add(candidate.id);
+          }
+        }
+
+        return selected.sort((a, b) => {
+          const domainIndex = (id) => metadata.domains.findIndex((d) => d.id === id);
+          return (
+            domainIndex(a.domain_id) - domainIndex(b.domain_id) ||
+            (a.strength === b.strength ? 0 : a.strength === 'strong' ? -1 : 1) ||
+            b.supportHits - a.supportHits ||
+            a.name.localeCompare(b.name)
+          );
+        });
       }
 
       function humanTarget(target) {
@@ -542,6 +581,11 @@ const questionnaireVersion = '1.1.0-pilot';
           low: 'low',
           moderate: 'moderate',
         }[target] ?? target;
+      }
+
+      function patternStatusLabel(pattern) {
+        if (pattern.inference_status === 'context_sensitive') return 'Context-sensitive candidate';
+        return pattern.strength === 'strong' ? 'Strong current match' : 'Current candidate';
       }
 
       function renderPatternCard(pattern, index) {
@@ -560,7 +604,7 @@ const questionnaireVersion = '1.1.0-pilot';
           : '';
 
         const context = pattern.context_note
-          ? `<p class="context-note"><strong>Context caveat:</strong> ${pattern.context_note}</p>`
+          ? `<p class="context-note"><strong>Inference limit:</strong> ${pattern.context_note}</p>`
           : '';
 
         return `
@@ -568,7 +612,7 @@ const questionnaireVersion = '1.1.0-pilot';
             <div class="pattern-card-head">
               <div>
                 <span class="pattern-rank">${String(index + 1).padStart(2, '0')}</span>
-                <span class="pattern-strength">${pattern.strength === 'strong' ? 'Strong current match' : 'Current candidate'}</span>
+                <span class="pattern-strength">${patternStatusLabel(pattern)}</span>
               </div>
               <h3>${pattern.name}</h3>
             </div>
@@ -619,28 +663,46 @@ const questionnaireVersion = '1.1.0-pilot';
         if (!latestDerivation.length) {
           container.innerHTML = `
             <div class="no-patterns">
-              <h3>No Cognitive & Learning PRECEPTA pattern passed the current core gate.</h3>
+              <h3>No PRECEPTA pattern passed the current core gate.</h3>
               <p>This is a useful pilot outcome rather than an error. The raw dimensions remain available below.</p>
             </div>`;
           document.querySelector('#portrait-text').textContent =
-            'Within the Cognitive & Learning pilot, your current combination did not produce a clear higher-order PRECEPTA candidate under the provisional core rules.';
+            'Your current 26-dimensional profile did not produce a clear higher-order PRECEPTA candidate under the provisional derivation rules.';
         } else {
-          container.innerHTML = latestDerivation.map(renderPatternCard).join('');
+          let globalIndex = 0;
+          container.innerHTML = metadata.domains.map((domain) => {
+            const domainPatterns = latestDerivation.filter((p) => p.domain_id === domain.id);
+            if (!domainPatterns.length) return '';
 
-          const clauses = latestDerivation.slice(0, 3)
-            .map((p) => p.portrait_clause)
+            const cards = domainPatterns.map((pattern) => {
+              const card = renderPatternCard(pattern, globalIndex);
+              globalIndex += 1;
+              return card;
+            }).join('');
+
+            return `
+              <section class="pattern-domain">
+                <div class="pattern-domain-heading">
+                  <p class="eyebrow">${domain.name}</p>
+                  <span>${domainPatterns.length} current ${domainPatterns.length === 1 ? 'pattern' : 'patterns'}</span>
+                </div>
+                <div class="pattern-domain-grid">${cards}</div>
+              </section>
+            `;
+          }).join('');
+
+          const representatives = metadata.domains
+            .map((domain) => latestDerivation.find((p) => p.domain_id === domain.id))
             .filter(Boolean);
 
-          const names = latestDerivation.slice(0, 3).map((p) => p.name);
-          const lead = names.length === 1
-            ? `Your current Cognitive & Learning profile most clearly aligns with ${names[0]}.`
-            : `Your current Cognitive & Learning profile is best described by the combination of ${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}.`;
+          const clauses = representatives.map((p) => p.portrait_clause).filter(Boolean);
+          const domainCount = new Set(latestDerivation.map((p) => p.domain_id)).size;
 
-          const synthesis = clauses.length
-            ? ` Taken together, this suggests that ${clauses.join(' At the same time, ')}`
-            : '';
+          const lead =
+            `This provisional whole-profile synthesis draws on ${latestDerivation.length} current PRECEPTA ${latestDerivation.length === 1 ? 'pattern' : 'patterns'} across ${domainCount} ${domainCount === 1 ? 'domain' : 'domains'}.`;
 
-          document.querySelector('#portrait-text').textContent = lead + synthesis;
+          document.querySelector('#portrait-text').textContent =
+            clauses.length ? `${lead} ${clauses.join(' ')}` : lead;
         }
 
         renderRawScores(scores);
@@ -715,8 +777,8 @@ const questionnaireVersion = '1.1.0-pilot';
 
       function buildDownloadPayload() {
         return {
-          schema: 'dynamos-cognitive-precepta-pilot',
-          schema_version: '1.1.0',
+          schema: 'dynamos-precepta-pilot',
+          schema_version: '1.2.0',
           generated_at: new Date().toISOString(),
           model_version: metadata.modelVersion,
           questionnaire_version: metadata.questionnaireVersion,
@@ -734,7 +796,7 @@ const questionnaireVersion = '1.1.0-pilot';
             pattern_recognition: patternRecognitionFeedback(),
             missing_pattern_feedback: getMissingFeedback(),
           },
-          note: 'Experimental Cognitive & Learning PRECEPTA pilot. Not diagnostic and not a validated psychometric result.',
+          note: 'Experimental full PRECEPTA pilot covering all 32 patterns. Not diagnostic and not a validated psychometric result.',
         };
       }
 
@@ -772,7 +834,7 @@ const questionnaireVersion = '1.1.0-pilot';
           questionnaire_version: metadata.questionnaireVersion,
           derivation_version: metadata.derivation.derivation_version,
           consent_version: '0.1',
-          scope: ['cognitive_learning'],
+          scope: metadata.domains.map((domain) => domain.id),
           scores: getScores(),
           presented_precepta: latestDerivation.map((p, index) => ({
             pattern_id: p.id,
@@ -810,7 +872,7 @@ const questionnaireVersion = '1.1.0-pilot';
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `dynamos-cognitive-precepta-pilot-${metadata.modelVersion}.json`;
+        a.download = `dynamos-precepta-pilot-${metadata.modelVersion}.json`;
         document.body.appendChild(a);
         a.click();
         a.remove();
@@ -820,19 +882,28 @@ const questionnaireVersion = '1.1.0-pilot';
 
       function renderMissingPatternChoices() {
         const presented = new Set(latestDerivation.map((p) => p.id));
-        const allCognitive = metadata.derivation.patterns;
-        const available = allCognitive.filter((p) => !presented.has(p.id));
+        const available = metadata.derivation.patterns.filter((p) => !presented.has(p.id));
         const list = document.querySelector('#missing-pattern-list');
 
-        list.innerHTML = available.map((pattern) => `
-          <label class="missing-choice">
-            <input type="checkbox" name="missing_pattern" value="${pattern.id}" />
-            <span>
-              <strong>${pattern.name}</strong>
-              <small>${pattern.description}</small>
-            </span>
-          </label>
-        `).join('');
+        list.innerHTML = metadata.domains.map((domain) => {
+          const domainPatterns = available.filter((p) => p.domain_id === domain.id);
+          if (!domainPatterns.length) return '';
+
+          return `
+            <div class="missing-domain">
+              <p class="eyebrow">${domain.name}</p>
+              ${domainPatterns.map((pattern) => `
+                <label class="missing-choice">
+                  <input type="checkbox" name="missing_pattern" value="${pattern.id}" />
+                  <span>
+                    <strong>${pattern.name}</strong>
+                    <small>${pattern.description}</small>
+                  </span>
+                </label>
+              `).join('')}
+            </div>
+          `;
+        }).join('');
       }
 
       document.querySelectorAll('input[name="important_part_missing"]').forEach((input) => {
@@ -995,20 +1066,29 @@ const questionnaireVersion = '1.1.0-pilot';
         document.querySelector('#print-report-meta').textContent =
           `Model ${metadata.modelVersion} · Questionnaire ${metadata.questionnaireVersion} · Derivation ${metadata.derivation.derivation_version} · ${new Date().toLocaleDateString()}`;
         document.querySelector('#print-portrait').textContent =
-          document.querySelector('#portrait-text').textContent || 'No higher-order Cognitive & Learning candidate was presented.';
+          document.querySelector('#portrait-text').textContent || 'No higher-order PRECEPTA candidate was presented.';
 
         document.querySelector('#print-precepta').innerHTML = latestDerivation.length
-          ? latestDerivation.map((p, i) => `
-              <article class="print-pattern">
-                <div class="print-pattern-heading">
-                  <strong>${i + 1}. ${esc(p.name)}</strong>
-                  <span>${p.inference_status === 'context_sensitive' ? 'Context-sensitive candidate' : (p.strength === 'strong' ? 'Strong current match' : 'Current candidate')}</span>
+          ? metadata.domains.map((domain) => {
+              const items = latestDerivation.filter((p) => p.domain_id === domain.id);
+              if (!items.length) return '';
+              return `
+                <div class="print-precepta-domain">
+                  <h3>${esc(domain.name)}</h3>
+                  ${items.map((p) => `
+                    <article class="print-pattern">
+                      <div class="print-pattern-heading">
+                        <strong>${esc(p.name)}</strong>
+                        <span>${esc(patternStatusLabel(p))}</span>
+                      </div>
+                      <p>${esc(p.description)}</p>
+                      <p><strong>Your feedback:</strong> ${esc(recognitionLabels[selectedValue(`fit_${p.id}`)] ?? 'Not answered')}</p>
+                    </article>
+                  `).join('')}
                 </div>
-                <p>${esc(p.description)}</p>
-                <p><strong>Your feedback:</strong> ${esc(recognitionLabels[selectedValue(`fit_${p.id}`)] ?? 'Not answered')}</p>
-              </article>
-            `).join('') + `<p class="print-overall"><strong>Overall interpretation feedback:</strong> ${esc(recognitionLabels[overall] ?? 'Not answered')}</p>`
-          : `<p>No Cognitive & Learning PRECEPTA candidate was presented.</p>
+              `;
+            }).join('') + `<p class="print-overall"><strong>Overall interpretation feedback:</strong> ${esc(recognitionLabels[overall] ?? 'Not answered')}</p>`
+          : `<p>No PRECEPTA candidate was presented.</p>
              <p><strong>Overall interpretation feedback:</strong> ${esc(recognitionLabels[overall] ?? 'Not answered')}</p>`;
 
         const grouped = new Map();
@@ -1308,11 +1388,6 @@ const questionnaireVersion = '1.1.0-pilot';
 
       .pattern-section { margin: 0 0 5rem; }
 
-      .pattern-results {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-      }
 
       .pattern-card {
         border: 1px solid #b9b6ad;
@@ -1564,6 +1639,56 @@ const questionnaireVersion = '1.1.0-pilot';
 
         .score-options { grid-template-columns: repeat(5, 1fr); }
         .raw-score-grid { grid-template-columns: 1fr; }
+      }
+
+
+      .pattern-results {
+        display: block;
+      }
+
+      .pattern-domain {
+        padding: 2.5rem 0;
+        border-top: 1px solid #b9b6ad;
+      }
+
+      .pattern-domain:first-child {
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .pattern-domain-heading {
+        display: flex;
+        justify-content: space-between;
+        gap: 2rem;
+        align-items: baseline;
+        margin-bottom: 1.2rem;
+      }
+
+      .pattern-domain-heading span {
+        font-size: 0.82rem;
+      }
+
+      .pattern-domain-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+
+      .missing-domain {
+        display: grid;
+        gap: 0.7rem;
+        padding-bottom: 1.5rem;
+      }
+
+      .missing-domain + .missing-domain {
+        border-top: 1px solid #d2cfc6;
+        padding-top: 1.5rem;
+      }
+
+      @media (max-width: 900px) {
+        .pattern-domain-grid {
+          grid-template-columns: 1fr;
+        }
       }
 
       .print-report {

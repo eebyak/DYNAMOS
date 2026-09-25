@@ -1,0 +1,1187 @@
+{
+  "id": "dynamos-precepta-derivation",
+  "derivation_version": "0.3.0-pilot",
+  "model_version": "2.0.0",
+  "status": "experimental",
+  "scope": "All 32 PRECEPTA patterns across five domains",
+  "domains": [
+    {
+      "id": "cognitive_learning",
+      "name": "Cognitive & Learning"
+    },
+    {
+      "id": "attention_activation_work_rhythm",
+      "name": "Attention, Activation & Work Rhythm"
+    },
+    {
+      "id": "social_communication",
+      "name": "Social & Communication"
+    },
+    {
+      "id": "emotional_self_regulation",
+      "name": "Emotional & Self-Regulation"
+    },
+    {
+      "id": "sensory_physical",
+      "name": "Sensory & Physical"
+    }
+  ],
+  "scale_definition": {
+    "type": "comparative_self_estimate",
+    "statement": "Scores express the respondent's estimate of their typical functioning relative to what they perceive as typical among other adults. They are not measured population percentiles.",
+    "bands": [
+      {
+        "min": 1,
+        "max": 2,
+        "label": "very_low",
+        "arrow": "↓↓"
+      },
+      {
+        "min": 3,
+        "max": 4,
+        "label": "low",
+        "arrow": "↓"
+      },
+      {
+        "min": 5,
+        "max": 6,
+        "label": "moderate",
+        "arrow": "↔"
+      },
+      {
+        "min": 7,
+        "max": 8,
+        "label": "high",
+        "arrow": "↑"
+      },
+      {
+        "min": 9,
+        "max": 10,
+        "label": "very_high",
+        "arrow": "↑↑"
+      }
+    ]
+  },
+  "role_assignment_status": "provisional model specification for empirical testing",
+  "rc_decision": {
+    "canonical_meaning": "Re-Entry Cost",
+    "retired_construct": "Regulation Capacity",
+    "rule": "Where older PRECEPTA signatures used RC to mean Regulation Capacity, v0.3 explicitly revises the mechanism rather than reinterpreting RC as Re-Entry Cost."
+  },
+  "matching_rule": {
+    "core_gate": "A pattern is considered only when no core condition lies in the opposite score region. It is strong when every core condition is directly satisfied and candidate when at least one core condition is adjacent but none conflict.",
+    "supporting": "Supporting conditions do not create or veto a pattern; they order compatible candidates and enrich interpretation.",
+    "modifiers": "Modifiers change cost, sustainability, or expression; they do not determine whether the base pattern exists.",
+    "context_sensitive": "A compatible base architecture may be shown, but the participant is told which defining contextual or dynamic feature was not directly observed.",
+    "not_directly_inferable": "The pattern is not automatically presented from the 26 scores. It remains available in structured missing-pattern feedback and may trigger a targeted follow-up.",
+    "display_policy": "Present all strong compatible patterns, then the best remaining candidate in any PRECEPTA domain not yet represented, with a maximum of 12 patterns.",
+    "not_probability": true
+  },
+  "research_note": "Participant recognition or rejection of higher-order PRECEPTA interpretations is the empirical signal. Disagreement is evidence about the derivation, not participant error.",
+  "patterns": [
+    {
+      "id": "deep_systems_architect",
+      "name": "Deep Systems Architect",
+      "description": "Naturally perceives problems as systems rather than isolated elements. Excels at identifying structural gaps, dependencies, and long-term implications, especially in complex or abstract domains.",
+      "domain_id": "cognitive_learning",
+      "domain_name": "Cognitive & Learning",
+      "source_signature": "MR↑ RC↑ · IG↑ MI↑ · CD↑ · TD↑ CC↑ · IC-C↑ RSu↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "CD",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "IC-C",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "TD",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "MR",
+          "target": "high",
+          "role": "supporting"
+        },
+        {
+          "dimension": "MI",
+          "target": "high",
+          "role": "supporting"
+        },
+        {
+          "dimension": "CC",
+          "target": "high",
+          "role": "supporting"
+        },
+        {
+          "dimension": "IG",
+          "target": "high",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [
+        {
+          "dimension": "RC",
+          "if": "high",
+          "text": "Interruption and re-entry may be especially costly."
+        },
+        {
+          "dimension": "RSu",
+          "if": "low",
+          "text": "The depth pattern may be difficult to sustain under prolonged load."
+        },
+        {
+          "dimension": "RSu",
+          "if": "high",
+          "text": "The depth pattern appears comparatively sustainable over time."
+        }
+      ],
+      "portrait_clause": "You appear strongly drawn to understanding structure, dependencies, and long-range consequences rather than isolated elements.",
+      "role_rationale": "CD and IC-C carry the systems/synthesis mechanism; TD carries the long-range component. MR, MI, CC and IG support sustained depth. RC and RSu describe cost and sustainability rather than whether systems thinking exists."
+    },
+    {
+      "id": "precision_resolver",
+      "name": "Precision Resolver",
+      "description": "Experiences strong internal pressure to eliminate errors, inconsistencies, or unfinished structures. Thrives when problems can be refined to clarity and completion, but may find ambiguity or partial solutions costly.",
+      "domain_id": "cognitive_learning",
+      "domain_name": "Cognitive & Learning",
+      "source_signature": "MR↑ SF↑ RC↑ · IG↑ MI↑ · PH↑ CD↑ · IC-C↑ FB-I↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "PH",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "FB-I",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "IC-C",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "CD",
+          "target": "high",
+          "role": "supporting"
+        },
+        {
+          "dimension": "MR",
+          "target": "high",
+          "role": "supporting"
+        },
+        {
+          "dimension": "MI",
+          "target": "high",
+          "role": "supporting"
+        },
+        {
+          "dimension": "IG",
+          "target": "high",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [
+        {
+          "dimension": "SF",
+          "if": "high",
+          "text": "Switching away from unresolved work may itself carry noticeable cost."
+        },
+        {
+          "dimension": "RC",
+          "if": "high",
+          "text": "Returning to an interrupted precision task may feel like reconstructing the state."
+        }
+      ],
+      "portrait_clause": "Unresolved errors, inconsistencies, or incomplete structures may create a strong internal pull toward clarification and closure.",
+      "role_rationale": "PH is the pressure toward resolution, FB-I supplies internal standards, and IC-C supplies coherent structure. Persistence/filtering dimensions support the pattern; SF and RC describe transition cost around unfinished work."
+    },
+    {
+      "id": "fast_insight_slow_explanation",
+      "name": "Fast Insight / Slow Explanation",
+      "description": "Arrives at understanding rapidly and often non-linearly, but needs additional time or effort to translate insights into step-by-step explanations. Others may underestimate the depth of reasoning because intermediate steps are skipped internally.",
+      "domain_id": "cognitive_learning",
+      "domain_name": "Cognitive & Learning",
+      "source_signature": "ET↓ IC-C↑ · FB-S↓ · SF~",
+      "inference_status": "not_directly_inferable",
+      "core": [
+        {
+          "dimension": "IC-C",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "ET",
+          "target": "low",
+          "role": "supporting"
+        },
+        {
+          "dimension": "FB-S",
+          "target": "low",
+          "role": "supporting"
+        },
+        {
+          "dimension": "SF",
+          "target": "moderate",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "portrait_clause": "",
+      "role_rationale": "The source signature offers correlates, but the defining delay between insight and sequential explanation is not directly measured by the 26 items.",
+      "context_note": "A targeted follow-up is needed to observe the defining insight-to-explanation latency."
+    },
+    {
+      "id": "divergent_idea_generator",
+      "name": "Divergent Idea Generator",
+      "description": "Generates novel ideas and unconventional approaches with ease, especially when exploration is encouraged. May prioritize creativity over completion and benefit from external structures that support follow-through.",
+      "domain_id": "cognitive_learning",
+      "domain_name": "Cognitive & Learning",
+      "source_signature": "CD↑ RS↑ · ET↓ · PH↓",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "CD",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "RS",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "ET",
+          "target": "low",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [
+        {
+          "dimension": "PH",
+          "if": "low",
+          "text": "Lower closure pressure may leave more room for open-ended exploration."
+        },
+        {
+          "dimension": "PH",
+          "if": "high",
+          "text": "Idea generation may coexist with a strong pull to refine, resolve, or formalize quickly."
+        }
+      ],
+      "portrait_clause": "Meaningful complexity seems likely to generate alternative ideas and unconventional routes rather than only a single obvious solution.",
+      "role_rationale": "CD and RS provide the generative mechanism. ET can make exploration easier to enter. PH changes whether exploration remains open or is rapidly pulled toward closure, so it is treated as a modifier."
+    },
+    {
+      "id": "domain_locked_expert",
+      "name": "Domain-Locked Expert",
+      "description": "Develops exceptional depth and expertise within specific interest areas. Performs best when work aligns closely with established domains of meaning and may disengage sharply outside those contexts.",
+      "domain_id": "cognitive_learning",
+      "domain_name": "Cognitive & Learning",
+      "source_signature": "CG↑↑ CD↑ MR↑ · ET↑ (outside domain)",
+      "inference_status": "context_sensitive",
+      "core": [
+        {
+          "dimension": "CG",
+          "target": "very_high",
+          "role": "core"
+        },
+        {
+          "dimension": "CD",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "MR",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [],
+      "modifiers": [],
+      "portrait_clause": "Depth and sustained engagement may depend strongly on being in a domain or context that fits the system particularly well.",
+      "role_rationale": "CG supplies context dependence, CD supplies depth/complexity seeking, and MR supplies sustained engagement. The source additionally requires ET to rise outside the domain.",
+      "context_note": "The 26-item questionnaire does not separately measure Entry Threshold inside versus outside an aligned domain."
+    },
+    {
+      "id": "split_integration_thinker",
+      "name": "Split-Integration Thinker",
+      "description": "Shows strong conceptual reasoning while having limited access to emotional labeling or articulation. Emotions are present and influential but are processed indirectly rather than through explicit awareness.",
+      "domain_id": "cognitive_learning",
+      "domain_name": "Cognitive & Learning",
+      "source_signature": "IC-C↑ IC-A↓",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "IC-C",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "IC-A",
+          "target": "low",
+          "role": "core"
+        }
+      ],
+      "supporting": [],
+      "modifiers": [],
+      "portrait_clause": "Conceptual integration may be substantially easier than identifying or putting emotional states into words in real time.",
+      "role_rationale": "The pattern is explicitly defined by the contrast between conceptual and affective integration, so both dimensions are core."
+    },
+    {
+      "id": "big_picture_synthesizer",
+      "name": "Big-Picture Synthesizer",
+      "description": "Naturally integrates information across time, domains, and perspectives. Prefers abstraction and synthesis over detail work and often contributes strategic or visionary insight.",
+      "domain_id": "cognitive_learning",
+      "domain_name": "Cognitive & Learning",
+      "source_signature": "IC-C↑ TD↑ CD↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "IC-C",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "CD",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "TD",
+          "target": "high",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "portrait_clause": "You appear inclined to connect ideas into larger conceptual structures, with a preference for abstraction and synthesis over isolated detail.",
+      "role_rationale": "IC-C and CD carry the synthesis/abstraction mechanism. TD strengthens the across-time component but is supporting so cross-domain synthesis is not reduced to long-horizon planning alone."
+    },
+    {
+      "id": "executive_load_taxed",
+      "name": "Executive-Load Taxed",
+      "description": "Handles complexity well in principle but experiences high cost when multiple executive demands stack. Task switching, coordination, or administrative overhead can disproportionately reduce effectiveness.",
+      "domain_id": "cognitive_learning",
+      "domain_name": "Cognitive & Learning",
+      "source_signature": "CL-cog↑ RSu↓ SF↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "CL-cognitive",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "SF",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "RSu",
+          "target": "low",
+          "role": "core"
+        }
+      ],
+      "supporting": [],
+      "modifiers": [],
+      "portrait_clause": "Stacked executive demands such as switching, coordination, or administrative overhead may accumulate cost quickly even when the underlying task itself is manageable.",
+      "role_rationale": "The canonical signature maps directly onto cognitive coupling cost, switching cost, and reduced sustainability."
+    },
+    {
+      "id": "flow_diver",
+      "name": "Flow Diver",
+      "description": "Enters deep focus states readily when conditions are right and remains absorbed for extended periods. Disengaging or switching tasks can be difficult and costly once immersion has occurred.",
+      "domain_id": "attention_activation_work_rhythm",
+      "domain_name": "Attention, Activation & Work Rhythm",
+      "source_signature": "ET↓ MR↑ SF↑ · RC↑ MI↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "ET",
+          "target": "low",
+          "role": "core"
+        },
+        {
+          "dimension": "MR",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "SF",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "RC",
+          "target": "high",
+          "role": "supporting"
+        },
+        {
+          "dimension": "MI",
+          "target": "high",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "portrait_clause": "Once a task catches, you may enter deep focus readily and remain there strongly, while disengaging or switching can be disproportionately costly.",
+      "role_rationale": "Low ET captures easy entry, high MR captures persistence, and high SF captures hard switching. RC and MI strengthen the cost and single-mode character of immersion."
+    },
+    {
+      "id": "meaning_gated_performer",
+      "name": "Meaning-Gated Performer",
+      "description": "Engagement and performance depend strongly on perceived meaning or relevance. When alignment is present, output is high; when absent, activation becomes effortful or unsustainable.",
+      "domain_id": "attention_activation_work_rhythm",
+      "domain_name": "Attention, Activation & Work Rhythm",
+      "source_signature": "CG↑ RS↑ · ET~ (variable by meaning)",
+      "inference_status": "context_sensitive",
+      "core": [
+        {
+          "dimension": "CG",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "RS",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [],
+      "modifiers": [],
+      "portrait_clause": "Engagement appears strongly dependent on whether work feels meaningful or relevant, rather than being uniformly available across contexts.",
+      "role_rationale": "CG and RS directly support context- and meaning-sensitive activation. The defining ET shift by meaning is dynamic and not separately measured by a single static ET score.",
+      "context_note": "A targeted follow-up can test whether starting becomes markedly easier when meaning or relevance is high."
+    },
+    {
+      "id": "burst_creator",
+      "name": "Burst Creator",
+      "description": "Works in intense, high-energy bursts followed by periods of low output or disengagement. Performs best with flexible pacing and may struggle in environments requiring steady, uniform productivity.",
+      "domain_id": "attention_activation_work_rhythm",
+      "domain_name": "Attention, Activation & Work Rhythm",
+      "source_signature": "BC↑ MR↓ SF↓ · RD↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "BC",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "MR",
+          "target": "low",
+          "role": "core"
+        },
+        {
+          "dimension": "RD",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "SF",
+          "target": "low",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "portrait_clause": "Your work rhythm may favor intense periods of output followed by a meaningful recovery need rather than a uniformly steady pace.",
+      "role_rationale": "High BC supplies intensity, lower MR limits sustained persistence, and high RD captures the recovery consequence. Low SF supports easy movement out of the active burst."
+    },
+    {
+      "id": "routine_anchor",
+      "name": "Routine Anchor",
+      "description": "Relies on predictability and established routines to maintain stability and performance. Unexpected changes or disruptions may cause stress, even if overall capability remains high.",
+      "domain_id": "attention_activation_work_rhythm",
+      "domain_name": "Attention, Activation & Work Rhythm",
+      "source_signature": "CG↑ XS↑ MR↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "CG",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "XS",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "MR",
+          "target": "high",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "portrait_clause": "Predictable contexts and established routines may protect performance by reducing the cost of disruption and preserving a stable working state.",
+      "role_rationale": "High CG makes context fit consequential and high XS makes disruption costly. MR supports the stable state that routines help preserve."
+    },
+    {
+      "id": "deadline_unlocked_starter",
+      "name": "Deadline-Unlocked Starter",
+      "description": "Activation increases sharply as external time pressure approaches. Can perform very effectively under deadlines but may experience unnecessary stress or volatility as a result.",
+      "domain_id": "attention_activation_work_rhythm",
+      "domain_name": "Attention, Activation & Work Rhythm",
+      "source_signature": "ET↑→↓ (near deadline) · FB-S↑ RD↑",
+      "inference_status": "not_directly_inferable",
+      "core": [
+        {
+          "dimension": "ET",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "FB-S",
+          "target": "high",
+          "role": "supporting"
+        },
+        {
+          "dimension": "RD",
+          "target": "high",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "portrait_clause": "",
+      "role_rationale": "The defining mechanism is a within-person drop in Entry Threshold as a deadline approaches. A single static ET rating cannot establish that transition.",
+      "context_note": "A targeted follow-up is required to test whether urgency specifically unlocks initiation."
+    },
+    {
+      "id": "long_horizon_planner",
+      "name": "Long-Horizon Planner",
+      "description": "Thinks naturally in extended timeframes and maintains continuity across long projects. Prefers strategic planning and future-oriented work over short-term task cycling.",
+      "domain_id": "attention_activation_work_rhythm",
+      "domain_name": "Attention, Activation & Work Rhythm",
+      "source_signature": "TD↑ CC↑ MR↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "TD",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "CC",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "MR",
+          "target": "high",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "portrait_clause": "You appear comfortable carrying plans and complex threads across long time horizons rather than relying only on short task cycles.",
+      "role_rationale": "TD and CC define long-horizon orientation plus continuity across gaps. MR supports sustained engagement with extended work."
+    },
+    {
+      "id": "transition_fragile",
+      "name": "Transition-Fragile",
+      "description": "Experiences significant cost when moving between tasks, states, or contexts. May perform well once settled but find beginnings and endings disproportionately demanding.",
+      "domain_id": "attention_activation_work_rhythm",
+      "domain_name": "Attention, Activation & Work Rhythm",
+      "source_signature": "SF↑ RC↑ XS↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "SF",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "RC",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "XS",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [],
+      "modifiers": [],
+      "portrait_clause": "Beginnings, endings, interruptions, and task changes may carry more cost than the work itself once a stable state has been established.",
+      "role_rationale": "SF, RC, and XS jointly describe switching friction, restart cost, and sensitivity to being knocked out of state."
+    },
+    {
+      "id": "start_stop_oscillator",
+      "name": "Start–Stop Oscillator",
+      "description": "Cycles between engagement and disengagement due to regulation or recovery limits. Patterns may appear inconsistent externally despite strong capability during active phases.",
+      "domain_id": "attention_activation_work_rhythm",
+      "domain_name": "Attention, Activation & Work Rhythm",
+      "source_signature": "RSu↓ MR~ RD↑",
+      "inference_status": "context_sensitive",
+      "core": [
+        {
+          "dimension": "RSu",
+          "target": "low",
+          "role": "core"
+        },
+        {
+          "dimension": "RD",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "MR",
+          "target": "moderate",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "portrait_clause": "Your output may be vulnerable to cycles of engagement and disengagement when sustained functioning outruns available recovery.",
+      "role_rationale": "Low RSu and high RD create the sustainability/recovery architecture that can generate start–stop rhythms. Actual cycling is temporal behavior and is therefore treated as context-sensitive.",
+      "context_note": "The static profile can suggest the architecture, but repeated start–stop cycling itself is not directly observed."
+    },
+    {
+      "id": "precision_literalist",
+      "name": "Precision Literalist",
+      "description": "Communicates directly, accurately, and with minimal reliance on subtext. Values clarity and correctness over social smoothing, which can sometimes be misinterpreted by others.",
+      "domain_id": "social_communication",
+      "domain_name": "Social & Communication",
+      "source_signature": "IC-C↑ FB-S↓",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "IC-C",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "FB-S",
+          "target": "low",
+          "role": "core"
+        }
+      ],
+      "supporting": [],
+      "modifiers": [],
+      "portrait_clause": "In communication, conceptual clarity and semantic precision may take priority over social smoothing or indirect signaling.",
+      "role_rationale": "High conceptual integration favors explicit coherence; lower social-feedback sensitivity reduces pressure to optimize wording for social reaction."
+    },
+    {
+      "id": "social_cue_load",
+      "name": "Social Cue Load",
+      "description": "Finds real-time social interpretation cognitively demanding. Social difficulties arise from processing load rather than lack of interest or concern for others.",
+      "domain_id": "social_communication",
+      "domain_name": "Social & Communication",
+      "source_signature": "CL-soc↑ FB-S~",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "CL-social",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "FB-S",
+          "target": "moderate",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "portrait_clause": "Real-time social coordination may consume substantial processing capacity even when interest in other people is intact.",
+      "role_rationale": "High social coupling load is the core cost mechanism. Moderate social-feedback sensitivity is supporting rather than required because social load can occur at different feedback-gain levels."
+    },
+    {
+      "id": "low_feedback_autonomy",
+      "name": "Low-Feedback Autonomy",
+      "description": "Self-regulates primarily through internal standards rather than external validation. Functions well independently and is relatively unaffected by praise or criticism.",
+      "domain_id": "social_communication",
+      "domain_name": "Social & Communication",
+      "source_signature": "FB-S↓ FB-I↑ RC↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "FB-S",
+          "target": "low",
+          "role": "core"
+        },
+        {
+          "dimension": "FB-I",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [],
+      "modifiers": [
+        {
+          "dimension": "RSu",
+          "if": "low",
+          "text": "Strong internal guidance may still become costly or unsustainable under prolonged load."
+        },
+        {
+          "dimension": "RSu",
+          "if": "high",
+          "text": "The internally guided pattern appears comparatively sustainable."
+        }
+      ],
+      "portrait_clause": "Your internal standards may carry more weight than praise, criticism, or social approval when deciding whether something is right.",
+      "role_rationale": "After retiring the older Regulation Capacity construct, the defining contrast is low social-feedback dependence with high internal-feedback dependence.",
+      "revision_note": "RC formerly referred to Regulation Capacity in this signature. The v0.3 rule removes that obsolete construct rather than reinterpreting it as Re-Entry Cost."
+    },
+    {
+      "id": "impulsive_enthusiastic_communicator",
+      "name": "Impulsive / Enthusiastic Communicator",
+      "description": "Expresses thoughts and excitement quickly and openly, sometimes before full filtering. Communication energy can be engaging but may occasionally overwhelm conversational pacing.",
+      "domain_id": "social_communication",
+      "domain_name": "Social & Communication",
+      "source_signature": "BC↑ RC↓ SF↓",
+      "inference_status": "not_directly_inferable",
+      "core": [
+        {
+          "dimension": "BC",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "SF",
+          "target": "low",
+          "role": "core"
+        }
+      ],
+      "supporting": [],
+      "modifiers": [],
+      "portrait_clause": "",
+      "role_rationale": "High baseline charge and low state friction can support rapid expression, but the 26 dimensions do not directly measure output inhibition, conversational interruption, or speaking before filtering.",
+      "context_note": "A targeted follow-up is required before treating rapid/enthusiastic expression as an observed PRECEPTA pattern.",
+      "revision_note": "The old RC↓ term referred to Regulation Capacity, not Re-Entry Cost, and is retired."
+    },
+    {
+      "id": "masked_high_cost_performer",
+      "name": "Masked High-Cost Performer",
+      "description": "Maintains socially expected behavior through conscious regulation rather than ease. Performance appears smooth externally but carries significant internal cost over time.",
+      "domain_id": "social_communication",
+      "domain_name": "Social & Communication",
+      "source_signature": "FB-S↑ RC↑ RSu↓",
+      "inference_status": "context_sensitive",
+      "core": [
+        {
+          "dimension": "FB-S",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "CL-social",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "RSu",
+          "target": "low",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "CL-affective",
+          "target": "high",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "portrait_clause": "Socially expected performance may be maintainable outwardly while carrying a much larger internal cost than observers can see.",
+      "role_rationale": "The revised rule uses social-feedback sensitivity, social coupling load, and low sustainability to represent the hidden-cost architecture. Conscious masking itself is not directly measured.",
+      "context_note": "The 26-item profile can suggest hidden social cost but cannot establish that the person is consciously masking or camouflaging.",
+      "revision_note": "The old RC↑ term meant Regulation Capacity. v0.3 replaces it with explicit social coupling cost plus Regulation Sustainability."
+    },
+    {
+      "id": "ethical_precision_speaker",
+      "name": "Ethical Precision Speaker",
+      "description": "Is guided by strong internal values around fairness, truth, and responsibility in communication. May correct inaccuracies or challenge inconsistencies even in informal contexts.",
+      "domain_id": "social_communication",
+      "domain_name": "Social & Communication",
+      "source_signature": "FB-I↑ IC-C↑ PH↑",
+      "inference_status": "context_sensitive",
+      "core": [
+        {
+          "dimension": "FB-I",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "IC-C",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "PH",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [],
+      "modifiers": [],
+      "portrait_clause": "Internally driven precision and conceptual coherence may make inaccuracies or inconsistencies difficult to leave unchallenged in communication.",
+      "role_rationale": "FB-I, IC-C and PH support internally anchored precision. The specifically ethical content—fairness, truth, responsibility—is not directly measured by the 26 dimensions.",
+      "context_note": "The current questionnaire supports a precision-speaking architecture but not the values content implied by the word ethical."
+    },
+    {
+      "id": "affective_floodgate",
+      "name": "Affective Floodgate",
+      "description": "Experiences emotions intensely and with limited buffering once thresholds are crossed. Emotional overwhelm can emerge suddenly under cumulative load.",
+      "domain_id": "emotional_self_regulation",
+      "domain_name": "Emotional & Self-Regulation",
+      "source_signature": "IC-A↑ RC↓ RSu↓",
+      "inference_status": "context_sensitive",
+      "core": [
+        {
+          "dimension": "IC-A",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "CL-affective",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "RSu",
+          "target": "low",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "PA",
+          "target": "high",
+          "role": "supporting"
+        },
+        {
+          "dimension": "RD",
+          "target": "high",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "portrait_clause": "Affective information may enter the system strongly while sustained emotional load can exceed available endurance and produce abrupt protective responses.",
+      "role_rationale": "With Regulation Capacity retired, v0.3 represents the pattern through high affective integration, high affective coupling load, and low regulation sustainability; PA and RD support the overload/recovery component.",
+      "context_note": "The static profile can suggest the architecture of overwhelm but does not directly observe a sudden threshold-crossing episode.",
+      "revision_note": "The old RC↓ term meant low Regulation Capacity. It is replaced here by explicit affective load and sustainability mechanisms."
+    },
+    {
+      "id": "social_rejection_amplifier",
+      "name": "Social Rejection Amplifier",
+      "description": "Reacts strongly to perceived criticism or rejection, even when subtle or unintended. Sensitivity reflects heightened feedback gain rather than fragility or insecurity.",
+      "domain_id": "emotional_self_regulation",
+      "domain_name": "Emotional & Self-Regulation",
+      "source_signature": "FB-S↑ IC-A↑ RSu~",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "FB-S",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "IC-A",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [],
+      "modifiers": [
+        {
+          "dimension": "RSu",
+          "if": "low",
+          "text": "Social feedback may be especially costly to carry over time."
+        },
+        {
+          "dimension": "RSu",
+          "if": "high",
+          "text": "High social-feedback gain may be easier to sustain without prolonged depletion."
+        }
+      ],
+      "portrait_clause": "Social feedback may carry unusually high emotional gain, so criticism or perceived rejection can have a stronger internal impact than observers expect.",
+      "role_rationale": "FB-S captures social-feedback gain and IC-A captures affective integration. RSu changes the sustainability cost rather than defining the feedback sensitivity itself."
+    },
+    {
+      "id": "ethical_amplifier",
+      "name": "Ethical Amplifier",
+      "description": "Responds deeply to issues of justice, fairness, and moral coherence. Ethical violations or value conflicts are difficult to ignore and may drive sustained engagement or distress.",
+      "domain_id": "emotional_self_regulation",
+      "domain_name": "Emotional & Self-Regulation",
+      "source_signature": "FB-I↑ IC-C↑ (values) TD↑",
+      "inference_status": "context_sensitive",
+      "core": [
+        {
+          "dimension": "FB-I",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "IC-C",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "TD",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [],
+      "modifiers": [],
+      "portrait_clause": "Long-horizon internal standards and conceptual coherence may make value conflicts difficult to ignore once they become salient.",
+      "role_rationale": "FB-I, IC-C and TD support persistent internally anchored coherence. The values/justice content is explicitly qualified in the source and is not directly measured.",
+      "context_note": "A targeted follow-up is needed to establish that the high-coherence pattern is specifically activated by justice, fairness, or moral conflict."
+    },
+    {
+      "id": "verification_loop",
+      "name": "Verification Loop",
+      "description": "Feels compelled to re-check, refine, or perfect work to ensure correctness. This can enhance quality but may also prolong tasks or increase cognitive load.",
+      "domain_id": "emotional_self_regulation",
+      "domain_name": "Emotional & Self-Regulation",
+      "source_signature": "PH↑ FB-I↑ DHL↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "PH",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "FB-I",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "DHL",
+          "target": "high",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "portrait_clause": "Internal standards and a strong need for correctness may keep unresolved details active long enough to drive repeated checking, refining, or rework.",
+      "role_rationale": "PH and FB-I are the core precision/standards mechanism; high DHL supports the persistence of unresolved signals after the initial event."
+    },
+    {
+      "id": "affective_decoupler",
+      "name": "Affective Decoupler",
+      "description": "Processes emotions internally without readily identifying or verbalizing them. Emotional awareness may emerge indirectly through behavior, values, or delayed reflection.",
+      "domain_id": "emotional_self_regulation",
+      "domain_name": "Emotional & Self-Regulation",
+      "source_signature": "IC-A↓ MR↑ RC↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "IC-A",
+          "target": "low",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "MR",
+          "target": "high",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [
+        {
+          "dimension": "RSu",
+          "if": "low",
+          "text": "Limited immediate affective access does not necessarily mean low cost; sustainability may still degrade under load."
+        },
+        {
+          "dimension": "RSu",
+          "if": "high",
+          "text": "The decoupled pattern may remain comparatively stable under sustained load."
+        }
+      ],
+      "portrait_clause": "Emotional states may influence the system without being immediately available for explicit labeling or verbal explanation.",
+      "role_rationale": "Low IC-A directly represents reduced affective mapping. MR can support continued task-state functioning while emotional interpretation remains delayed.",
+      "revision_note": "The old RC↑ term meant Regulation Capacity and is retired rather than reinterpreted as Re-Entry Cost."
+    },
+    {
+      "id": "open_plan_vulnerable",
+      "name": "Open-Plan Vulnerable",
+      "description": "Is sensitive to sensory-rich environments such as noise, movement, or visual clutter. Performance improves significantly in controlled or quieter settings.",
+      "domain_id": "sensory_physical",
+      "domain_name": "Sensory & Physical",
+      "source_signature": "CL-sen↑ XS↑ RSu↓",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "CL-sensory",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "XS",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [],
+      "modifiers": [
+        {
+          "dimension": "RSu",
+          "if": "low",
+          "text": "Sensory-rich environments may become increasingly costly over sustained exposure."
+        }
+      ],
+      "portrait_clause": "Sensory-rich environments may knock you out of productive state more readily, making quieter or more controlled settings materially easier to work in.",
+      "role_rationale": "High sensory coupling load and high exit sensitivity capture environmental vulnerability. Low RSu increases cumulative cost but is treated as a modifier rather than a requirement."
+    },
+    {
+      "id": "sensory_seeking_stabilizer",
+      "name": "Sensory-Seeking Stabilizer",
+      "description": "Uses movement, stimulation, or sensory input to regulate attention and energy. Physical engagement supports cognitive focus rather than distracting from it.",
+      "domain_id": "sensory_physical",
+      "domain_name": "Sensory & Physical",
+      "source_signature": "CL-sen↓ BC↑ RS↑",
+      "inference_status": "context_sensitive",
+      "core": [
+        {
+          "dimension": "CL-sensory",
+          "target": "low",
+          "role": "core"
+        },
+        {
+          "dimension": "BC",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "RS",
+          "target": "high",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "portrait_clause": "Additional sensory or physical stimulation may sometimes help organize attention and energy rather than functioning purely as distraction.",
+      "role_rationale": "Lower sensory coupling cost plus high baseline charge supports tolerance or appetite for stimulation; RS supports engagement. Actual sensory-seeking behavior is not directly measured.",
+      "context_note": "The 26 scores can suggest this architecture but cannot establish that movement, music, or stimulation is actively used to regulate."
+    },
+    {
+      "id": "quiet_need_deep_worker",
+      "name": "Quiet-Need Deep Worker",
+      "description": "Performs best in low-stimulation environments that protect focus and continuity. Sensory calm enables sustained deep work and high-quality output.",
+      "domain_id": "sensory_physical",
+      "domain_name": "Sensory & Physical",
+      "source_signature": "CL-sen↑ (sensitivity) MI↑ MR↑",
+      "inference_status": "inferable",
+      "core": [
+        {
+          "dimension": "CL-sensory",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "MI",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "MR",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [],
+      "modifiers": [],
+      "portrait_clause": "Deep work may become much more reliable when sensory input is controlled enough to protect a stable, single-mode working state.",
+      "role_rationale": "High sensory coupling load identifies environmental cost, while high MI and MR identify a deep, stable work state worth protecting."
+    },
+    {
+      "id": "stim_regulation_loop",
+      "name": "Stim-Regulation Loop",
+      "description": "Engages in repetitive movements or sensory actions to self-regulate. These behaviors support stability and concentration and are adaptive rather than problematic.",
+      "domain_id": "sensory_physical",
+      "domain_name": "Sensory & Physical",
+      "source_signature": "BC↑ XS↑ CL-sen~ (variable)",
+      "inference_status": "not_directly_inferable",
+      "core": [
+        {
+          "dimension": "BC",
+          "target": "high",
+          "role": "core"
+        },
+        {
+          "dimension": "XS",
+          "target": "high",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "CL-sensory",
+          "target": "moderate",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "portrait_clause": "",
+      "role_rationale": "The defining phenomenon is the use of repetitive movement or sensory action as self-regulation. The 26 items measure load and state dynamics, not the behavior itself.",
+      "context_note": "A targeted follow-up is required to observe stimming/fidgeting or other repetitive sensory regulation."
+    },
+    {
+      "id": "time_blind_sprinter",
+      "name": "Time-Blind Sprinter",
+      "description": "Experiences time subjectively rather than linearly. May underestimate duration or urgency but can perform effectively once engaged or externally anchored.",
+      "domain_id": "sensory_physical",
+      "domain_name": "Sensory & Physical",
+      "source_signature": "TD↓ DHL↓ FB-S~",
+      "inference_status": "not_directly_inferable",
+      "core": [
+        {
+          "dimension": "TD",
+          "target": "low",
+          "role": "core"
+        }
+      ],
+      "supporting": [
+        {
+          "dimension": "DHL",
+          "target": "low",
+          "role": "supporting"
+        },
+        {
+          "dimension": "FB-S",
+          "target": "moderate",
+          "role": "supporting"
+        }
+      ],
+      "modifiers": [],
+      "portrait_clause": "",
+      "role_rationale": "Low TD may describe a shorter planning horizon, but subjective duration estimation and time blindness are not directly measured by the current 26 items.",
+      "context_note": "A targeted follow-up is required to observe systematic underestimation of elapsed time or urgency."
+    }
+  ]
+}

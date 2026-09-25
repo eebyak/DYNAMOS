@@ -1,0 +1,183 @@
+{
+  "id": "dynamos-precepta-targeted-followups",
+  "version": "0.2.0",
+  "status": "experimental",
+  "purpose": "Optional targeted questions shown after a participant independently reports that something important is missing and selects a PRECEPTA pattern that requires information not directly represented by the 26 static scores.",
+  "bias_control": [
+    "Ask whether something important is missing before showing uninferred patterns.",
+    "Do not use a follow-up answer to rewrite the result already shown in the same session.",
+    "Store follow-up responses as separate model-development observations.",
+    "Use structured responses rather than free text in the initial research phase."
+  ],
+  "questions": [
+    {
+      "pattern_id": "fast_insight_slow_explanation",
+      "question_id": "fis_explanation_latency_v1",
+      "prompt": "I often understand something before I can explain the steps by which I reached the understanding.",
+      "responses": [
+        "strongly_agree",
+        "mostly_agree",
+        "partly_agree",
+        "disagree",
+        "unsure"
+      ],
+      "reason": "The 26 items do not directly measure insight-to-explanation latency."
+    },
+    {
+      "pattern_id": "domain_locked_expert",
+      "question_id": "dle_domain_entry_contrast_v1",
+      "prompt": "Starting work is substantially easier inside a domain that matters deeply to me than outside it.",
+      "responses": [
+        "strongly_agree",
+        "mostly_agree",
+        "partly_agree",
+        "disagree",
+        "unsure"
+      ],
+      "reason": "The 26 items do not separately measure Entry Threshold inside and outside an aligned domain."
+    },
+    {
+      "pattern_id": "meaning_gated_performer",
+      "question_id": "mgp_meaning_activation_v1",
+      "prompt": "Work becomes markedly easier to start when I can see why it matters.",
+      "responses": [
+        "strongly_agree",
+        "mostly_agree",
+        "partly_agree",
+        "disagree",
+        "unsure"
+      ],
+      "reason": "The defining ET shift by perceived meaning is dynamic."
+    },
+    {
+      "pattern_id": "deadline_unlocked_starter",
+      "question_id": "dus_deadline_activation_v1",
+      "prompt": "A real approaching deadline can suddenly make a task much easier for me to start.",
+      "responses": [
+        "strongly_agree",
+        "mostly_agree",
+        "partly_agree",
+        "disagree",
+        "unsure"
+      ],
+      "reason": "The defining high-to-low ET transition near deadline is not directly measured."
+    },
+    {
+      "pattern_id": "start_stop_oscillator",
+      "question_id": "sso_cycle_v1",
+      "prompt": "I repeatedly cycle between strong engagement and disengagement when I have exceeded my recovery capacity.",
+      "responses": [
+        "strongly_agree",
+        "mostly_agree",
+        "partly_agree",
+        "disagree",
+        "unsure"
+      ],
+      "reason": "The static profile can suggest recovery limits but not repeated temporal cycling."
+    },
+    {
+      "pattern_id": "impulsive_enthusiastic_communicator",
+      "question_id": "iec_output_filter_v1",
+      "prompt": "When I am engaged or excited, I sometimes speak before I have fully filtered what I want to say.",
+      "responses": [
+        "strongly_agree",
+        "mostly_agree",
+        "partly_agree",
+        "disagree",
+        "unsure"
+      ],
+      "reason": "The 26 dimensions do not directly measure output inhibition or conversational interruption."
+    },
+    {
+      "pattern_id": "masked_high_cost_performer",
+      "question_id": "mhcp_masking_cost_v1",
+      "prompt": "I can appear socially fine while consciously managing my behavior and paying for it afterward.",
+      "responses": [
+        "strongly_agree",
+        "mostly_agree",
+        "partly_agree",
+        "disagree",
+        "unsure"
+      ],
+      "reason": "The architecture can suggest hidden social cost but not conscious masking itself."
+    },
+    {
+      "pattern_id": "ethical_precision_speaker",
+      "question_id": "eps_values_speech_v1",
+      "prompt": "I find it difficult not to correct or challenge something when truth, fairness, or responsibility is at stake.",
+      "responses": [
+        "strongly_agree",
+        "mostly_agree",
+        "partly_agree",
+        "disagree",
+        "unsure"
+      ],
+      "reason": "The 26 dimensions measure precision and internal standards, not specifically ethical content."
+    },
+    {
+      "pattern_id": "affective_floodgate",
+      "question_id": "af_threshold_overwhelm_v1",
+      "prompt": "Emotional load can build until it suddenly becomes much harder for me to regulate or stay engaged.",
+      "responses": [
+        "strongly_agree",
+        "mostly_agree",
+        "partly_agree",
+        "disagree",
+        "unsure"
+      ],
+      "reason": "Threshold-crossing affective overwhelm is a dynamic phenomenon."
+    },
+    {
+      "pattern_id": "ethical_amplifier",
+      "question_id": "ea_moral_salience_v1",
+      "prompt": "Perceived unfairness or moral inconsistency can stay active in my mind and demand a response.",
+      "responses": [
+        "strongly_agree",
+        "mostly_agree",
+        "partly_agree",
+        "disagree",
+        "unsure"
+      ],
+      "reason": "The source explicitly requires a values-specific form of conceptual integration."
+    },
+    {
+      "pattern_id": "sensory_seeking_stabilizer",
+      "question_id": "sss_sensory_support_v1",
+      "prompt": "Movement, music, or other sensory input can help me stabilize attention or energy.",
+      "responses": [
+        "strongly_agree",
+        "mostly_agree",
+        "partly_agree",
+        "disagree",
+        "unsure"
+      ],
+      "reason": "The 26 items do not directly measure active sensory-seeking behavior."
+    },
+    {
+      "pattern_id": "stim_regulation_loop",
+      "question_id": "srl_repetitive_regulation_v1",
+      "prompt": "I use repetitive movement or sensory actions to help regulate concentration, tension, or energy.",
+      "responses": [
+        "strongly_agree",
+        "mostly_agree",
+        "partly_agree",
+        "disagree",
+        "unsure"
+      ],
+      "reason": "The regulatory behavior itself is not directly measured."
+    },
+    {
+      "pattern_id": "time_blind_sprinter",
+      "question_id": "tbs_time_estimation_v1",
+      "prompt": "I often misjudge how much time has passed or how long a task will take until an external cue makes it concrete.",
+      "responses": [
+        "strongly_agree",
+        "mostly_agree",
+        "partly_agree",
+        "disagree",
+        "unsure"
+      ],
+      "reason": "Subjective duration estimation is not the same construct as Temporal Depth."
+    }
+  ]
+}
