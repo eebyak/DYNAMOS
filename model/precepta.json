@@ -1,0 +1,202 @@
+{
+  "model": "DYNAMOS",
+  "layer": "PRECEPTA",
+  "full_name": "Phenotypic Interface Layer",
+  "version": "2.0.0",
+  "status": "canonical",
+  "license": "CC-BY-SA-4.0",
+  "pattern_count": 32,
+  "principle": "PRECEPTA patterns are human-readable, stigma-free descriptions that emerge from combinations of DYNAMOS dimensions. No single dimension defines a pattern.",
+  "domains": [
+    {
+      "id": "cognitive_learning",
+      "name": "Cognitive & Learning",
+      "patterns": [
+        {
+          "id": "deep_systems_architect",
+          "name": "Deep Systems Architect",
+          "description": "Naturally perceives problems as systems rather than isolated elements. Excels at identifying structural gaps, dependencies, and long-term implications, especially in complex or abstract domains."
+        },
+        {
+          "id": "precision_resolver",
+          "name": "Precision Resolver",
+          "description": "Experiences strong internal pressure to eliminate errors, inconsistencies, or unfinished structures. Thrives when problems can be refined to clarity and completion, but may find ambiguity or partial solutions costly."
+        },
+        {
+          "id": "fast_insight_slow_explanation",
+          "name": "Fast Insight / Slow Explanation",
+          "description": "Arrives at understanding rapidly and often non-linearly, but needs additional time or effort to translate insights into step-by-step explanations. Others may underestimate the depth of reasoning because intermediate steps are skipped internally."
+        },
+        {
+          "id": "divergent_idea_generator",
+          "name": "Divergent Idea Generator",
+          "description": "Generates novel ideas and unconventional approaches with ease, especially when exploration is encouraged. May prioritize creativity over completion and benefit from external structures that support follow-through."
+        },
+        {
+          "id": "domain_locked_expert",
+          "name": "Domain-Locked Expert",
+          "description": "Develops exceptional depth and expertise within specific interest areas. Performs best when work aligns closely with established domains of meaning and may disengage sharply outside those contexts."
+        },
+        {
+          "id": "split_integration_thinker",
+          "name": "Split-Integration Thinker",
+          "description": "Shows strong conceptual reasoning while having limited access to emotional labeling or articulation. Emotions are present and influential but are processed indirectly rather than through explicit awareness."
+        },
+        {
+          "id": "big_picture_synthesizer",
+          "name": "Big-Picture Synthesizer",
+          "description": "Naturally integrates information across time, domains, and perspectives. Prefers abstraction and synthesis over detail work and often contributes strategic or visionary insight."
+        },
+        {
+          "id": "executive_load_taxed",
+          "name": "Executive-Load Taxed",
+          "description": "Handles complexity well in principle but experiences high cost when multiple executive demands stack. Task switching, coordination, or administrative overhead can disproportionately reduce effectiveness."
+        }
+      ]
+    },
+    {
+      "id": "attention_activation_work_rhythm",
+      "name": "Attention, Activation & Work Rhythm",
+      "patterns": [
+        {
+          "id": "flow_diver",
+          "name": "Flow Diver",
+          "description": "Enters deep focus states readily when conditions are right and remains absorbed for extended periods. Disengaging or switching tasks can be difficult and costly once immersion has occurred."
+        },
+        {
+          "id": "meaning_gated_performer",
+          "name": "Meaning-Gated Performer",
+          "description": "Engagement and performance depend strongly on perceived meaning or relevance. When alignment is present, output is high; when absent, activation becomes effortful or unsustainable."
+        },
+        {
+          "id": "burst_creator",
+          "name": "Burst Creator",
+          "description": "Works in intense, high-energy bursts followed by periods of low output or disengagement. Performs best with flexible pacing and may struggle in environments requiring steady, uniform productivity."
+        },
+        {
+          "id": "routine_anchor",
+          "name": "Routine Anchor",
+          "description": "Relies on predictability and established routines to maintain stability and performance. Unexpected changes or disruptions may cause stress, even if overall capability remains high."
+        },
+        {
+          "id": "deadline_unlocked_starter",
+          "name": "Deadline-Unlocked Starter",
+          "description": "Activation increases sharply as external time pressure approaches. Can perform very effectively under deadlines but may experience unnecessary stress or volatility as a result."
+        },
+        {
+          "id": "long_horizon_planner",
+          "name": "Long-Horizon Planner",
+          "description": "Thinks naturally in extended timeframes and maintains continuity across long projects. Prefers strategic planning and future-oriented work over short-term task cycling."
+        },
+        {
+          "id": "transition_fragile",
+          "name": "Transition-Fragile",
+          "description": "Experiences significant cost when moving between tasks, states, or contexts. May perform well once settled but find beginnings and endings disproportionately demanding."
+        },
+        {
+          "id": "start_stop_oscillator",
+          "name": "Start–Stop Oscillator",
+          "description": "Cycles between engagement and disengagement due to regulation or recovery limits. Patterns may appear inconsistent externally despite strong capability during active phases."
+        }
+      ]
+    },
+    {
+      "id": "social_communication",
+      "name": "Social & Communication",
+      "patterns": [
+        {
+          "id": "precision_literalist",
+          "name": "Precision Literalist",
+          "description": "Communicates directly, accurately, and with minimal reliance on subtext. Values clarity and correctness over social smoothing, which can sometimes be misinterpreted by others."
+        },
+        {
+          "id": "social_cue_load",
+          "name": "Social Cue Load",
+          "description": "Finds real-time social interpretation cognitively demanding. Social difficulties arise from processing load rather than lack of interest or concern for others."
+        },
+        {
+          "id": "low_feedback_autonomy",
+          "name": "Low-Feedback Autonomy",
+          "description": "Self-regulates primarily through internal standards rather than external validation. Functions well independently and is relatively unaffected by praise or criticism."
+        },
+        {
+          "id": "impulsive_enthusiastic_communicator",
+          "name": "Impulsive / Enthusiastic Communicator",
+          "description": "Expresses thoughts and excitement quickly and openly, sometimes before full filtering. Communication energy can be engaging but may occasionally overwhelm conversational pacing."
+        },
+        {
+          "id": "masked_high_cost_performer",
+          "name": "Masked High-Cost Performer",
+          "description": "Maintains socially expected behavior through conscious regulation rather than ease. Performance appears smooth externally but carries significant internal cost over time."
+        },
+        {
+          "id": "ethical_precision_speaker",
+          "name": "Ethical Precision Speaker",
+          "description": "Is guided by strong internal values around fairness, truth, and responsibility in communication. May correct inaccuracies or challenge inconsistencies even in informal contexts."
+        }
+      ]
+    },
+    {
+      "id": "emotional_self_regulation",
+      "name": "Emotional & Self-Regulation",
+      "patterns": [
+        {
+          "id": "affective_floodgate",
+          "name": "Affective Floodgate",
+          "description": "Experiences emotions intensely and with limited buffering once thresholds are crossed. Emotional overwhelm can emerge suddenly under cumulative load."
+        },
+        {
+          "id": "social_rejection_amplifier",
+          "name": "Social Rejection Amplifier",
+          "description": "Reacts strongly to perceived criticism or rejection, even when subtle or unintended. Sensitivity reflects heightened feedback gain rather than fragility or insecurity."
+        },
+        {
+          "id": "ethical_amplifier",
+          "name": "Ethical Amplifier",
+          "description": "Responds deeply to issues of justice, fairness, and moral coherence. Ethical violations or value conflicts are difficult to ignore and may drive sustained engagement or distress."
+        },
+        {
+          "id": "verification_loop",
+          "name": "Verification Loop",
+          "description": "Feels compelled to re-check, refine, or perfect work to ensure correctness. This can enhance quality but may also prolong tasks or increase cognitive load."
+        },
+        {
+          "id": "affective_decoupler",
+          "name": "Affective Decoupler",
+          "description": "Processes emotions internally without readily identifying or verbalizing them. Emotional awareness may emerge indirectly through behavior, values, or delayed reflection."
+        }
+      ]
+    },
+    {
+      "id": "sensory_physical",
+      "name": "Sensory & Physical",
+      "patterns": [
+        {
+          "id": "open_plan_vulnerable",
+          "name": "Open-Plan Vulnerable",
+          "description": "Is sensitive to sensory-rich environments such as noise, movement, or visual clutter. Performance improves significantly in controlled or quieter settings."
+        },
+        {
+          "id": "sensory_seeking_stabilizer",
+          "name": "Sensory-Seeking Stabilizer",
+          "description": "Uses movement, stimulation, or sensory input to regulate attention and energy. Physical engagement supports cognitive focus rather than distracting from it."
+        },
+        {
+          "id": "quiet_need_deep_worker",
+          "name": "Quiet-Need Deep Worker",
+          "description": "Performs best in low-stimulation environments that protect focus and continuity. Sensory calm enables sustained deep work and high-quality output."
+        },
+        {
+          "id": "stim_regulation_loop",
+          "name": "Stim-Regulation Loop",
+          "description": "Engages in repetitive movements or sensory actions to self-regulate. These behaviors support stability and concentration and are adaptive rather than problematic."
+        },
+        {
+          "id": "time_blind_sprinter",
+          "name": "Time-Blind Sprinter",
+          "description": "Experiences time subjectively rather than linearly. May underestimate duration or urgency but can perform effectively once engaged or externally anchored."
+        }
+      ]
+    }
+  ]
+}
