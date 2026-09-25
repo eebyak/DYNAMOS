@@ -1,0 +1,125 @@
+---
+import '../../styles/global.css';
+import model from '../../../model/dynamos-v2.json';
+import dimensions from '../../../model/dimensions.json';
+
+const base = import.meta.env.BASE_URL;
+
+const dimensionCount = dimensions.categories.reduce(
+  (total, category) => total + category.dimensions.length,
+  0
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content="Explore the 26 dimensions and eight architectural categories of DYNAMOS v2."
+    />
+    <title>The Model — DYNAMOS</title>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <a class="wordmark" href={base}>DYNAMOS</a>
+      <nav aria-label="Primary navigation">
+        <a aria-current="page" href={`${base}model/`}>Model</a>
+        <a href={`${base}#precepta`}>PRECEPTA</a>
+        <a href={`${base}#principles`}>Principles</a>
+        <a href={`${base}responsible-use/`}>Responsible use</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="model-hero">
+        <p class="eyebrow">Canonical model · v{model.version}</p>
+        <h1>The DYNAMOS origin space</h1>
+        <p class="lede">
+          {dimensionCount} continuous dimensions across {dimensions.categories.length}
+          architectural categories. Each describes one aspect of how a system
+          operates. None is a diagnosis, type, or verdict.
+        </p>
+      </section>
+
+      <section class="model-intro">
+        <div>
+          <p class="eyebrow">How to read this</p>
+          <h2>Dimensions become meaningful in combination.</h2>
+        </div>
+        <div>
+          <p>
+            A score on one dimension should not be interpreted as a trait in isolation.
+            DYNAMOS treats observable patterns as configurations that emerge from
+            combinations of dimensions, context, interaction, and time.
+          </p>
+          <p>
+            Select a dimension below to read its canonical definition and scoring
+            direction.
+          </p>
+        </div>
+      </section>
+
+      <section class="model-categories">
+        {dimensions.categories.map((category, index) => (
+          <section class="model-category" id={category.id}>
+            <div class="category-number">{String(index + 1).padStart(2, '0')}</div>
+            <div class="category-content">
+              <p class="eyebrow">{category.name}</p>
+              <h2>{category.description}</h2>
+
+              <div class="dimension-list">
+                {category.dimensions.map((dimension) => (
+                  <a class="dimension-row" href={`${base}model/${dimension.id}/`}>
+                    <div class="dimension-code">{dimension.id}</div>
+                    <div>
+                      <h3>{dimension.name}</h3>
+                      <p>{dimension.short}</p>
+                    </div>
+                    <span aria-hidden="true">→</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+        ))}
+      </section>
+
+      <section class="scale-section">
+        <div>
+          <p class="eyebrow">Reflective scale</p>
+          <h2>1–10 describes magnitude, not quality.</h2>
+        </div>
+        <div class="scale-grid">
+          {Object.entries(model.scoring.scale.anchors).map(([range, label]) => (
+            <div>
+              <strong>{range}</strong>
+              <span>{label}</span>
+            </div>
+          ))}
+        </div>
+        <p class="scale-note">
+          There are no inherently good or bad scores. Interpretation depends on the
+          configuration and the conditions in which it operates.
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        <p>
+          <strong>DYNAMOS — Dynamic Neuro-Operational Systems Model</strong><br />
+          © {model.copyright.year} {model.copyright.holder}
+        </p>
+        <p>Model and content licensed under CC BY-SA 4.0.</p>
+      </div>
+      <div class="footer-notice">
+        <p><strong>Responsible use:</strong> DYNAMOS is non-diagnostic and is not a performance evaluation.</p>
+        <p><a href={`${base}responsible-use/`}>Responsible-use statement →</a></p>
+      </div>
+    </footer>
+  </body>
+</html>
