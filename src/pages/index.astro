@@ -3,6 +3,7 @@ import '../styles/global.css';
 import model from '../../model/dynamos-v2.json';
 import dimensions from '../../model/dimensions.json';
 import precepta from '../../model/precepta.json';
+import researchBackend from '../../model/research/backend.json';
 
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
@@ -16,6 +17,13 @@ const preceptaCount = precepta.domains.reduce(
   (total, domain) => total + domain.patterns.length,
   0
 );
+
+const researchConfig = {
+  apiBase: (researchBackend.api_base ?? '').replace(/\/$/, ''),
+  modelVersion: model.version,
+  questionnaireVersion: '1.1.0-pilot',
+  derivationVersion: '0.3.0-pilot',
+};
 ---
 
 <!doctype html>
@@ -36,9 +44,8 @@ const preceptaCount = precepta.domains.reduce(
       <nav aria-label="Primary navigation">
         <a href={`${base}model/`}>Model</a>
         <a href={`${base}precepta/`}>PRECEPTA</a>
-        <a href="#principles">Principles</a>
-        <a href="#open">Open framework</a>
         <a href={`${base}explore/`}>Explore</a>
+        <a href={`${base}research/`}>Research</a>
         <a href={`${base}responsible-use/`}>Responsible use</a>
       </nav>
     </header>
@@ -63,6 +70,37 @@ const preceptaCount = precepta.domains.reduce(
           <div><strong>{dimensionCount}</strong><span>dimensions</span></div>
           <div><strong>{dimensions.categories.length}</strong><span>architectural categories</span></div>
           <div><strong>{preceptaCount}</strong><span>PRECEPTA patterns</span></div>
+        </div>
+      </section>
+
+
+      <section id="research" class="section research-home">
+        <div class="research-home-copy">
+          <p class="eyebrow">Open research · live pilot</p>
+          <h2>Help us find where the model works — and where it doesn’t.</h2>
+          <p class="research-home-lede">
+            DYNAMOS becomes more useful when people test its higher-order PRECEPTA
+            interpretation against their own experience. Agreement helps. Disagreement
+            is just as valuable.
+          </p>
+          <div class="research-actions">
+            <a class="research-primary" href={`${base}explore/`}>Donate your data to research →</a>
+            <a class="text-link" href={`${base}research/`}>See the live research status →</a>
+          </div>
+          <p class="research-note">
+            Your questionnaire is calculated locally first. Nothing is contributed until
+            you explicitly choose to donate the structured research record.
+          </p>
+        </div>
+
+        <div class="research-live" aria-live="polite">
+          <p class="eyebrow">Current evidence</p>
+          <div class="research-stat-grid">
+            <div><strong id="home-profile-count">—</strong><span>contributed profiles</span></div>
+            <div><strong id="home-judgment-count">—</strong><span>PRECEPTA judgments</span></div>
+            <div><strong>0.3</strong><span>current derivation pilot</span></div>
+          </div>
+          <p id="home-research-status" class="research-status">Loading live research status…</p>
         </div>
       </section>
 
@@ -165,7 +203,117 @@ const preceptaCount = precepta.domains.reduce(
         <p><a href={`${base}responsible-use/`}>Read the full responsible-use and liability statement →</a></p>
       </div>
     </footer>
+
+    <script
+      type="application/json"
+      id="research-home-config"
+      set:html={JSON.stringify(researchConfig)}
+    ></script>
+
+    <script>
+      const researchHomeConfig = JSON.parse(
+        document.querySelector('#research-home-config').textContent
+      );
+
+      async function loadHomeResearchStats() {
+        const status = document.querySelector('#home-research-status');
+
+        if (!researchHomeConfig.apiBase) {
+          status.textContent = 'Research collection is not connected yet.';
+          return;
+        }
+
+        const params = new URLSearchParams({
+          model_version: researchHomeConfig.modelVersion,
+          questionnaire_version: researchHomeConfig.questionnaireVersion,
+          derivation_version: researchHomeConfig.derivationVersion,
+        });
+
+        try {
+          const response = await fetch(
+            `${researchHomeConfig.apiBase}/v1/stats?${params.toString()}`,
+            { headers: { accept: 'application/json' } }
+          );
+
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const stats = await response.json();
+
+          document.querySelector('#home-profile-count').textContent =
+            Number(stats.total_contributions ?? 0).toLocaleString();
+          document.querySelector('#home-judgment-count').textContent =
+            Number(stats.total_pattern_judgments ?? 0).toLocaleString();
+
+          status.textContent =
+            Number(stats.total_contributions ?? 0) === 0
+              ? 'The pilot is ready for its first contributed profile.'
+              : 'Live aggregate counts from the current DYNAMOS research cohort.';
+        } catch {
+          status.textContent =
+            'Live research statistics are temporarily unavailable. The model and questionnaire still work normally.';
+        }
+      }
+
+      loadHomeResearchStats();
+    </script>
+
   <style>
+
+      .research-home {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 4rem;
+        align-items: start;
+        border-top: 1px solid #b9b6ad;
+        border-bottom: 1px solid #b9b6ad;
+      }
+
+      .research-home-lede { max-width: 760px; font-size: 1.15rem; }
+
+      .research-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem 1.5rem;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+      }
+
+      .research-primary {
+        display: inline-block;
+        padding: 0.8rem 1rem;
+        border: 1px solid #17202a;
+        border-radius: 0.55rem;
+        background: #17202a;
+        color: #f7f5ef;
+        text-decoration: none;
+        font-weight: 750;
+      }
+
+      .research-note,
+      .research-status { max-width: 700px; margin-top: 1.25rem; font-size: 0.88rem; }
+
+      .research-live {
+        border: 1px solid #b9b6ad;
+        border-radius: 0.8rem;
+        padding: 1.5rem;
+      }
+
+      .research-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        border-top: 1px solid #d2cfc6;
+        border-bottom: 1px solid #d2cfc6;
+      }
+
+      .research-stat-grid div { display: grid; padding: 1.25rem 0.75rem 1.25rem 0; }
+      .research-stat-grid strong { font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1; }
+      .research-stat-grid span { margin-top: 0.45rem; font-size: 0.78rem; }
+
+      @media (max-width: 800px) {
+        .research-home { grid-template-columns: 1fr; }
+        .research-stat-grid { grid-template-columns: 1fr; }
+        .research-stat-grid div + div { border-top: 1px solid #d2cfc6; }
+      }
+
       .domain-row-link {
         text-decoration: none;
         transition: padding-left 140ms ease, padding-right 140ms ease, background-color 140ms ease;

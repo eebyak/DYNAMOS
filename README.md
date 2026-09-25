@@ -1,43 +1,32 @@
-# DYNAMOS full PRECEPTA pilot — v0.3
+# DYNAMOS live research dashboard
 
-This patch expands the working research loop from the Cognitive & Learning pilot to all **32 PRECEPTA patterns in all five domains**.
+This patch adds a public-facing live research status while keeping raw contributions private.
 
-## GitHub files
+## What changes
 
-Add:
+- New `/research/` page with live aggregate statistics from the Cloudflare `/v1/stats` endpoint.
+- Homepage section: **“Help us find where the model works — and where it doesn’t.”**
+- Live homepage counters for contributed profiles and PRECEPTA judgments.
+- “Donate your data to research” call-to-action.
+- Pattern-level evidence appears only when the Worker marks a cell as published (currently n >= 20).
+- Overall recognition percentage is hidden until at least 10 contributed profiles exist.
+- Navigation gains `Explore` and `Research`.
 
-- `model/precepta-derivation.json`
-- `model/research/precepta-followups.json`
+## Add / replace
 
-Replace:
+- `src/pages/research/index.astro` — NEW
+- `src/pages/index.astro` — REPLACE
+- `src/pages/explore/index.astro` — REPLACE
+- `src/pages/model/index.astro` — REPLACE
+- `src/pages/model/[id].astro` — REPLACE
+- `src/pages/precepta/index.astro` — REPLACE
+- `src/pages/precepta/[id].astro` — REPLACE
+- `src/pages/responsible-use.astro` — REPLACE
 
-- `src/pages/explore/index.astro`
+No Cloudflare Worker or D1 change is required for this dashboard.
 
-Do **not** overwrite your working `model/research/backend.json`; keep the Cloudflare URL you already configured.
+Keep your existing `model/research/backend.json` with the already-working Cloudflare Worker URL.
 
-The old files `model/precepta-derivation-cognitive.json` and `model/research/cognitive-missing-followups.json` become unused. They may be left in the repository temporarily or deleted later.
+Suggested commit:
 
-## Cloudflare Worker
-
-Replace the current Worker code with:
-
-- `cloudflare/worker-dashboard-v3.js`
-
-No D1 database schema change is required.
-
-The Worker update is necessary because the donation record now declares all five PRECEPTA domains rather than only `cognitive_learning`.
-
-## Recommended order
-
-1. Update/deploy the Cloudflare Worker v3.
-2. Confirm `/v1/health` still works.
-3. Add/replace the three GitHub files above.
-4. Let GitHub Pages build.
-5. Run your profile again.
-6. Inspect the new all-domain PRECEPTA result.
-7. Donate one v0.3 test record.
-8. Check the stats endpoint using `derivation_version=0.3.0-pilot`.
-
-Suggested GitHub commit:
-
-`Expand Explore to all 32 PRECEPTA patterns`
+`Add live DYNAMOS research status`
