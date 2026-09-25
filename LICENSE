@@ -1,0 +1,60 @@
+DYNAMOS — Licensing Notice
+
+Copyright © 2026 Kay Berkling
+
+This repository is dual-licensed because it contains both an intellectual
+framework/content layer and software code.
+
+1. DYNAMOS MODEL AND CONTENT
+
+Unless a file states otherwise, the DYNAMOS model and non-software content
+in this repository are licensed under the Creative Commons
+Attribution-ShareAlike 4.0 International License (CC BY-SA 4.0).
+
+This includes, in particular:
+
+- the DYNAMOS model specification;
+- DYNAMOS dimension definitions and model data;
+- PRECEPTA definitions and pattern descriptions;
+- documentation, explanatory text, diagrams, and educational materials;
+- machine-readable model data such as JSON files whose primary purpose is
+  to express the DYNAMOS framework.
+
+Full license text:
+LICENSES/CC-BY-SA-4.0.txt
+
+SPDX identifier:
+CC-BY-SA-4.0
+
+2. SOFTWARE CODE
+
+Unless a file states otherwise, software source code used to implement the
+DYNAMOS website, interactive tools, visualizations, build system, or other
+software is licensed under the GNU General Public License version 3 only.
+
+Full license text:
+LICENSES/GPL-3.0-only.txt
+
+SPDX identifier:
+GPL-3.0-only
+
+3. THIRD-PARTY MATERIAL
+
+Third-party material is not relicensed merely by being included in this
+repository. Where third-party material is present, its original copyright
+and license terms apply and should be identified with the material.
+
+4. ATTRIBUTION
+
+When reusing CC BY-SA 4.0 material from this repository, appropriate
+attribution should identify:
+
+DYNAMOS — Dynamic Neuro-Operational Systems Model
+© 2026 Kay Berkling
+Licensed under CC BY-SA 4.0
+
+Users must also comply with the attribution and ShareAlike requirements of
+the Creative Commons license, including indicating changes where required.
+
+This notice is a summary of how licensing is applied within this repository.
+The full license texts govern.
