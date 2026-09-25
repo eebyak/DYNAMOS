@@ -1,43 +1,29 @@
-# DYNAMOS social preview + subtle homepage background fix
+# LinkedIn static share workaround
 
-This patch combines the current FAQ-enabled site with the social-preview metadata and the new transparent systems graphic.
+This is deliberately separate from the normal Astro homepage.
 
-## Why LinkedIn probably stopped working
+Add these two files:
 
-The later FAQ update replaced `src/pages/index.astro` with a version that did not yet contain the Open Graph metadata from the earlier LinkedIn patch. This package combines both changes, so the FAQ/navigation is preserved and the social tags are restored.
+- `public/share/index.html`
+- `public/social/dynamos-linkedin-v3.jpg`
 
-## Add
+Then share this URL on LinkedIn:
 
-- `public/social/dynamos-system-background.png`
-- `public/social/dynamos-link-preview-v2.png`
+`https://eebyak.github.io/DYNAMOS/share/`
 
-## Replace
+Why this is different:
+- the share page is literal static HTML copied directly by Astro/GitHub Pages;
+- its Open Graph tags are hard-coded in the first HTML response;
+- it uses a brand-new URL, so LinkedIn has no old cache entry for it;
+- it uses a brand-new JPEG filename;
+- `og:url` points to the share URL itself rather than the previously cached homepage URL;
+- normal human visitors are redirected by JavaScript to the real DYNAMOS homepage.
 
-- `src/pages/index.astro`
-
-Nothing else needs to change. No Cloudflare or D1 changes are required.
-
-## Visible website change
-
-Only the homepage hero gets the new systems graphic, at very low opacity. The rest of the site stays unchanged.
-
-## LinkedIn fix
-
-The homepage now contains:
-- `og:title`
-- `og:description`
-- `og:url`
-- `og:image`
-- `og:image:secure_url`
-- image MIME type and 1200×627 dimensions
-- Twitter/X large-card fallbacks
-
-The social image uses a new filename (`dynamos-link-preview-v2.png`) so LinkedIn does not keep requesting the old image asset.
-
-After GitHub Pages deploys successfully, run the clean homepage URL through LinkedIn Post Inspector:
-
-https://eebyak.github.io/DYNAMOS/
+After deployment:
+1. Open `https://eebyak.github.io/DYNAMOS/social/dynamos-linkedin-v3.jpg`
+2. Open `https://eebyak.github.io/DYNAMOS/share/`
+3. Inspect the `/share/` URL in LinkedIn Post Inspector.
+4. Use the `/share/` URL in the LinkedIn post.
 
 Suggested commit:
-
-`Add systems background and restore social preview`
+`Add static LinkedIn share endpoint`
