@@ -1,3 +1,5 @@
+[![CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/88x31.png)](https://creativecommons.org/licenses/by-sa/4.0/)  [![DOI](https://zenodo.org/badge/1387295198.svg)](https://doi.org/10.5281/zenodo.22977733)  
+
 # DYNAMOS questionnaire wording + result readability update
 
 This patch implements the agreed small changes without redesigning the 1–10 scale.
