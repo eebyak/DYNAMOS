@@ -1,17 +1,21 @@
 cff-version: 1.2.0
 message: "If you use DYNAMOS in research, teaching, practice, or derived work, please cite the model."
 title: "DYNAMOS: Dynamic Neuro-Operational Systems Model"
+type: software
 authors:
   - family-names: "Berkling"
     given-names: "Kay"
 version: "2.0.0"
-date-released: 2026-09-25
+date-released: 2026-09-26
 license: "CC-BY-SA-4.0"
 abstract: >-
-  DYNAMOS (Dynamic Neuro-Operational Systems Model) is a non-diagnostic
+  DYNAMOS (Dynamic Neuro-Operational Systems Model) is an open, non-diagnostic
   systems-architecture framework for describing how human cognitive-behavioral
   systems operate under meaning, load, interaction, context, and time.
-  The model includes 26 dimensions and the PRECEPTA phenotypic interface layer.
+  Version 2.0.0 includes 26 dimensions, 32 PRECEPTA patterns across five domains,
+  a browser-based self-reflection instrument, and an experimental participant-
+  feedback research loop. The questionnaire and PRECEPTA derivation remain
+  explicitly pilot-stage and are not validated diagnostic or psychometric tools.
 keywords:
   - neurodiversity
   - dynamic systems
