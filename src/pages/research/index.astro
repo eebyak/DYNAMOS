@@ -150,6 +150,25 @@ const researchConfig = {
         </div>
       </section>
 
+      <section class="research-citation">
+        <div>
+          <p class="eyebrow">Citation & archive</p>
+          <h2>DYNAMOS v2.0.0 is permanently archived.</h2>
+        </div>
+        <div>
+          <p>
+            <strong>Current citable release</strong><br />
+            Berkling, K. (2026). DYNAMOS: Dynamic Neuro-Operational Systems Model (Version 2.0.0). Zenodo.
+            <a class="text-link" href="https://doi.org/10.5281/zenodo.22977734">https://doi.org/10.5281/zenodo.22977734</a>
+          </p>
+          <p>
+            Use the version DOI above when referring specifically to v2.0.0.
+            The project-level DOI <a class="text-link" href="https://doi.org/10.5281/zenodo.22977733">10.5281/zenodo.22977733</a>
+            represents DYNAMOS across releases and follows the evolving record.
+          </p>
+        </div>
+      </section>
+
       <section class="research-final-cta">
         <p class="eyebrow">Participate</p>
         <h2>Give DYNAMOS a chance to be wrong.</h2>
@@ -162,6 +181,12 @@ const researchConfig = {
       <div>
         <p><strong>DYNAMOS — Dynamic Neuro-Operational Systems Model</strong><br />© {model.copyright.year} {model.copyright.holder}</p>
         <p>Model and content licensed under CC BY-SA 4.0.</p>
+      
+        <p class="citation-note">
+          <strong>Cite v2.0.0:</strong> Berkling, K. (2026). DYNAMOS: Dynamic Neuro-Operational Systems Model (Version 2.0.0). Zenodo.
+          <a href="https://doi.org/10.5281/zenodo.22977734">doi:10.5281/zenodo.22977734</a>
+          · <a href="https://doi.org/10.5281/zenodo.22977733">all versions</a>
+        </p>
       </div>
       <div class="footer-notice">
         <p><strong>Research status:</strong> descriptive model-development evidence, not diagnostic or psychometric validation.</p>
@@ -341,6 +366,7 @@ const researchConfig = {
       .research-evidence,
       .research-how,
       .research-privacy,
+      .research-citation,
       .research-final-cta {
         padding: 5rem 2rem;
         border-top: 1px solid #b9b6ad;
@@ -400,7 +426,8 @@ const researchConfig = {
       .evidence-row span { font-size: 0.78rem; }
 
       .research-how,
-      .research-privacy {
+      .research-privacy,
+      .research-citation {
         display: grid;
         grid-template-columns: 0.85fr 1.4fr;
         gap: 4rem;
@@ -430,7 +457,7 @@ const researchConfig = {
 
       @media (max-width: 850px) {
         .big-stats { grid-template-columns: 1fr 1fr; }
-        .research-how, .research-privacy { grid-template-columns: 1fr; }
+        .research-how, .research-privacy, .research-citation { grid-template-columns: 1fr; }
         .evidence-row { grid-template-columns: 1fr; }
       }
 
