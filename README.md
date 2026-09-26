@@ -1,29 +1,49 @@
-# LinkedIn static share workaround
+# DYNAMOS questionnaire wording + result readability update
 
-This is deliberately separate from the normal Astro homepage.
+This patch implements the agreed small changes without redesigning the 1–10 scale.
 
-Add these two files:
+## 1. Removes comparison-to-other-people framing
 
-- `public/share/index.html`
-- `public/social/dynamos-linkedin-v3.jpg`
+The public site no longer asks participants to judge themselves against other people.
 
-Then share this URL on LinkedIn:
+The questionnaire now says:
+- rate your typical functioning over time;
+- use the same 1–10 scale;
+- use the existing low/high descriptions for each dimension;
+- scores are not currently population norms or percentiles.
 
-`https://eebyak.github.io/DYNAMOS/share/`
+The numerical scale and derivation thresholds are unchanged.
 
-Why this is different:
-- the share page is literal static HTML copied directly by Astro/GitHub Pages;
-- its Open Graph tags are hard-coded in the first HTML response;
-- it uses a brand-new URL, so LinkedIn has no old cache entry for it;
-- it uses a brand-new JPEG filename;
-- `og:url` points to the share URL itself rather than the previously cached homepage URL;
-- normal human visitors are redirected by JavaScript to the real DYNAMOS homepage.
+## 2. Makes the integrated result easier to read
 
-After deployment:
-1. Open `https://eebyak.github.io/DYNAMOS/social/dynamos-linkedin-v3.jpg`
-2. Open `https://eebyak.github.io/DYNAMOS/share/`
-3. Inspect the `/share/` URL in LinkedIn Post Inspector.
-4. Use the `/share/` URL in the LinkedIn post.
+The large uninterrupted synthesis paragraph is replaced by:
+- a short explanatory lead;
+- one visually separated observation per represented PRECEPTA domain;
+- smaller body typography and clearer spacing.
+
+The underlying PRECEPTA inference and wording are unchanged.
+
+The printable report uses the same clearer domain-by-domain synthesis.
+
+## 3. Questionnaire version becomes 1.2.0-pilot
+
+This is intentional. Although the 1–10 scale itself is unchanged, the response instruction changed materially. New donations should therefore not be silently pooled with records collected under the old comparison-based instruction.
+
+- Model remains `2.0.0`
+- Derivation remains `0.3.0-pilot`
+- Questionnaire becomes `1.2.0-pilot`
+
+The homepage and Research dashboard now request statistics for the new 1.2 cohort. Existing 1.1 data remain in the database as a separate historical cohort.
+
+## Replace these four files
+
+- `src/pages/explore/index.astro`
+- `src/pages/faq/index.astro`
+- `src/pages/research/index.astro`
+- `src/pages/index.astro`
+
+No Cloudflare Worker or D1 change is required.
 
 Suggested commit:
-`Add static LinkedIn share endpoint`
+
+`Simplify questionnaire framing and improve result readability`
