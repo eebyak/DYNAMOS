@@ -8,6 +8,7 @@ authors:
 version: "2.0.0"
 date-released: 2026-09-26
 license: "CC-BY-SA-4.0"
+doi: 10.5281/zenodo.22977734
 abstract: >-
   DYNAMOS (Dynamic Neuro-Operational Systems Model) is an open, non-diagnostic
   systems-architecture framework for describing how human cognitive-behavioral
