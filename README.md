@@ -14,6 +14,36 @@ It is not a personality test, diagnostic instrument, or performance evaluation. 
 
 ---
 
+## Why the names?
+
+### DYNAMOS
+
+**DYNAMOS** is the name of the **Dynamic Neuro-Operational Systems Model**. It is a constructed name rather than a strict first-letter initialism: **DYNA** from *Dynamic*, **MO** from *Model*, and **S** from *Systems*.
+
+The name was also chosen with the Greek **δύναμις (*dynamis*)** in mind: power, capacity, or potential. That resonance fits the model's central question. DYNAMOS is less concerned with what kind of person someone *is* than with what a human system can do, sustain, shift, recover from, and become under different conditions.
+
+### PRECEPTA
+
+**PRECEPTA** is the name of the **Phenotypic Interface Layer**: the layer between underlying DYNAMOS architecture and patterns that become human-readable in everyday functioning.
+
+During development, the idea behind the name was expressed as **perceived, socially legible cognitive-behavioral patterns inferred from observation, not mechanisms of origin**. The point is that PRECEPTA describes what can become visible at the interface without claiming that the visible pattern reveals one unique hidden cause.
+
+The name also deliberately echoes Latin **_praecepta_**, the plural of **_praeceptum_** — precepts, rules, or instructions — from **_praecipere_**, with the older sense of taking beforehand and the later senses of instructing or prescribing. In DYNAMOS, the resonance is intentionally epistemic: PRECEPTA is what can be apprehended and formulated at the visible interface before the underlying mechanism is fully known.
+
+Together, the two names express the architecture of the framework:
+
+```text
+DYNAMOS
+underlying dynamic capacity and operating architecture
+        ↓
+PRECEPTA
+patterns apprehended at the phenotypic interface
+        ↓
+observable functioning in context
+```
+
+---
+
 ## Current public version
 
 | Component | Version | Status |
