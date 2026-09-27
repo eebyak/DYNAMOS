@@ -2,6 +2,8 @@
 import '../../styles/global.css';
 import model from '../../../model/dynamos-v2.json';
 import precepta from '../../../model/precepta.json';
+import derivation from '../../../model/precepta-derivation.json';
+import dimensions from '../../../model/dimensions.json';
 
 export function getStaticPaths() {
   return precepta.domains.flatMap((domain) =>
@@ -20,6 +22,47 @@ export function getStaticPaths() {
 }
 
 const { pattern, domain, siblings } = Astro.props;
+
+const derivationRule = derivation.patterns.find((entry) => entry.id === pattern.id);
+const dimensionMap = Object.fromEntries(
+  dimensions.categories.flatMap((category) =>
+    category.dimensions.map((dimension) => [
+      dimension.id,
+      { ...dimension, categoryName: category.name },
+    ])
+  )
+);
+
+const inferenceStatus = {
+  inferable: {
+    label: 'Directly inferable',
+    explanation:
+      'The current 26 ratings can test the core architecture. A pattern is still shown only when the rule is compatible with the participant’s scores.',
+  },
+  context_sensitive: {
+    label: 'Context-sensitive',
+    explanation:
+      'The static profile can support the architecture, but a defining contextual or dynamic feature is not directly observed.',
+  },
+  not_directly_inferable: {
+    label: 'Not directly inferable from static scores',
+    explanation:
+      'The current 26 ratings do not directly measure the defining phenomenon. The pattern is withheld from automatic inference and can be tested through structured follow-up.',
+  },
+};
+
+const status = derivationRule ? inferenceStatus[derivationRule.inference_status] : null;
+const conditions = derivationRule
+  ? [...(derivationRule.core ?? []), ...(derivationRule.supporting ?? [])]
+  : [];
+const targetLabel = (target) =>
+  ({
+    very_low: 'Very low',
+    low: 'Low',
+    moderate: 'Moderate',
+    high: 'High',
+    very_high: 'Very high',
+  })[target] ?? target;
 
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
@@ -85,12 +128,134 @@ const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
           <hr />
 
           <p><strong>Derivation status</strong></p>
-          <p>
-            Formal machine-readable derivation rules are not yet part of the public
-            specification.
-          </p>
+          {derivationRule && status ? (
+            <>
+              <p class="status-label">{status.label}</p>
+              <p>{status.explanation}</p>
+              <p class="status-version">
+                Derivation <strong>{derivation.derivation_version}</strong> · {derivation.status}
+              </p>
+            </>
+          ) : (
+            <p>No machine-readable rule is currently registered for this pattern.</p>
+          )}
         </aside>
       </section>
+
+      {derivationRule && (
+        <section class="derivation-section">
+          <div class="derivation-heading">
+            <div>
+              <p class="eyebrow">Transparent derivation</p>
+              <h2>How this pattern enters the model.</h2>
+            </div>
+            <div>
+              <p>
+                This is the current machine-readable hypothesis used by the Explore
+                engine. It is public and auditable, but it is not a validated
+                psychometric or diagnostic rule.
+              </p>
+              <p>
+                <a class="text-link" href={`${base}precepta/derivation/`}>
+                  How PRECEPTA derivation was constructed →
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <div class="signature-card">
+            <p class="eyebrow">Architectural signature</p>
+            <code>{derivationRule.source_signature}</code>
+          </div>
+
+          {conditions.length > 0 && (
+            <div class="rule-table-wrap">
+              <table class="rule-table">
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th>Dimension</th>
+                    <th>Target region</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {conditions.map((condition) => {
+                    const dimension = dimensionMap[condition.dimension];
+                    return (
+                      <tr>
+                        <td>{condition.role === 'core' ? 'Core' : 'Supporting'}</td>
+                        <td>
+                          <a href={`${base}model/${condition.dimension}/`}>
+                            <strong>{condition.dimension}</strong>
+                            {dimension ? ` — ${dimension.name}` : ''}
+                          </a>
+                        </td>
+                        <td>{targetLabel(condition.target)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          <div class="derivation-notes">
+            <article>
+              <p class="eyebrow">Why these dimensions?</p>
+              <p>{derivationRule.role_rationale}</p>
+            </article>
+
+            {derivationRule.context_note && (
+              <article>
+                <p class="eyebrow">What the static profile cannot establish</p>
+                <p>{derivationRule.context_note}</p>
+              </article>
+            )}
+          </div>
+
+          {(derivationRule.modifiers ?? []).length > 0 && (
+            <div class="modifier-block">
+              <p class="eyebrow">Expression modifiers</p>
+              <p>
+                Modifiers affect cost, sustainability, or expression. They do not
+                determine whether the base pattern exists.
+              </p>
+              <div class="modifier-grid">
+                {derivationRule.modifiers.map((modifier) => {
+                  const dimension = dimensionMap[modifier.dimension];
+                  return (
+                    <article>
+                      <p>
+                        <a href={`${base}model/${modifier.dimension}/`}>
+                          <strong>{modifier.dimension}</strong>
+                          {dimension ? ` — ${dimension.name}` : ''}
+                        </a>
+                        {' · '}
+                        {targetLabel(modifier.if)}
+                      </p>
+                      <p>{modifier.text}</p>
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {derivationRule.revision_note && (
+            <details class="revision-note">
+              <summary>Revision note</summary>
+              <p>{derivationRule.revision_note}</p>
+            </details>
+          )}
+
+          <div class="machine-source">
+            <span>Machine-readable source</span>
+            <a href="https://github.com/eebyak/DYNAMOS/blob/main/model/precepta-derivation.json">
+              model/precepta-derivation.json ↗
+            </a>
+          </div>
+        </section>
+      )}
 
       <section class="pattern-principles">
         <div>
@@ -199,6 +364,113 @@ const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
         margin: 1.5rem 0;
       }
 
+      .status-label {
+        margin-bottom: 0.35rem;
+        font-weight: 800;
+      }
+
+      .status-version {
+        margin-top: 1rem;
+        font-size: 0.82rem;
+      }
+
+      .derivation-section {
+        padding: 5rem 2rem;
+        border-top: 1px solid #b9b6ad;
+      }
+
+      .derivation-heading {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .derivation-heading h2 {
+        font-size: clamp(2rem, 4vw, 3.8rem);
+      }
+
+      .signature-card {
+        margin: 2rem 0;
+        padding: 1.5rem;
+        border: 1px solid #b9b6ad;
+        border-radius: 0.75rem;
+      }
+
+      .signature-card code {
+        display: block;
+        margin-top: 0.7rem;
+        white-space: normal;
+        font-size: clamp(1.05rem, 2vw, 1.35rem);
+        line-height: 1.55;
+      }
+
+      .rule-table-wrap {
+        overflow-x: auto;
+        margin: 2rem 0;
+      }
+
+      .rule-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .rule-table th,
+      .rule-table td {
+        padding: 0.9rem 0.75rem;
+        border-bottom: 1px solid #d2cfc6;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .rule-table th {
+        font-size: 0.78rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .derivation-notes,
+      .modifier-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .derivation-notes article,
+      .modifier-grid article {
+        padding: 1.25rem;
+        border: 1px solid #d2cfc6;
+        border-radius: 0.65rem;
+      }
+
+      .modifier-block {
+        margin-top: 2.5rem;
+      }
+
+      .revision-note {
+        margin-top: 2rem;
+        padding: 1rem 0;
+        border-top: 1px solid #d2cfc6;
+        border-bottom: 1px solid #d2cfc6;
+      }
+
+      .revision-note summary {
+        cursor: pointer;
+        font-weight: 750;
+      }
+
+      .machine-source {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 2.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid #d2cfc6;
+        font-size: 0.86rem;
+      }
+
       .pattern-principles {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -214,7 +486,10 @@ const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
 
       @media (max-width: 760px) {
         .pattern-body,
-        .pattern-principles {
+        .pattern-principles,
+        .derivation-heading,
+        .derivation-notes,
+        .modifier-grid {
           grid-template-columns: 1fr;
         }
       }

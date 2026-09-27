@@ -2,6 +2,7 @@
 import '../../styles/global.css';
 import model from '../../../model/dynamos-v2.json';
 import precepta from '../../../model/precepta.json';
+import derivation from '../../../model/precepta-derivation.json';
 
 const rawBase = import.meta.env.BASE_URL;
 const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
@@ -9,6 +10,14 @@ const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
 const patternCount = precepta.domains.reduce(
   (total, domain) => total + domain.patterns.length,
   0
+);
+
+const derivationCounts = derivation.patterns.reduce(
+  (counts, pattern) => {
+    counts[pattern.inference_status] = (counts[pattern.inference_status] ?? 0) + 1;
+    return counts;
+  },
+  {}
 );
 ---
 
@@ -106,17 +115,39 @@ const patternCount = precepta.domains.reduce(
       <section class="precepta-status">
         <div>
           <p class="eyebrow">Current status</p>
-          <h2>The descriptions are canonical. The formal derivation grammar comes next.</h2>
+          <h2>The descriptions are canonical. The derivation grammar is public and experimental.</h2>
         </div>
         <div>
           <p>
-            The current public specification fixes the PRECEPTA names, domains, and
-            descriptions. The next development step is to encode transparent
-            derivation logic linking dimension configurations to PRECEPTA patterns.
+            DYNAMOS now publishes machine-readable derivation rules for all
+            {derivation.patterns.length} PRECEPTA patterns. These rules are the same
+            provisional rules used by the Explore engine.
           </p>
           <p>
-            Until that derivation grammar is published, PRECEPTA should be read as
-            a canonical descriptive interface rather than as a validated scoring algorithm.
+            Publication makes the reasoning auditable; it does not make the rules
+            validated. The signatures remain model hypotheses being tested through
+            participant recognition, rejection, uncertainty, and missing-pattern feedback.
+          </p>
+
+          <div class="derivation-status-grid">
+            <div>
+              <strong>{derivationCounts.inferable ?? 0}</strong>
+              <span>directly inferable</span>
+            </div>
+            <div>
+              <strong>{derivationCounts.context_sensitive ?? 0}</strong>
+              <span>context-sensitive</span>
+            </div>
+            <div>
+              <strong>{derivationCounts.not_directly_inferable ?? 0}</strong>
+              <span>not directly inferable</span>
+            </div>
+          </div>
+
+          <p>
+            <a class="text-link" href={`${base}precepta/derivation/`}>
+              Read how PRECEPTA derivation works →
+            </a>
           </p>
         </div>
       </section>
@@ -159,6 +190,30 @@ const patternCount = precepta.domains.reduce(
         padding: 5rem 2rem;
         border-top: 1px solid #b9b6ad;
         border-bottom: 1px solid #b9b6ad;
+      }
+
+      .derivation-status-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0;
+        margin: 2rem 0;
+        border-top: 1px solid #d2cfc6;
+        border-bottom: 1px solid #d2cfc6;
+      }
+
+      .derivation-status-grid div {
+        display: grid;
+        gap: 0.35rem;
+        padding: 1.2rem 0.8rem 1.2rem 0;
+      }
+
+      .derivation-status-grid strong {
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        line-height: 1;
+      }
+
+      .derivation-status-grid span {
+        font-size: 0.78rem;
       }
 
       .precepta-domains {
@@ -252,6 +307,14 @@ const patternCount = precepta.domains.reduce(
 
         .precepta-domain {
           gap: 1rem;
+        }
+
+        .derivation-status-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .derivation-status-grid div + div {
+          border-top: 1px solid #d2cfc6;
         }
 
         .pattern-row {

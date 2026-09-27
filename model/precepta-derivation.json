@@ -27,8 +27,8 @@
     }
   ],
   "scale_definition": {
-    "type": "comparative_self_estimate",
-    "statement": "Scores express the respondent's estimate of their typical functioning relative to what they perceive as typical among other adults. They are not measured population percentiles.",
+    "type": "self_rating",
+    "statement": "Scores describe the respondent's typical functioning over time using the low/high anchors defined for each dimension. They are not population norms or percentiles.",
     "bands": [
       {
         "min": 1,
@@ -1183,5 +1183,12 @@
       "role_rationale": "Low TD may describe a shorter planning horizon, but subjective duration estimation and time blindness are not directly measured by the current 26 items.",
       "context_note": "A targeted follow-up is required to observe systematic underestimation of elapsed time or urgency."
     }
-  ]
+  ],
+  "provenance": {
+    "development_method": "theory-driven, literature-anchored model development",
+    "literature_role": "Published research supplied theoretical foundations and phenomenological input. Diagnostic categories were treated as sources of recurring observed phenomena, not as causal ground truth.",
+    "construction_status": "The 26-dimensional architecture, the 32 PRECEPTA signatures, and the machine-readable derivation grammar are DYNAMOS model constructions. They are provisional hypotheses for empirical testing rather than validated psychometric or diagnostic rules.",
+    "empirical_signal": "Participant recognition, partial recognition, rejection, uncertainty, and missing-pattern feedback are evidence about the derivation. Disagreement is not treated as participant error.",
+    "metadata_note": "Scale wording updated after questionnaire 1.2 removed comparison-to-other-people instructions. Matching rules and thresholds are unchanged."
+  }
 }
